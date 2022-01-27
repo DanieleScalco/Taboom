@@ -98,8 +98,12 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
                                .setPositiveButton(R.string.modify, new DialogInterface.OnClickListener() {
                                    @Override
                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                       int minutes = Integer.parseInt(String.valueOf(minutesEdit.getText()));
-                                       int seconds = Integer.parseInt(String.valueOf(secondsEdit.getText()));
+
+                                       String minutesString = String.valueOf(minutesEdit.getText());
+                                       String secondsString = String.valueOf(secondsEdit.getText());
+                                       // Check if the user deleted the input
+                                       int minutes = Integer.parseInt(!minutesString.equals("") ? minutesString : "0");
+                                       int seconds = Integer.parseInt(!secondsString.equals("") ? secondsString : "0");
                                        sendDialogData(minutes, seconds);
                                    }
                                })
@@ -177,13 +181,13 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
                 timerIsRunning = false;
                 timeLeftInMillis = startTimeInMillis;
                 updateCountDownText();
-                playPauseButton.setBackgroundResource(R.drawable.ic_baseline_play_circle_filled_24);
+                playPauseButton.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
             }
         };
 
         countDownTimer.start();
         timerIsRunning = true;
-        playPauseButton.setBackgroundResource(R.drawable.ic_baseline_pause_circle_filled_24);
+        playPauseButton.setBackgroundResource(R.drawable.ic_baseline_pause_24);
     }
 
     private void updateCountDownText() {
@@ -195,18 +199,22 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
     private void pauseTimer() {
 
-        countDownTimer.cancel();
+        // Or it will generate Null Pointer Exception for sanity sake
+        if (countDownTimer != null)
+            countDownTimer.cancel();
         timerIsRunning = false;
-        playPauseButton.setBackgroundResource(R.drawable.ic_baseline_play_circle_filled_24);
+        playPauseButton.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
 
     }
 
     private void resetTimer() {
 
-        countDownTimer.cancel();
+        // Or it will generate Null Pointer Exception
+        if (countDownTimer != null)
+            countDownTimer.cancel();
         timerIsRunning = false;
         timeLeftInMillis = startTimeInMillis;
-        playPauseButton.setBackgroundResource(R.drawable.ic_baseline_play_circle_filled_24);
+        playPauseButton.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
         updateCountDownText();
     }
 

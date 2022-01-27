@@ -3,6 +3,7 @@ package it.bastoner.taboom.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -61,11 +62,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
 
             title = itemView.findViewById(R.id.title);
+            title.setFocusable(false);
             tabooWord1 = itemView.findViewById(R.id.taboo_word_1);
+            tabooWord1.setFocusable(false);
             tabooWord2 = itemView.findViewById(R.id.taboo_word_2);
+            tabooWord2.setFocusable(false);
             tabooWord3 = itemView.findViewById(R.id.taboo_word_3);
+            tabooWord3.setFocusable(false);
             tabooWord4 = itemView.findViewById(R.id.taboo_word_4);
+            tabooWord4.setFocusable(false);
             tabooWord5 = itemView.findViewById(R.id.taboo_word_5);
+            tabooWord5.setFocusable(false);
 
         }
     }

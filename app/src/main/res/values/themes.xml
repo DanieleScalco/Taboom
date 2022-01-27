@@ -7,7 +7,8 @@
         <item name="colorPrimaryVariant">@color/dark_red</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <!-- colorSecondary is for cursor editText -->
+        <item name="colorSecondary">@color/light_red</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
 
@@ -27,5 +28,6 @@
     <style name="card">
         <item name="android:background">@color/blue</item>
         <item name="android:textColor">@color/yellow</item>
+        <item name="android:textColorHint">@color/dark_yellow</item>
     </style>
 </resources>

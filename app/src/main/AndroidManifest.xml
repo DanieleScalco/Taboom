@@ -11,6 +11,7 @@
         android:theme="@style/Theme.Taboo">
         <activity
             android:name="it.bastoner.taboom.MainActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

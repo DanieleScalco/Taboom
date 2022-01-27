@@ -18,21 +18,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
+            <EditText
                 android:id="@+id/title"
+                style="@style/card"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.17"
                 android:layout_margin="8dp"
-                android:textAlignment="center"
-                android:textSize="28dp"
-                android:text="TITLE"
-                android:textStyle="bold"
                 android:gravity="center"
-                style="@style/card"
+                android:hint="TITLE"
+                android:singleLine="true"
+                android:textAlignment="center"
+                android:inputType="textCapSentences"
+                android:textSize="28dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.17"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></TextView>
+                app:layout_constraintTop_toTopOf="parent"></EditText>
 
             <LinearLayout
                 android:id="@+id/layout_taboo_words"
@@ -49,60 +51,70 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/border">
 
-                <TextView
+                <EditText
                     android:id="@+id/taboo_word_1"
+                    style="@style/card"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:textAlignment="center"
                     android:gravity="center"
-                    android:text="TABOO1"
-                    style="@style/card"
-                    android:textSize="24dp"></TextView>
+                    android:hint="TABOO1"
+                    android:inputType="textCapSentences"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textSize="24dp"></EditText>
 
-                <TextView
+                <EditText
                     android:id="@+id/taboo_word_2"
+                    style="@style/card"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:textAlignment="center"
                     android:gravity="center"
-                    android:text="TABOO2"
-                    style="@style/card"
-                    android:textSize="24dp"></TextView>
+                    android:hint="TABOO2"
+                    android:inputType="textCapSentences"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textSize="24dp"></EditText>
 
-                <TextView
+                <EditText
                     android:id="@+id/taboo_word_3"
+                    style="@style/card"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:textAlignment="center"
                     android:gravity="center"
-                    android:text="TABOO3"
-                    style="@style/card"
-                    android:textSize="24dp"></TextView>
+                    android:hint="TABOO3"
+                    android:inputType="textCapSentences"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textSize="24dp"></EditText>
 
-                <TextView
+                <EditText
                     android:id="@+id/taboo_word_4"
+                    style="@style/card"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:textAlignment="center"
                     android:gravity="center"
-                    android:text="TABOO4"
-                    style="@style/card"
-                    android:textSize="24dp"></TextView>
+                    android:hint="TABOO4"
+                    android:inputType="textCapSentences"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textSize="24dp"></EditText>
 
-                <TextView
+                <EditText
                     android:id="@+id/taboo_word_5"
+                    style="@style/card"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:textAlignment="center"
                     android:gravity="center"
-                    android:text="TABOO5"
-                    style="@style/card"
-                    android:textSize="24dp"></TextView>
+                    android:hint="TABOO5"
+                    android:inputType="textCapSentences"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textSize="24dp"></EditText>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

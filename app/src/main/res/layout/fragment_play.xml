@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:background="@drawable/ic_baseline_play_circle_filled_24"
+            android:background="@drawable/ic_baseline_play_arrow_24"
             app:layout_constraintStart_toEndOf="@id/timer"
             app:layout_constraintEnd_toStartOf="@id/reset"
             app:layout_constraintBottom_toBottomOf="parent"></Button>
