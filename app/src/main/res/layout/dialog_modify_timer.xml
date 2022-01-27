@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditText
+        android:id="@+id/modify_minutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="1"
+        android:text="1"
+        android:textAlignment="center"
+        android:textColor="@color/dark_red"
+        android:textSize="48dp"></EditText>
+
+    <TextView
+        android:id="@+id/modify_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text=":"
+        android:textSize="48dp"
+        android:textColor="@color/dark_red"></TextView>
+
+    <EditText
+        android:id="@+id/modify_seconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="2"
+        android:text="00"
+        android:textAlignment="center"
+        android:textColor="@color/dark_red"
+        android:textSize="48dp"></EditText>
+
+</LinearLayout>

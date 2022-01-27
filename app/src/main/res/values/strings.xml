@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Taboo</string>
+    <string name="add">Aggiungi</string>
+    <string name="play">Gioca</string>
+    <string name="update">modifica</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="reset">RESET</string>
+    <string name="title_modify_timer">Modifica il timer</string>
+    <string name="modify">MODIFICA</string>
+</resources>
