@@ -1,10 +1,8 @@
-package it.bastoner.taboo.adapter;
+package it.bastoner.taboom.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import it.bastoner.taboo.R;
-import it.bastoner.taboo.objects.Card;
+import it.bastoner.taboom.R;
+import it.bastoner.taboom.objects.Card;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {

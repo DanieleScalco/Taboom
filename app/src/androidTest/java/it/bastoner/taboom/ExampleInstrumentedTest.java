@@ -1,4 +1,4 @@
-package it.bastoner.taboo;
+package it.bastoner.taboom;
 
 import android.content.Context;
 

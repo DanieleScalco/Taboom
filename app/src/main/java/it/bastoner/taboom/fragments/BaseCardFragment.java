@@ -1,17 +1,11 @@
-package it.bastoner.taboo.fragments;
-
-import android.os.Bundle;
+package it.bastoner.taboom.fragments;
 
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import java.util.List;
 
-import it.bastoner.taboo.R;
-import it.bastoner.taboo.objects.Card;
+import it.bastoner.taboom.R;
+import it.bastoner.taboom.objects.Card;
 
 public abstract class BaseCardFragment extends Fragment {
 

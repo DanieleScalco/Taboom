@@ -1,4 +1,4 @@
-package it.bastoner.taboo.filters;
+package it.bastoner.taboom.filters;
 
 import android.text.InputFilter;
 import android.text.Spanned;

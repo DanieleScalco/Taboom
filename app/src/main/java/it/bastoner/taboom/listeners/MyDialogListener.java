@@ -1,4 +1,4 @@
-package it.bastoner.taboo.listeners;
+package it.bastoner.taboom.listeners;
 
 public interface MyDialogListener {
     public void sendDialogData (int minutes, int seconds);

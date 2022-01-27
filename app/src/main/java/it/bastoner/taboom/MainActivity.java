@@ -1,4 +1,4 @@
-package it.bastoner.taboo;
+package it.bastoner.taboom;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +14,10 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.bastoner.taboo.fragments.AddFragment;
-import it.bastoner.taboo.fragments.PlayFragment;
-import it.bastoner.taboo.fragments.UpdateFragment;
-import it.bastoner.taboo.objects.Card;
+import it.bastoner.taboom.fragments.AddFragment;
+import it.bastoner.taboom.fragments.PlayFragment;
+import it.bastoner.taboom.fragments.UpdateFragment;
+import it.bastoner.taboom.objects.Card;
 
 public class MainActivity extends AppCompatActivity {
 

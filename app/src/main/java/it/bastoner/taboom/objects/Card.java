@@ -1,4 +1,4 @@
-package it.bastoner.taboo.objects;
+package it.bastoner.taboom.objects;
 
 import android.util.Log;
 

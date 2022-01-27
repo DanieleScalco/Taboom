@@ -1,4 +1,4 @@
-package it.bastoner.taboo.fragments;
+package it.bastoner.taboom.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -20,16 +20,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
 
-import it.bastoner.taboo.R;
-import it.bastoner.taboo.adapter.RecyclerViewAdapter;
-import it.bastoner.taboo.filters.MinMaxFilter;
-import it.bastoner.taboo.listeners.MyDialogListener;
-import it.bastoner.taboo.objects.Card;
+import it.bastoner.taboom.R;
+import it.bastoner.taboom.adapter.RecyclerViewAdapter;
+import it.bastoner.taboom.filters.MinMaxFilter;
+import it.bastoner.taboom.listeners.MyDialogListener;
+import it.bastoner.taboom.objects.Card;
 
 
 public class PlayFragment extends BaseCardFragment implements MyDialogListener {
