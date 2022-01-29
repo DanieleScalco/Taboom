@@ -4,31 +4,35 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.InputFilter;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import android.os.CountDownTimer;
-import android.text.InputFilter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
 import java.util.List;
 import java.util.Locale;
 
 import it.bastoner.taboom.R;
+import it.bastoner.taboom.ViewModelMainActivity;
 import it.bastoner.taboom.adapter.RecyclerViewAdapter;
+import it.bastoner.taboom.database.CardEntity;
 import it.bastoner.taboom.filters.MinMaxFilter;
 import it.bastoner.taboom.listeners.MyDialogListener;
-import it.bastoner.taboom.objects.Card;
 
 
 public class PlayFragment extends BaseCardFragment implements MyDialogListener {
@@ -47,15 +51,17 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
     private MediaPlayer endTimerSound;
 
-    public PlayFragment(List<Card> cardList) {
+    public PlayFragment(List<CardEntity> cardList) {
         super(cardList);
-        //Log.d(TAG, "PlayFragment creato");
+        //Log.d(TAG, "PlayFragment created");
     }
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        Log.d(TAG, ">>OnCreateView");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_play, container, false);
     }
@@ -64,7 +70,11 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d(TAG, ">>OnViewCreated");
+
         setRecyclerView();
+
+        setViewModel();
 
         setTimerSound();
 
@@ -72,6 +82,26 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
         setDialogModifyTimer();
 
+    }
+
+    private void setViewModel() {
+        viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
+        viewModel.getCardList().observe(getActivity(), cardList -> {
+            updateUI(cardList);
+        });
+    }
+
+    @Override
+    public void updateUI(List<CardEntity> cardList) {
+
+        RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+                adapter.setCardList(cardList);
+                adapter.notifyDataSetChanged();
+                Log.d(TAG, ">>Update, number of items: " + adapter.getItemCount());
+        } else {
+            Log.d(TAG, "Adapter is null");
+        }
     }
 
     private void setDialogModifyTimer() {

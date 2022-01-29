@@ -1,17 +1,21 @@
 package it.bastoner.taboom.fragments;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import it.bastoner.taboom.R;
-import it.bastoner.taboom.objects.Card;
+import it.bastoner.taboom.ViewModelMainActivity;
+import it.bastoner.taboom.database.CardEntity;
 
 public abstract class BaseCardFragment extends Fragment {
 
-    protected List<Card> cardList;
+    protected List<CardEntity> cardList;
+    protected ViewModelMainActivity viewModel;
 
-    public BaseCardFragment(List<Card> cardList) {
+    public BaseCardFragment(List<CardEntity> cardList) {
         this.cardList = cardList;
     }
+
+    public abstract void updateUI(List<CardEntity> cardList);
 }

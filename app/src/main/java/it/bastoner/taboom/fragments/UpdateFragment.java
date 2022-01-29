@@ -1,20 +1,26 @@
 package it.bastoner.taboom.fragments;
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
 import it.bastoner.taboom.R;
-import it.bastoner.taboom.objects.Card;
+import it.bastoner.taboom.database.CardEntity;
 
 public class UpdateFragment extends BaseCardFragment {
 
-    public UpdateFragment(List<Card> cardList) {
+    public UpdateFragment(List<CardEntity> cardList) {
         super(cardList);
+    }
+
+    @Override
+    public void updateUI(List<CardEntity> cardList) {
+
     }
 
     @Override

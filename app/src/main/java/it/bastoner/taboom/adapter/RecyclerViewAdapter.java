@@ -12,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import it.bastoner.taboom.R;
-import it.bastoner.taboom.objects.Card;
+import it.bastoner.taboom.database.CardEntity;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
-    private List<Card> cardList;
+    private List<CardEntity> cardList;
 
-    public RecyclerViewAdapter(List<Card> cardList) {
+    public RecyclerViewAdapter(List<CardEntity> cardList) {
         this.cardList = cardList;
     }
 
@@ -35,15 +35,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.title.setText(cardList.get(position).getTitle());
-        holder.tabooWord1.setText(cardList.get(position).getTabooWords().get(0));
-        holder.tabooWord2.setText(cardList.get(position).getTabooWords().get(1));
-        holder.tabooWord3.setText(cardList.get(position).getTabooWords().get(2));
-        holder.tabooWord4.setText(cardList.get(position).getTabooWords().get(3));
-        holder.tabooWord5.setText(cardList.get(position).getTabooWords().get(4));
+        holder.tabooWord1.setText(cardList.get(position).getTabooWord1());
+        holder.tabooWord2.setText(cardList.get(position).getTabooWord2());
+        holder.tabooWord3.setText(cardList.get(position).getTabooWord3());
+        holder.tabooWord4.setText(cardList.get(position).getTabooWord4());
+        holder.tabooWord5.setText(cardList.get(position).getTabooWord5());
     }
 
     @Override
     public int getItemCount() {
+        if (cardList == null)
+            return 0;
         return cardList.size();
     }
 
@@ -75,5 +77,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tabooWord5.setFocusable(false);
 
         }
+    }
+
+    public void setCardList(List<CardEntity> cardList) {
+        this.cardList = cardList;
     }
 }
