@@ -24,7 +24,7 @@ public interface CardDAO {
     @Delete
     public void deleteCard(CardEntity card);
 
-    // With a query method you can perform complex inserts/updates/deletes
+    // With a query method you can also perform complex inserts/updates/deletes
     @Query("SELECT * FROM cardentity")
-    LiveData<List<CardEntity>> getAll();
+    LiveData<List<CardEntity>> getAllCards();
 }

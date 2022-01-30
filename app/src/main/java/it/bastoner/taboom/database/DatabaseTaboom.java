@@ -17,6 +17,7 @@ public abstract class DatabaseTaboom extends RoomDatabase {
 
     public static DatabaseTaboom db;
 
+    // Singleton pattern
     public static DatabaseTaboom getDatabase(Context applicationContext) {
         if (db == null) {
             db = Room.databaseBuilder(applicationContext, DatabaseTaboom.class, DATABASE_NAME)

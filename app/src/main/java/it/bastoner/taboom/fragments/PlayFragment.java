@@ -53,7 +53,6 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
     public PlayFragment(List<CardEntity> cardList) {
         super(cardList);
-        //Log.d(TAG, "PlayFragment created");
     }
 
 
@@ -61,7 +60,7 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Log.d(TAG, ">>OnCreateView");
+        Log.d(TAG, ">>OnCreateView()");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_play, container, false);
     }
@@ -70,7 +69,7 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.d(TAG, ">>OnViewCreated");
+        Log.d(TAG, ">>OnViewCreated()");
 
         setRecyclerView();
 
@@ -86,7 +85,7 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
     private void setViewModel() {
         viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
-        viewModel.getCardList().observe(getActivity(), cardList -> {
+        viewModel.getAllCards().observe(getActivity(), cardList -> {
             updateUI(cardList);
         });
     }
@@ -98,10 +97,12 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         if (adapter != null) {
                 adapter.setCardList(cardList);
                 adapter.notifyDataSetChanged();
-                Log.d(TAG, ">>Update, number of items: " + adapter.getItemCount());
+                Log.d(TAG, ">>Update, Total cards found: " + adapter.getItemCount());
         } else {
-            Log.d(TAG, "Adapter is null");
+            Log.d(TAG, ">>Update, Adapter is null");
         }
+
+
     }
 
     private void setDialogModifyTimer() {
@@ -181,7 +182,6 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
     }
 
     private void setRecyclerView() {
-        // Log.d(TAG, "PlayFragment view creata");
         recyclerView = getView().findViewById(R.id.recycler_view);
         RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(cardList);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1,
@@ -254,6 +254,5 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         timeLeftInMillis = startTimeInMillis;
         updateCountDownText();
     }
-
 
 }

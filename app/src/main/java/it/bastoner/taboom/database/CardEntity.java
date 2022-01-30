@@ -1,8 +1,12 @@
 package it.bastoner.taboom.database;
 
+import android.content.res.Resources;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import it.bastoner.taboom.R;
 
 @Entity
 public class CardEntity {
@@ -29,16 +33,38 @@ public class CardEntity {
     private String tabooWord5;
 
     @ColumnInfo(name = "list_name")
-    private String list_name;
+    private String listName;
 
-    public CardEntity(String title, String tabooWord1, String tabooWord2,
-                      String tabooWord3, String tabooWord4, String tabooWord5) {
+    public CardEntity(String title, String tabooWord1, String tabooWord2, String tabooWord3,
+                      String tabooWord4, String tabooWord5, String listName) {
+
+        String emptyTabooWord = "---------"; // R.string.no_taboo_word
+
         this.title = title;
-        this.tabooWord1 = tabooWord1;
-        this.tabooWord2 = tabooWord2;
-        this.tabooWord3 = tabooWord3;
-        this.tabooWord4 = tabooWord4;
-        this.tabooWord5 = tabooWord5;
+        if (tabooWord1 == null || tabooWord1.length() == 0)
+            this.tabooWord1 = emptyTabooWord;
+        else
+            this.tabooWord1 = tabooWord1;
+        if (tabooWord2 == null || tabooWord2.length() == 0)
+            this.tabooWord2 = emptyTabooWord;
+        else
+            this.tabooWord2 = tabooWord2;
+        if (tabooWord3 == null || tabooWord3.length() == 0)
+            this.tabooWord3 = emptyTabooWord;
+        else
+            this.tabooWord3 = tabooWord3;
+        if (tabooWord4 == null || tabooWord4.length() == 0)
+            this.tabooWord4 = emptyTabooWord;
+        else
+            this.tabooWord4 = tabooWord4;
+        if (tabooWord5 == null || tabooWord5.length() == 0)
+            this.tabooWord5 = emptyTabooWord;
+        else
+            this.tabooWord5 = tabooWord5;
+        if (listName != null && !listName.isEmpty())
+            this.listName = listName;
+        else
+            this.listName = "Lista base"; // R.string.default_list_name only with context
     }
 
     public Long getId() {
@@ -97,11 +123,25 @@ public class CardEntity {
         this.tabooWord5 = tabooWord5;
     }
 
-    public String getList_name() {
-        return list_name;
+    public String getListName() {
+        return listName;
     }
 
-    public void setList_name(String list_name) {
-        this.list_name = list_name;
+    public void setListName(String listName) {
+        this.listName = listName;
+    }
+
+    @Override
+    public String toString() {
+        return "CardEntity{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", tabooWord1='" + tabooWord1 + '\'' +
+                ", tabooWord2='" + tabooWord2 + '\'' +
+                ", tabooWord3='" + tabooWord3 + '\'' +
+                ", tabooWord4='" + tabooWord4 + '\'' +
+                ", tabooWord5='" + tabooWord5 + '\'' +
+                ", listName='" + listName + '\'' +
+                '}';
     }
 }

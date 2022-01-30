@@ -7,4 +7,11 @@
     <string name="reset">RESET</string>
     <string name="title_modify_timer">Modifica il timer</string>
     <string name="modify">MODIFICA</string>
+    <string name="default_list_name">Lista base</string>
+    <string name="card_title_needed">Per il salvataggio di una carta è obbligatorio il titolo</string>
+    <string name="no_taboo_word">---------</string>
+    <string name="card_added">Carta salvata con successo!</string>
+    <string name="default_title_card">Inserisci il titolo</string>
+    <string name="default_taboo">Inserisci tabù</string>
+    <string name="card_already_exists">è gia stata salvata</string>
 </resources>
