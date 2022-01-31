@@ -13,11 +13,11 @@
         app:layout_constraintHeight_percent="0.90"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/layout_menu"
+        app:layout_constraintBottom_toTopOf="@id/layout_menu_timer"
         app:layout_constraintEnd_toEndOf="parent"></include>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_menu"
+        android:id="@+id/layout_menu_timer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintHeight_percent="0.10"

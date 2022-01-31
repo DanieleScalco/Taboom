@@ -26,6 +26,8 @@ import it.bastoner.taboom.database.CardEntity;
 
 public class AddFragment extends BaseCardFragment {
 
+    // TODO fixed lenght of editTexts
+
     private static final String TAG = "AddFragment";
 
     private EditText titleEditText;
@@ -45,6 +47,7 @@ public class AddFragment extends BaseCardFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         Log.d(TAG, ">>OnCreateView()");
 
         // Inflate the layout for this fragment
@@ -146,11 +149,11 @@ public class AddFragment extends BaseCardFragment {
 
     private void resetView() {
         titleEditText.setHint(R.string.default_title_card);
-        taboo1EditText.setHint("1° " + R.string.default_taboo);
-        taboo2EditText.setHint("2° " + R.string.default_taboo);
-        taboo3EditText.setHint("3° " + R.string.default_taboo);
-        taboo4EditText.setHint("4° " + R.string.default_taboo);
-        taboo5EditText.setHint("5° " + R.string.default_taboo);
+        taboo1EditText.setHint(R.string.default_taboo);
+        taboo2EditText.setHint(R.string.default_taboo);
+        taboo3EditText.setHint(R.string.default_taboo);
+        taboo4EditText.setHint(R.string.default_taboo);
+        taboo5EditText.setHint(R.string.default_taboo);
 
         String emptyString = "";
         titleEditText.setText(emptyString);

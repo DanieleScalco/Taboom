@@ -10,20 +10,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,10 +51,23 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
     private MediaPlayer endTimerSound;
 
+    private Button plusButtonA;
+    private Button minusButtonA;
+    private Button plusButtonB;
+    private Button minusButtonB;
+    private TextView scoreATextView;
+    private TextView scoreBTextView;
+    private int scoreA = 0;
+    private int scoreB = 0;
+
+    private EditText teamA;
+    private EditText teamB;
+
+    private Button shuffleButton;
+
     public PlayFragment(List<CardEntity> cardList) {
         super(cardList);
     }
-
 
 
     @Override
@@ -81,6 +94,12 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
         setDialogModifyTimer();
 
+        setScoreButtons();
+
+        setTeamNames();
+
+        setShuffleButton();
+
     }
 
     private void setViewModel() {
@@ -95,9 +114,10 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
         RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerView.getAdapter();
         if (adapter != null) {
-                adapter.setCardList(cardList);
-                adapter.notifyDataSetChanged();
-                Log.d(TAG, ">>Update, Total cards found: " + adapter.getItemCount());
+            this.cardList = cardList;
+            adapter.setCardList(cardList);
+            adapter.notifyDataSetChanged();
+            Log.d(TAG, ">>Update, Total cards found: " + adapter.getItemCount());
         } else {
             Log.d(TAG, ">>Update, Adapter is null");
         }
@@ -255,4 +275,101 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         updateCountDownText();
     }
 
+    private void setScoreButtons() {
+
+        minusButtonA = getView().findViewById(R.id.team_a_minus);
+        plusButtonA = getView().findViewById(R.id.team_a_plus);
+        minusButtonB = getView().findViewById(R.id.team_b_minus);
+        plusButtonB = getView().findViewById(R.id.team_b_plus);
+        scoreATextView = getView().findViewById(R.id.team_a_score);
+        scoreBTextView = getView().findViewById(R.id.team_b_score);
+
+
+        minusButtonA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (scoreA <= 0) {
+                    return;
+                } else
+                    scoreATextView.setText(String.format(Locale.getDefault(), "%02d", --scoreA));
+            }
+        });
+
+        plusButtonA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (scoreA >= 99) {
+                    scoreA = 0;
+                    scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
+                } else
+                    scoreATextView.setText(String.format(Locale.getDefault(), "%02d", ++scoreA));
+            }
+        });
+
+        minusButtonB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (scoreB <= 0) {
+                    return;
+                } else
+                    scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", --scoreB));
+            }
+        });
+
+        plusButtonB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (scoreB >= 99) {
+                    scoreB = 0;
+                    scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
+                } else
+                    scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", ++scoreB));
+            }
+        });
+
+    }
+
+    private void setTeamNames() {
+
+        teamA = getView().findViewById(R.id.team_a_name);
+        teamB = getView().findViewById(R.id.team_b_name);
+
+        teamA.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+
+                // If loses focus check if team name is not empty
+                if (!b) {
+                    if (teamA.getText().toString().length() == 0)
+                        teamA.setText(R.string.team_a_name);
+                }
+            }
+        });
+
+        teamB.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+
+                // If loses focus check if team name is not empty
+                if (!b) {
+                    if (teamB.getText().toString().length() == 0)
+                        teamB.setText(R.string.team_b_name);
+                }
+            }
+        });
+
+    }
+
+    private void setShuffleButton() {
+
+        shuffleButton = getView().findViewById(R.id.shuffle);
+        shuffleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Collections.shuffle(cardList);
+                updateUI(cardList);
+                Toast.makeText(getContext(), R.string.card_shuffled, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

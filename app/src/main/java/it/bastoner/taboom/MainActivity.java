@@ -3,10 +3,12 @@ package it.bastoner.taboom;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNav;
 
     // TODO add sounds to buttons
-    // TODO add labels tu clickable objects
+    // TODO add labels to clickable objects
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +43,29 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, ">>MainActivity created()");
 
+        // No night mode support
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         loadCardList();
 
         setBottomNavigation();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        // Remove focus from editText
+        if (bottomNav.getSelectedItemId() == R.id.play_nav) {
+            View teamA = findViewById(R.id.team_a_name);
+            View teamB = findViewById(R.id.team_b_name);
+            if (teamA.hasFocus() || teamB.hasFocus()) {
+                teamA.clearFocus();
+                teamB.clearFocus();
+                return;
+            }
+        }
+        super.onBackPressed();
     }
 
     private void setBottomNavigation() {

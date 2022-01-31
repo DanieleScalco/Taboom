@@ -14,4 +14,8 @@
     <string name="default_title_card">Inserisci il titolo</string>
     <string name="default_taboo">Inserisci tabù</string>
     <string name="card_already_exists">è gia stata salvata</string>
+    <string name="team_a_name">Squadra A</string>
+    <string name="team_b_name">Squadra B</string>
+    <string name="reset_score">Azzera\npunteggio</string>
+    <string name="card_shuffled">Le carte sono state mescolate</string>
 </resources>
