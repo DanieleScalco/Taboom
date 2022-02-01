@@ -1,7 +1,9 @@
 package it.bastoner.taboom.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -27,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import it.bastoner.taboom.Constants;
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.ViewModelMainActivity;
 import it.bastoner.taboom.adapter.RecyclerViewAdapter;
@@ -36,6 +39,8 @@ import it.bastoner.taboom.listeners.MyDialogListener;
 
 
 public class PlayFragment extends BaseCardFragment implements MyDialogListener {
+
+    // TODO show total cards number; Limit text lenght teamname
 
     private static final String TAG = "PlayFragment";
 
@@ -47,7 +52,7 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
     private CountDownTimer countDownTimer;
     private long startTimeInMillis;
     private boolean timerIsRunning;
-    private long timeLeftInMillis = startTimeInMillis;
+    private long timeLeftInMillis;
 
     private MediaPlayer endTimerSound;
 
@@ -57,13 +62,17 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
     private Button minusButtonB;
     private TextView scoreATextView;
     private TextView scoreBTextView;
-    private int scoreA = 0;
-    private int scoreB = 0;
+    private int scoreA;
+    private int scoreB;
 
     private EditText teamA;
     private EditText teamB;
 
     private Button shuffleButton;
+
+    private SharedPreferences sharedPreferences;
+
+    private int position;
 
     public PlayFragment(List<CardEntity> cardList) {
         super(cardList);
@@ -83,6 +92,9 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         super.onViewCreated(view, savedInstanceState);
 
         Log.d(TAG, ">>OnViewCreated()");
+
+        sharedPreferences = getActivity()
+                            .getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         setRecyclerView();
 
@@ -127,81 +139,73 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
     private void setDialogModifyTimer() {
 
-        timerTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        timerTextView.setOnClickListener(view -> {
 
-                LayoutInflater layoutInflater = getLayoutInflater();
-                View viewTimer = layoutInflater.inflate(R.layout.dialog_modify_timer, null);
-                EditText minutesEdit = viewTimer.findViewById(R.id.modify_minutes);
-                EditText secondsEdit = viewTimer.findViewById(R.id.modify_seconds);
-                secondsEdit.setFilters(new InputFilter[] {new MinMaxFilter(0, 60)});
-                int minutes = (int) (startTimeInMillis / 1000 / 60);
-                int seconds = (int) (startTimeInMillis / 1000 % 60);
-                String minutesString = String.format(Locale.getDefault(), "%d", minutes);
-                String secondsString = String.format(Locale.getDefault(), "%02d", seconds);
-                minutesEdit.setText(minutesString);
-                secondsEdit.setText(secondsString);
+            LayoutInflater layoutInflater = getLayoutInflater();
+            View viewTimer = layoutInflater.inflate(R.layout.dialog_modify_timer, null);
+            EditText minutesEdit = viewTimer.findViewById(R.id.modify_minutes);
+            EditText secondsEdit = viewTimer.findViewById(R.id.modify_seconds);
+            secondsEdit.setFilters(new InputFilter[] {new MinMaxFilter(0, 60)});
+            int minutes = (int) (startTimeInMillis / 1000 / 60);
+            int seconds = (int) (startTimeInMillis / 1000 % 60);
+            String minutesString = String.format(Locale.getDefault(), "%d", minutes);
+            String secondsString = String.format(Locale.getDefault(), "%02d", seconds);
+            minutesEdit.setText(minutesString);
+            secondsEdit.setText(secondsString);
 
-                new AlertDialog.Builder(getContext())
-                               .setView(viewTimer)
-                               .setTitle(R.string.title_modify_timer)
-                               .setPositiveButton(R.string.modify, new DialogInterface.OnClickListener() {
-                                   @Override
-                                   public void onClick(DialogInterface dialogInterface, int i) {
+            resetTimer();
 
-                                       String minutesString = String.valueOf(minutesEdit.getText());
-                                       String secondsString = String.valueOf(secondsEdit.getText());
-                                       // Check if the user deleted the input
-                                       int minutes = Integer.parseInt(!minutesString.equals("") ? minutesString : "0");
-                                       int seconds = Integer.parseInt(!secondsString.equals("") ? secondsString : "0");
-                                       sendDialogData(minutes, seconds);
-                                   }
-                               })
-                               .create()
-                               .show();
+            new AlertDialog.Builder(getContext())
+                           .setView(viewTimer)
+                           .setTitle(R.string.title_modify_timer)
+                           .setPositiveButton(R.string.modify, new DialogInterface.OnClickListener() {
+                               @Override
+                               public void onClick(DialogInterface dialogInterface, int i) {
 
-            }
+                                   String minutesString = String.valueOf(minutesEdit.getText());
+                                   String secondsString = String.valueOf(secondsEdit.getText());
+                                   // Check if the user deleted the input
+                                   int minutes = Integer.parseInt(!minutesString.equals("") ? minutesString : "0");
+                                   int seconds = Integer.parseInt(!secondsString.equals("") ? secondsString : "0");
+                                   sendDialogData(minutes, seconds);
+                               }
+                           })
+                           .create()
+                           .show();
+
         });
     }
 
     private void setTimer() {
 
-        startTimeInMillis = 60000;
+        startTimeInMillis = sharedPreferences.getLong(Constants.TIMER, 60000);
         timeLeftInMillis = startTimeInMillis;
         timerIsRunning = false;
         timerTextView = getView().findViewById(R.id.timer);
         playPauseButton = getView().findViewById(R.id.play);
         resetButton = getView().findViewById(R.id.reset);
 
-        playPauseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (timerIsRunning) {
-                    pauseTimer();
-                } else {
-                    startTimer();
-                }
+        playPauseButton.setOnClickListener(view -> {
+            if (timerIsRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
             }
         });
 
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resetTimer();
-            }
-        });
+        resetButton.setOnClickListener(view -> resetTimer());
 
         updateCountDownText();
     }
 
     private void setTimerSound() {
         if (endTimerSound == null) {
-            endTimerSound = MediaPlayer.create(getContext(), R.raw.end_timer_sound_default);
+            endTimerSound = MediaPlayer.create(getContext(), R.raw.bomb);
         }
     }
 
     private void setRecyclerView() {
+
         recyclerView = getView().findViewById(R.id.recycler_view);
         RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(cardList);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1,
@@ -213,6 +217,24 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         snapHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(recyclerViewAdapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if(newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    View actualView = snapHelper.findSnapView(layoutManager);
+                    position = layoutManager.getPosition(actualView);
+                    Log.e(TAG,">>RecyclerPosition: " + position);
+                }
+            }
+
+        });
+
+        position = sharedPreferences.getInt(Constants.RECYCLER_CARD_POSITION, 0);
+        layoutManager.scrollToPosition(position);
+
     }
 
     private void startTimer() {
@@ -231,14 +253,38 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
                 timerIsRunning = false;
                 timeLeftInMillis = startTimeInMillis;
                 updateCountDownText();
-                playPauseButton.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
+                playPauseButton.setBackgroundResource(R.drawable.play_button);
             }
         };
 
         countDownTimer.start();
         timerIsRunning = true;
-        playPauseButton.setBackgroundResource(R.drawable.ic_baseline_pause_24);
+        playPauseButton.setBackgroundResource(R.drawable.pause_button);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.d(TAG, ">>Destroy()");
+
+        // Stop timer
+        if (countDownTimer != null)
+            countDownTimer.cancel();
+
+        // Save the state of the PlayFragment
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Constants.TEAM_A_NAME, teamA.getText().toString());
+        editor.putString(Constants.TEAM_B_NAME, teamB.getText().toString());
+        editor.putInt(Constants.TEAM_A_SCORE, scoreA);
+        editor.putInt(Constants.TEAM_B_SCORE, scoreB);
+        editor.putLong(Constants.TIMER, startTimeInMillis);
+        editor.putInt(Constants.RECYCLER_CARD_POSITION, position);
+        editor.commit();
+
+    }
+
+
 
     private void updateCountDownText() {
         int minutes = (int) (timeLeftInMillis / 1000 / 60);
@@ -253,7 +299,7 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         if (countDownTimer != null)
             countDownTimer.cancel();
         timerIsRunning = false;
-        playPauseButton.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
+        playPauseButton.setBackgroundResource(R.drawable.play_button);
 
     }
 
@@ -264,13 +310,13 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
             countDownTimer.cancel();
         timerIsRunning = false;
         timeLeftInMillis = startTimeInMillis;
-        playPauseButton.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
+        playPauseButton.setBackgroundResource(R.drawable.play_button);
         updateCountDownText();
     }
 
     public void sendDialogData(int minutes, int seconds) {
 
-        startTimeInMillis = minutes * 60 * 1000 + seconds * 1000;
+        startTimeInMillis = (long) (minutes * 60 * 1000 + seconds * 1000);
         timeLeftInMillis = startTimeInMillis;
         updateCountDownText();
     }
@@ -284,47 +330,40 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         scoreATextView = getView().findViewById(R.id.team_a_score);
         scoreBTextView = getView().findViewById(R.id.team_b_score);
 
+        scoreA = sharedPreferences.getInt(Constants.TEAM_A_SCORE, 0);
+        scoreB = sharedPreferences.getInt(Constants.TEAM_B_SCORE, 0);
+        scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
+        scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
 
-        minusButtonA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (scoreA <= 0) {
-                    return;
-                } else
-                    scoreATextView.setText(String.format(Locale.getDefault(), "%02d", --scoreA));
-            }
+
+
+        minusButtonA.setOnClickListener(view -> {
+            if (scoreA > 0 )
+                scoreATextView.setText(String.format(Locale.getDefault(), "%02d", --scoreA));
         });
 
-        plusButtonA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (scoreA >= 99) {
-                    scoreA = 0;
-                    scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
-                } else
-                    scoreATextView.setText(String.format(Locale.getDefault(), "%02d", ++scoreA));
-            }
+        plusButtonA.setOnClickListener(view -> {
+            if (scoreA >= 99) {
+                scoreA = 0;
+                scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
+            } else
+                scoreATextView.setText(String.format(Locale.getDefault(), "%02d", ++scoreA));
         });
 
         minusButtonB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (scoreB <= 0) {
-                    return;
-                } else
+                if (scoreB > 0)
                     scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", --scoreB));
             }
         });
 
-        plusButtonB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (scoreB >= 99) {
-                    scoreB = 0;
-                    scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
-                } else
-                    scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", ++scoreB));
-            }
+        plusButtonB.setOnClickListener(view -> {
+            if (scoreB >= 99) {
+                scoreB = 0;
+                scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
+            } else
+                scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", ++scoreB));
         });
 
     }
@@ -334,27 +373,26 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         teamA = getView().findViewById(R.id.team_a_name);
         teamB = getView().findViewById(R.id.team_b_name);
 
-        teamA.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
+        String nameA = sharedPreferences.getString(Constants.TEAM_A_NAME, getResources().getString(R.string.team_a_name));
+        String nameB = sharedPreferences.getString(Constants.TEAM_B_NAME, getResources().getString(R.string.team_a_name));
+        teamA.setText(nameA);
+        teamB.setText(nameB);
 
-                // If loses focus check if team name is not empty
-                if (!b) {
-                    if (teamA.getText().toString().length() == 0)
-                        teamA.setText(R.string.team_a_name);
-                }
+        teamA.setOnFocusChangeListener((view, hasFocus) -> {
+
+            // If loses focus check if team name is not empty
+            if (!hasFocus) {
+                if (teamA.getText().toString().length() == 0)
+                    teamA.setText(R.string.team_a_name);
             }
         });
 
-        teamB.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
+        teamB.setOnFocusChangeListener((view, hasFocus) -> {
 
-                // If loses focus check if team name is not empty
-                if (!b) {
-                    if (teamB.getText().toString().length() == 0)
-                        teamB.setText(R.string.team_b_name);
-                }
+            // If loses focus check if team name is not empty
+            if (!hasFocus) {
+                if (teamB.getText().toString().length() == 0)
+                    teamB.setText(R.string.team_b_name);
             }
         });
 
@@ -363,13 +401,10 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
     private void setShuffleButton() {
 
         shuffleButton = getView().findViewById(R.id.shuffle);
-        shuffleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Collections.shuffle(cardList);
-                updateUI(cardList);
-                Toast.makeText(getContext(), R.string.card_shuffled, Toast.LENGTH_SHORT).show();
-            }
+        shuffleButton.setOnClickListener(view -> {
+            viewModel.shuffle(cardList);
+            updateUI(cardList);
+            Toast.makeText(getContext(), R.string.card_shuffled, Toast.LENGTH_SHORT).show();
         });
     }
 }

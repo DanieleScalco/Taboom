@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/ic_baseline_pause_24"
+        android:width="72dp"
+        android:height="72dp"
+        android:gravity="center">
+    </item>
+    <item
+        android:width="45dp"
+        android:height="40dp"
+        android:top="16dp"
+        android:left="1.8dp">
+        <rotate
+            android:fromDegrees="90"
+            android:toDegrees="90">
+            <shape android:shape="line"
+                android:tint="@color/dark_red">
+                <stroke
+                    android:width="7dp"/>
+            </shape>
+        </rotate>
+    </item>
+    <item
+        android:width="45dp"
+        android:height="40dp"
+        android:top="16dp"
+        android:left="25.5dp">
+        <rotate
+            android:fromDegrees="90"
+            android:toDegrees="90">
+            <shape android:shape="line"
+                android:tint="@color/dark_red">
+                <stroke
+                    android:width="7dp"/>
+            </shape>
+        </rotate>
+    </item>
+</layer-list>

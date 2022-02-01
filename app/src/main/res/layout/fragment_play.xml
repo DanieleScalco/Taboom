@@ -37,13 +37,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/team_a_name"
-                android:textSize="16dp"
+                android:autofillHints="@string/team_a_name"
+                android:hint="@string/team_a_name"
+                android:inputType="textCapSentences"
+                android:textSize="16sp"
                 android:textColor="@color/red"
                 android:background="@null"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/team_a_score_layout"></EditText>
+                app:layout_constraintBottom_toTopOf="@id/team_a_score_layout"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/team_a_score_layout"
@@ -62,12 +65,12 @@
                     android:layout_height="40dp"
                     android:layout_margin="4dp"
                     android:text="-"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/team_a_score"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"></Button>
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <TextView
                     android:id="@+id/team_a_score"
@@ -75,13 +78,13 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="00"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/red"
                     app:layout_constraintStart_toEndOf="@id/team_a_minus"
                     app:layout_constraintEnd_toStartOf="@id/team_a_plus"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"></TextView>
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <Button
                     android:id="@+id/team_a_plus"
@@ -89,12 +92,12 @@
                     android:layout_height="40dp"
                     android:layout_margin="4dp"
                     android:text="+"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@id/team_a_score"
                     app:layout_constraintEnd_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"></Button>
+                    app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -117,13 +120,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/team_b_name"
-                android:textSize="16dp"
+                android:autofillHints="@string/team_b_name"
+                android:hint="@string/team_b_name"
+                android:textSize="16sp"
+                android:inputType="textCapSentences"
                 android:textColor="@color/blue"
                 android:background="@null"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/team_b_score_layout"></EditText>
+                app:layout_constraintBottom_toTopOf="@id/team_b_score_layout"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/team_b_score_layout"
@@ -142,13 +148,13 @@
                     android:layout_height="40dp"
                     android:layout_margin="4dp"
                     android:text="-"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:backgroundTint="@color/blue"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/team_b_score"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"></Button>
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <TextView
                     android:id="@+id/team_b_score"
@@ -156,13 +162,13 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="00"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/blue"
                     app:layout_constraintStart_toEndOf="@id/team_b_minus"
                     app:layout_constraintEnd_toStartOf="@id/team_b_plus"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"></TextView>
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <Button
                     android:id="@+id/team_b_plus"
@@ -170,25 +176,27 @@
                     android:layout_height="40dp"
                     android:layout_margin="4dp"
                     android:text="+"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:backgroundTint="@color/blue"
                     app:layout_constraintStart_toEndOf="@id/team_b_score"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"></Button>
+                    app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- Android Studio doesn't show that by default the button used is a MaterialButton
+             that decide the color autonomously -->
         <android.widget.Button
             android:id="@+id/shuffle"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="8dp"
-            android:background="@drawable/ic_baseline_change_circle_24"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/ic_rotate_solid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></android.widget.Button>
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -226,29 +234,29 @@
             android:textAlignment="center"
             android:gravity="center"
             android:text="1:00"
-            android:textSize="48dp"
+            android:textSize="48sp"
             android:textColor="@color/dark_red"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"></TextView>
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/play"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:gravity="center"
-            android:background="@drawable/ic_baseline_play_arrow_24"
+            android:background="@drawable/play_button"
             app:layout_constraintStart_toEndOf="@id/timer"
             app:layout_constraintEnd_toStartOf="@id/reset"
-            app:layout_constraintBottom_toBottomOf="parent"></Button>
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <Button
             android:id="@+id/reset"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/reset"
-            android:textSize="30dp"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"></Button>
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

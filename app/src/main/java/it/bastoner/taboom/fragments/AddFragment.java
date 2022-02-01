@@ -26,7 +26,7 @@ import it.bastoner.taboom.database.CardEntity;
 
 public class AddFragment extends BaseCardFragment {
 
-    // TODO fixed lenght of editTexts
+    // TODO fixed lenght of editTexts; remove check words
 
     private static final String TAG = "AddFragment";
 
@@ -67,6 +67,8 @@ public class AddFragment extends BaseCardFragment {
     }
 
     private void setView() {
+
+        // TODO next line can be null, check if empty list
         View cardIncluded = getActivity().findViewById(R.id.card_included);
         titleEditText = (EditText) cardIncluded.findViewById(R.id.title);
         taboo1EditText = (EditText) cardIncluded.findViewById(R.id.taboo_word_1);
@@ -85,12 +87,7 @@ public class AddFragment extends BaseCardFragment {
         taboo5EditText.setHint(R.string.default_taboo);
         listNameEditText.setHint(R.string.default_list_name);
 
-        addCardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addCard();
-            }
-        });
+        addCardButton.setOnClickListener(view -> addCard());
     }
 
     private void setViewModel() {
@@ -116,7 +113,7 @@ public class AddFragment extends BaseCardFragment {
                                         taboo4EditText.getText().toString(),
                                         taboo5EditText.getText().toString(),
                                         listNameEditText.getText().toString());
-        Log.d(TAG, ">>Card: " + card.toString());
+        Log.d(TAG, ">>Card: " + card);
 
         if (card.getTitle() == null || card.getTitle().isEmpty()) {
             Toast.makeText(getContext(), R.string.card_title_needed, Toast.LENGTH_SHORT).show();

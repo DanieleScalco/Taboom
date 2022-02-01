@@ -1,5 +1,7 @@
 package it.bastoner.taboom;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -33,8 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private ViewModelMainActivity viewModel;
     private BottomNavigationView bottomNav;
 
+    private SharedPreferences sharedPreferences;
+
     // TODO add sounds to buttons
     // TODO add labels to clickable objects
+    // TODO check for system text size
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         // No night mode support
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         loadCardList();
 
@@ -70,37 +77,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void setBottomNavigation() {
         bottomNav = findViewById(R.id.bottom_nav);
-        bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
 
-            //TODO ANIMATION
+        //TODO ANIMATION
 
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        bottomNav.setOnItemSelectedListener(item -> {
 
-                Log.d(TAG, ">>BottomNav item selected");
+            Log.d(TAG, ">>BottomNav item selected");
 
-                // By using switch we can easily get the selected fragment by using there id.
-                Fragment selectedFragment = null;
-                switch (item.getItemId()) {
-                    case R.id.add_nav:
-                        selectedFragment = new AddFragment(cardList);
-                        break;
-                    case R.id.play_nav:
-                        selectedFragment = new PlayFragment(cardList);
-                        break;
-                    case R.id.update_nav:
-                        selectedFragment = new UpdateFragment(cardList);
-                        break;
-                }
-                // It will help to replace the
-                // one fragment to other.
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, selectedFragment)
-                        .commit();
-                return true;
+            // By using switch we can easily get the selected fragment by using there id.
+            Fragment selectedFragment = null;
+            switch (item.getItemId()) {
+                case R.id.add_nav:
+                    selectedFragment = new AddFragment(cardList);
+                    break;
+                case R.id.play_nav:
+                    selectedFragment = new PlayFragment(cardList);
+                    break;
+                case R.id.update_nav:
+                    selectedFragment = new UpdateFragment(cardList);
+                    break;
+                default:
+                    selectedFragment = new PlayFragment(cardList);
+                    break;
             }
-
+            // It will help to replace the
+            // one fragment to other.
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, selectedFragment)
+                    .commit();
+            return true;
         });
 
         // As soon as the application opens the play fragment should be shown to the user
@@ -142,4 +148,15 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, ">>Database created");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // When activity got destroy remove all the shared preferences, no need to preserve
+        // data between different application start
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+    }
 }

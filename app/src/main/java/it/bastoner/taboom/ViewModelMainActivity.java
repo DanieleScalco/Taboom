@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,4 +40,8 @@ public class ViewModelMainActivity extends AndroidViewModel {
         executor.execute(() -> cardDAO.insertCard(card));
     }
 
+    public void shuffle(List<CardEntity> list) {
+        Collections.shuffle(list);
+        cardList = new MutableLiveData<>(list);
+    }
 }
