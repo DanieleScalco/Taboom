@@ -7,8 +7,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.60"
-        app:layout_constraintWidth_percent="0.60"
+        app:layout_constraintHeight_percent="0.65"
+        app:layout_constraintWidth_percent="0.65"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,16 +25,18 @@
                 android:layout_height="0dp"
                 android:layout_margin="8dp"
                 android:gravity="center"
-                android:hint="TITLE"
-                android:singleLine="true"
+                android:hint="@string/default_title_card"
+                android:maxLines="1"
                 android:textAlignment="center"
                 android:inputType="textCapSentences"
-                android:textSize="28dp"
+                android:textSize="28sp"
                 android:textStyle="bold"
+                android:ellipsize="end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.17"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></EditText>
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAutofill="no"/>
 
             <LinearLayout
                 android:id="@+id/layout_taboo_words"
@@ -48,8 +50,7 @@
                 app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@drawable/border">
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <EditText
                     android:id="@+id/taboo_word_1"
@@ -58,11 +59,13 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:hint="TABOO1"
+                    android:hint="@string/default_taboo"
+                    android:ellipsize="end"
                     android:inputType="textCapSentences"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:textAlignment="center"
-                    android:textSize="24dp"></EditText>
+                    android:textSize="24sp"
+                    android:importantForAutofill="no"/>
 
                 <EditText
                     android:id="@+id/taboo_word_2"
@@ -71,11 +74,13 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:hint="TABOO2"
+                    android:hint="@string/default_taboo"
+                    android:ellipsize="end"
                     android:inputType="textCapSentences"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:textAlignment="center"
-                    android:textSize="24dp"></EditText>
+                    android:textSize="24sp"
+                    android:importantForAutofill="no"/>
 
                 <EditText
                     android:id="@+id/taboo_word_3"
@@ -84,11 +89,13 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:hint="TABOO3"
+                    android:hint="@string/default_taboo"
+                    android:ellipsize="end"
                     android:inputType="textCapSentences"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:textAlignment="center"
-                    android:textSize="24dp"></EditText>
+                    android:textSize="24sp"
+                    android:importantForAutofill="no"/>
 
                 <EditText
                     android:id="@+id/taboo_word_4"
@@ -97,11 +104,13 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:hint="TABOO4"
+                    android:hint="@string/default_taboo"
+                    android:ellipsize="end"
                     android:inputType="textCapSentences"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:textAlignment="center"
-                    android:textSize="24dp"></EditText>
+                    android:textSize="24sp"
+                    android:importantForAutofill="no"/>
 
                 <EditText
                     android:id="@+id/taboo_word_5"
@@ -110,17 +119,16 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:hint="TABOO5"
+                    android:hint="@string/default_taboo"
+                    android:ellipsize="end"
                     android:inputType="textCapSentences"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:textAlignment="center"
-                    android:textSize="24dp"></EditText>
+                    android:textSize="24sp"
+                    android:importantForAutofill="no"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

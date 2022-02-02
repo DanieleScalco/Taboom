@@ -20,28 +20,49 @@ import it.bastoner.taboom.database.DatabaseTaboom;
 public class ViewModelMainActivity extends AndroidViewModel {
 
     private static final String TAG = "ViewModelMainActivity";
+    private static boolean cardListIsUpdatedWithDb = false;
+
     private LiveData<List<CardEntity>> cardList = new MutableLiveData<>();
-    private CardDAO cardDAO;
-    private ExecutorService executor;
+    private final CardDAO cardDAO;
+    private final ExecutorService executor;
 
     public ViewModelMainActivity(@NonNull Application application) {
         super(application);
+
         this.cardDAO = DatabaseTaboom.getDatabase(application).cardDao();
         this.executor = Executors.newSingleThreadExecutor();
     }
 
     public LiveData<List<CardEntity>> getAllCards() {
+
         Log.d(TAG, ">>GetAllCards()");
-        return cardDAO.getAllCards();
+
+        if (!cardListIsUpdatedWithDb) {
+            cardList = cardDAO.getAllCards();
+            Log.d(TAG, ">>Loaded cards from db");
+            cardListIsUpdatedWithDb = true;
+        }
+
+        return cardList;
+
     }
 
     public void insertCard(CardEntity card) {
+
         Log.d(TAG, ">>insertCard(): " + card);
-        executor.execute(() -> cardDAO.insertCard(card));
+        executor.execute(() -> {
+            cardDAO.insertCard(card);
+            cardListIsUpdatedWithDb = false;
+        });
+
     }
 
     public void shuffle(List<CardEntity> list) {
-        Collections.shuffle(list);
-        cardList = new MutableLiveData<>(list);
+        if (list != null) {
+            Collections.shuffle(list);
+            cardList = new MutableLiveData<>(list);
+        } else {
+            Log.d(TAG, ">>List is null");
+        }
     }
 }

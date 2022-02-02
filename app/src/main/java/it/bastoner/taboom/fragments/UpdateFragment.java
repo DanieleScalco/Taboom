@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.lifecycle.LiveData;
-
 import java.util.List;
 
 import it.bastoner.taboom.R;

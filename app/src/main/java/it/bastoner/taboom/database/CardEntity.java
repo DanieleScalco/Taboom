@@ -1,12 +1,9 @@
 package it.bastoner.taboom.database;
 
-import android.content.res.Resources;
-
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import it.bastoner.taboom.R;
 
 @Entity
 public class CardEntity {
@@ -131,6 +128,7 @@ public class CardEntity {
         this.listName = listName;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "CardEntity{" +

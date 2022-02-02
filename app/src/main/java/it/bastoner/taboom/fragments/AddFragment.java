@@ -1,7 +1,6 @@
 package it.bastoner.taboom.fragments;
 
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +11,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.ViewModelMainActivity;
-import it.bastoner.taboom.adapter.RecyclerViewAdapter;
 import it.bastoner.taboom.database.CardEntity;
 
 

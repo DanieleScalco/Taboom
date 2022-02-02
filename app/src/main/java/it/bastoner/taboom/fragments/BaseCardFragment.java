@@ -1,7 +1,6 @@
 package it.bastoner.taboom.fragments;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 
 import java.util.List;
 

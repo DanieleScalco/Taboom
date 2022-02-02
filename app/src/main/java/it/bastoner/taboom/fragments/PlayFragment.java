@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -225,8 +224,12 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
                 if(newState == RecyclerView.SCROLL_STATE_IDLE) {
                     View actualView = snapHelper.findSnapView(layoutManager);
-                    position = layoutManager.getPosition(actualView);
-                    Log.e(TAG,">>RecyclerPosition: " + position);
+
+                    // Check if there are no cards
+                    if (actualView != null) {
+                        position = layoutManager.getPosition(actualView);
+                        Log.d(TAG, ">>RecyclerPosition: " + position);
+                    }
                 }
             }
 

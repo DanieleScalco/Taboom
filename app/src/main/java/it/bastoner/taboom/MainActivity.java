@@ -4,18 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import java.io.File;
 import java.util.List;
@@ -23,6 +19,7 @@ import java.util.List;
 import it.bastoner.taboom.database.CardEntity;
 import it.bastoner.taboom.database.DatabaseTaboom;
 import it.bastoner.taboom.fragments.AddFragment;
+import it.bastoner.taboom.fragments.BaseCardFragment;
 import it.bastoner.taboom.fragments.PlayFragment;
 import it.bastoner.taboom.fragments.UpdateFragment;
 
@@ -31,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private List<CardEntity> cardList;
-    private boolean cardListIsUpdated;
     private ViewModelMainActivity viewModel;
     private BottomNavigationView bottomNav;
+    private BaseCardFragment selectedFragment;
 
     private SharedPreferences sharedPreferences;
 
@@ -76,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setBottomNavigation() {
+
         bottomNav = findViewById(R.id.bottom_nav);
 
         //TODO ANIMATION
@@ -85,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, ">>BottomNav item selected");
 
             // By using switch we can easily get the selected fragment by using there id.
-            Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.add_nav:
                     selectedFragment = new AddFragment(cardList);
@@ -122,8 +119,15 @@ public class MainActivity extends AppCompatActivity {
         checkIfDatabaseAlreadyExist();
 
         viewModel.getAllCards().observe(this, cardList -> {
+
             this.cardList = cardList;
+
             Log.d(TAG, ">>Total cards found: " + cardList.size());
+
+            // If cardList not loaded before creation of BottoNav update Fragment list
+            if (bottomNav != null && selectedFragment != null) {
+                selectedFragment.updateUI(cardList);
+            }
         });
 
     }

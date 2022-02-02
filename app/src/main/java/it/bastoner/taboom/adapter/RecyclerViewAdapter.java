@@ -3,7 +3,6 @@ package it.bastoner.taboom.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,12 +52,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         private static final String TAG = "ViewHolder";
 
-        private TextView title;
-        private TextView tabooWord1;
-        private TextView tabooWord2;
-        private TextView tabooWord3;
-        private TextView tabooWord4;
-        private TextView tabooWord5;
+        private final TextView title;
+        private final TextView tabooWord1;
+        private final TextView tabooWord2;
+        private final TextView tabooWord3;
+        private final TextView tabooWord4;
+        private final TextView tabooWord5;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
