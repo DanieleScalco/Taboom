@@ -17,4 +17,14 @@
     <string name="team_b_name">Squadra B</string>
     <string name="reset_score">Azzera\npunteggio</string>
     <string name="card_shuffled">Le carte sono state mescolate</string>
+    <string name="team_name_tooltip">Nome della squadra</string>
+    <string name="tooltip_shuffle">Mescola carte</string>
+    <string name="timer_tooltip">Timer</string>
+    <string name="play_tooltip">Avvia</string>
+    <string name="reset_tooltip">Reset</string>
+    <string name="add_tooltip">Aggiungi carta</string>
+    <string name="minutes_tooltip">Minuti</string>
+    <string name="seconds_tooltip">Secondi</string>
+    <string name="pause_tooltip">Pausa</string>
+    <string name="clean_tooltip">Cancella</string>
 </resources>

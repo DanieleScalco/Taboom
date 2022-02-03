@@ -1,5 +1,6 @@
 package it.bastoner.taboom.adapter;
 
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,10 @@ import it.bastoner.taboom.database.CardEntity;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
+    //android:inputType="textCapSentences|textNoSuggestions"
+
     private static final String TAG = "RecyclerViewAdapter";
+
     private List<CardEntity> cardList;
 
     public RecyclerViewAdapter(List<CardEntity> cardList) {
@@ -33,12 +37,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.title.setText(cardList.get(position).getTitle());
-        holder.tabooWord1.setText(cardList.get(position).getTabooWord1());
-        holder.tabooWord2.setText(cardList.get(position).getTabooWord2());
-        holder.tabooWord3.setText(cardList.get(position).getTabooWord3());
-        holder.tabooWord4.setText(cardList.get(position).getTabooWord4());
-        holder.tabooWord5.setText(cardList.get(position).getTabooWord5());
+
+        String titleString = cardList.get(position).getTitle();
+        String taboo1String = cardList.get(position).getTabooWord1();
+        String taboo2String = cardList.get(position).getTabooWord2();
+        String taboo3String = cardList.get(position).getTabooWord3();
+        String taboo4String = cardList.get(position).getTabooWord4();
+        String taboo5String = cardList.get(position).getTabooWord5();
+
+        holder.title.setText(titleString);
+        holder.tabooWord1.setText(taboo1String);
+        holder.tabooWord2.setText(taboo2String);
+        holder.tabooWord3.setText(taboo3String);
+        holder.tabooWord4.setText(taboo4String);
+        holder.tabooWord5.setText(taboo5String);
     }
 
     @Override
@@ -63,17 +75,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
 
             title = itemView.findViewById(R.id.title);
-            title.setFocusable(false);
+            title.setAutoSizeTextTypeUniformWithConfiguration(20, 28, 2, TypedValue.COMPLEX_UNIT_SP);
             tabooWord1 = itemView.findViewById(R.id.taboo_word_1);
-            tabooWord1.setFocusable(false);
+            tabooWord1.setAutoSizeTextTypeUniformWithConfiguration(16, 24, 2, TypedValue.COMPLEX_UNIT_SP);
             tabooWord2 = itemView.findViewById(R.id.taboo_word_2);
-            tabooWord2.setFocusable(false);
+            tabooWord2.setAutoSizeTextTypeUniformWithConfiguration(16, 24, 2, TypedValue.COMPLEX_UNIT_SP);
             tabooWord3 = itemView.findViewById(R.id.taboo_word_3);
-            tabooWord3.setFocusable(false);
+            tabooWord3.setAutoSizeTextTypeUniformWithConfiguration(16, 24, 2, TypedValue.COMPLEX_UNIT_SP);
             tabooWord4 = itemView.findViewById(R.id.taboo_word_4);
-            tabooWord4.setFocusable(false);
+            tabooWord4.setAutoSizeTextTypeUniformWithConfiguration(16, 24, 2, TypedValue.COMPLEX_UNIT_SP);
             tabooWord5 = itemView.findViewById(R.id.taboo_word_5);
-            tabooWord5.setFocusable(false);
+            tabooWord5.setAutoSizeTextTypeUniformWithConfiguration(16, 24, 2, TypedValue.COMPLEX_UNIT_SP);
 
         }
     }

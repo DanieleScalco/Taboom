@@ -4,7 +4,7 @@
     xmlns:tools="http://schematch_parentmas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="-8dp"
+    android:layout_marginTop="-4dp"
     tools:context=".fragments.PlayFragment">
 
 
@@ -39,9 +39,11 @@
                 android:text="@string/team_a_name"
                 android:autofillHints="@string/team_a_name"
                 android:hint="@string/team_a_name"
+                android:tooltipText="@string/team_name_tooltip"
                 android:inputType="textCapSentences"
                 android:textSize="16sp"
-                android:textColor="@color/red"
+                android:maxLength="11"
+                style="@style/team_a_color_text"
                 android:background="@null"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,18 +61,19 @@
                 app:layout_constraintTop_toBottomOf="@id/team_a_name"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-                <Button
+                <android.widget.Button
                     android:id="@+id/team_a_minus"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="4dp"
-                    android:text="-"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    style="@style/team_a_color_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/team_a_score"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@drawable/ic_baseline_remove_circle_outline_24"/>
 
                 <TextView
                     android:id="@+id/team_a_score"
@@ -78,26 +81,27 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="00"
+                    style="@style/team_a_color_text"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/red"
                     app:layout_constraintStart_toEndOf="@id/team_a_minus"
                     app:layout_constraintEnd_toStartOf="@id/team_a_plus"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <Button
+                <android.widget.Button
                     android:id="@+id/team_a_plus"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="4dp"
-                    android:text="+"
                     android:textSize="16sp"
+                    style="@style/team_a_color_button"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@id/team_a_score"
                     app:layout_constraintEnd_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@drawable/ic_baseline_add_circle_outline_24"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -122,9 +126,11 @@
                 android:text="@string/team_b_name"
                 android:autofillHints="@string/team_b_name"
                 android:hint="@string/team_b_name"
+                android:tooltipText="@string/team_name_tooltip"
                 android:textSize="16sp"
+                android:maxLength="11"
                 android:inputType="textCapSentences"
-                android:textColor="@color/blue"
+                style="@style/team_b_color_text"
                 android:background="@null"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -142,19 +148,22 @@
                 app:layout_constraintTop_toBottomOf="@id/team_b_name"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-                <Button
+                <!-- Android Studio doesn't show that by default the button used is a MaterialButton
+                     that decide the color autonomously
+                -->
+                <android.widget.Button
                     android:id="@+id/team_b_minus"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="4dp"
-                    android:text="-"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:backgroundTint="@color/blue"
+                    style="@style/team_b_color_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/team_b_score"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@drawable/ic_baseline_remove_circle_outline_24"/>
 
                 <TextView
                     android:id="@+id/team_b_score"
@@ -164,43 +173,40 @@
                     android:text="00"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/blue"
+                    style="@style/team_b_color_text"
                     app:layout_constraintStart_toEndOf="@id/team_b_minus"
                     app:layout_constraintEnd_toStartOf="@id/team_b_plus"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <Button
+                <android.widget.Button
                     android:id="@+id/team_b_plus"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="4dp"
-                    android:text="+"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:backgroundTint="@color/blue"
+                    style="@style/team_b_color_button"
                     app:layout_constraintStart_toEndOf="@id/team_b_score"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@drawable/ic_baseline_add_circle_outline_24"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Android Studio doesn't show that by default the button used is a MaterialButton
-             that decide the color autonomously -->
-        <android.widget.Button
+        <Button
             android:id="@+id/shuffle"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="16dp"
+            android:tooltipText="@string/tooltip_shuffle"
             android:background="@drawable/ic_rotate_solid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -234,6 +240,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:text="1:00"
+            android:tooltipText="@string/timer_tooltip"
             android:textSize="48sp"
             android:textColor="@color/dark_red"
             app:layout_constraintStart_toStartOf="parent"
@@ -244,6 +251,7 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:gravity="center"
+            android:tooltipText="@string/play_tooltip"
             android:background="@drawable/play_button"
             app:layout_constraintStart_toEndOf="@id/timer"
             app:layout_constraintEnd_toStartOf="@id/reset"
@@ -254,6 +262,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/reset"
+            android:tooltipText="@string/reset_tooltip"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

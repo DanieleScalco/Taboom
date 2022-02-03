@@ -13,9 +13,11 @@
         android:inputType="number"
         android:maxLength="1"
         android:text="1"
+        android:tooltipText="@string/minutes_tooltip"
         android:textAlignment="center"
         android:textColor="@color/dark_red"
-        android:textSize="48dp"></EditText>
+        android:textSize="48sp"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/modify_points"
@@ -24,8 +26,8 @@
         android:textAlignment="center"
         android:gravity="center"
         android:text=":"
-        android:textSize="48dp"
-        android:textColor="@color/dark_red"></TextView>
+        android:textSize="48sp"
+        android:textColor="@color/dark_red"/>
 
     <EditText
         android:id="@+id/modify_seconds"
@@ -35,8 +37,10 @@
         android:inputType="number"
         android:maxLength="2"
         android:text="00"
+        android:tooltipText="@string/seconds_tooltip"
         android:textAlignment="center"
         android:textColor="@color/dark_red"
-        android:textSize="48dp"></EditText>
+        android:textSize="48sp"
+        android:importantForAutofill="no" />
 
 </LinearLayout>

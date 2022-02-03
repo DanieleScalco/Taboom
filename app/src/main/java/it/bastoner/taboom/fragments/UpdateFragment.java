@@ -12,6 +12,8 @@ import it.bastoner.taboom.database.CardEntity;
 
 public class UpdateFragment extends BaseCardFragment {
 
+    // TODO show total cards number
+
     public UpdateFragment(List<CardEntity> cardList) {
         super(cardList);
     }

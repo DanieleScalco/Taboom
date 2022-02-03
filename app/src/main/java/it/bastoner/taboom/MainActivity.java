@@ -25,6 +25,8 @@ import it.bastoner.taboom.fragments.UpdateFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    // TODO add font
+
     private static final String TAG = "MainActivity";
 
     private List<CardEntity> cardList;
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     // TODO add sounds to buttons
     // TODO add labels to clickable objects
     // TODO check for system text size
+    // TODO animation bottomNav
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+
+        deleteOldDatas();
 
         loadCardList();
 
@@ -75,8 +81,6 @@ public class MainActivity extends AppCompatActivity {
     private void setBottomNavigation() {
 
         bottomNav = findViewById(R.id.bottom_nav);
-
-        //TODO ANIMATION
 
         bottomNav.setOnItemSelectedListener(item -> {
 
@@ -152,15 +156,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, ">>Database created");
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private void deleteOldDatas() {
 
-        // When activity got destroy remove all the shared preferences, no need to preserve
-        // data between different application start
+        // Remove all the old shared preferences, no need to preserve
+        // data between different application starts
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
-
     }
 }

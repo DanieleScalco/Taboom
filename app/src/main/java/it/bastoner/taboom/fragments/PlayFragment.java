@@ -32,14 +32,14 @@ import it.bastoner.taboom.Constants;
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.ViewModelMainActivity;
 import it.bastoner.taboom.adapter.RecyclerViewAdapter;
+import it.bastoner.taboom.animations.Animations;
 import it.bastoner.taboom.database.CardEntity;
 import it.bastoner.taboom.filters.MinMaxFilter;
-import it.bastoner.taboom.listeners.MyDialogListener;
 
 
-public class PlayFragment extends BaseCardFragment implements MyDialogListener {
+public class PlayFragment extends BaseCardFragment {
 
-    // TODO show total cards number; Limit text lenght teamname
+    // TODO longPress increaseScore;
 
     private static final String TAG = "PlayFragment";
 
@@ -54,6 +54,7 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
     private long timeLeftInMillis;
 
     private MediaPlayer endTimerSound;
+    private MediaPlayer clearSound;
 
     private Button plusButtonA;
     private Button minusButtonA;
@@ -71,7 +72,7 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
     private SharedPreferences sharedPreferences;
 
-    private int position;
+    private int positionRecyclerCard;
 
     public PlayFragment(List<CardEntity> cardList) {
         super(cardList);
@@ -98,8 +99,6 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         setRecyclerView();
 
         setViewModel();
-
-        setTimerSound();
 
         setTimer();
 
@@ -180,9 +179,13 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         startTimeInMillis = sharedPreferences.getLong(Constants.TIMER, 60000);
         timeLeftInMillis = startTimeInMillis;
         timerIsRunning = false;
+
         timerTextView = getView().findViewById(R.id.timer);
         playPauseButton = getView().findViewById(R.id.play);
         resetButton = getView().findViewById(R.id.reset);
+
+        endTimerSound = MediaPlayer.create(getContext(), R.raw.bomb);
+
 
         playPauseButton.setOnClickListener(view -> {
             if (timerIsRunning) {
@@ -198,9 +201,6 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
     }
 
     private void setTimerSound() {
-        if (endTimerSound == null) {
-            endTimerSound = MediaPlayer.create(getContext(), R.raw.bomb);
-        }
     }
 
     private void setRecyclerView() {
@@ -227,16 +227,16 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
 
                     // Check if there are no cards
                     if (actualView != null) {
-                        position = layoutManager.getPosition(actualView);
-                        Log.d(TAG, ">>RecyclerPosition: " + position);
+                        positionRecyclerCard = layoutManager.getPosition(actualView);
+                        Log.d(TAG, ">>RecyclerPosition: " + positionRecyclerCard);
                     }
                 }
             }
 
         });
 
-        position = sharedPreferences.getInt(Constants.RECYCLER_CARD_POSITION, 0);
-        layoutManager.scrollToPosition(position);
+        positionRecyclerCard = sharedPreferences.getInt(Constants.RECYCLER_CARD_POSITION, 0);
+        layoutManager.scrollToPosition(positionRecyclerCard);
 
     }
 
@@ -257,35 +257,19 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
                 timeLeftInMillis = startTimeInMillis;
                 updateCountDownText();
                 playPauseButton.setBackgroundResource(R.drawable.play_button);
+                playPauseButton.setTooltipText(getResources().getString(R.string.play_tooltip));
+
             }
         };
 
         countDownTimer.start();
         timerIsRunning = true;
         playPauseButton.setBackgroundResource(R.drawable.pause_button);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        Log.d(TAG, ">>Destroy()");
-
-        // Stop timer
-        if (countDownTimer != null)
-            countDownTimer.cancel();
-
-        // Save the state of the PlayFragment
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Constants.TEAM_A_NAME, teamA.getText().toString());
-        editor.putString(Constants.TEAM_B_NAME, teamB.getText().toString());
-        editor.putInt(Constants.TEAM_A_SCORE, scoreA);
-        editor.putInt(Constants.TEAM_B_SCORE, scoreB);
-        editor.putLong(Constants.TIMER, startTimeInMillis);
-        editor.putInt(Constants.RECYCLER_CARD_POSITION, position);
-        editor.commit();
+        playPauseButton.setTooltipText(getResources().getString(R.string.pause_tooltip));
 
     }
+
+
 
 
 
@@ -303,6 +287,7 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
             countDownTimer.cancel();
         timerIsRunning = false;
         playPauseButton.setBackgroundResource(R.drawable.play_button);
+        playPauseButton.setTooltipText(getResources().getString(R.string.play_tooltip));
 
     }
 
@@ -314,10 +299,12 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         timerIsRunning = false;
         timeLeftInMillis = startTimeInMillis;
         playPauseButton.setBackgroundResource(R.drawable.play_button);
+        playPauseButton.setTooltipText(getResources().getString(R.string.play_tooltip));
+
         updateCountDownText();
     }
 
-    public void sendDialogData(int minutes, int seconds) {
+    private void sendDialogData(int minutes, int seconds) {
 
         startTimeInMillis = (long) (minutes * 60 * 1000 + seconds * 1000);
         timeLeftInMillis = startTimeInMillis;
@@ -338,14 +325,16 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
         scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
 
-
+        // Setting onClick animation
 
         minusButtonA.setOnClickListener(view -> {
+            Animations.doReduceIncreaseAnimation(view);
             if (scoreA > 0 )
                 scoreATextView.setText(String.format(Locale.getDefault(), "%02d", --scoreA));
         });
 
         plusButtonA.setOnClickListener(view -> {
+            Animations.doReduceIncreaseAnimation(view);
             if (scoreA >= 99) {
                 scoreA = 0;
                 scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
@@ -353,15 +342,14 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
                 scoreATextView.setText(String.format(Locale.getDefault(), "%02d", ++scoreA));
         });
 
-        minusButtonB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (scoreB > 0)
-                    scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", --scoreB));
-            }
+        minusButtonB.setOnClickListener(view -> {
+            Animations.doReduceIncreaseAnimation(view);
+            if (scoreB > 0)
+                scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", --scoreB));
         });
 
         plusButtonB.setOnClickListener(view -> {
+            Animations.doReduceIncreaseAnimation(view);
             if (scoreB >= 99) {
                 scoreB = 0;
                 scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
@@ -377,7 +365,7 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
         teamB = getView().findViewById(R.id.team_b_name);
 
         String nameA = sharedPreferences.getString(Constants.TEAM_A_NAME, getResources().getString(R.string.team_a_name));
-        String nameB = sharedPreferences.getString(Constants.TEAM_B_NAME, getResources().getString(R.string.team_a_name));
+        String nameB = sharedPreferences.getString(Constants.TEAM_B_NAME, getResources().getString(R.string.team_b_name));
         teamA.setText(nameA);
         teamB.setText(nameB);
 
@@ -404,10 +392,39 @@ public class PlayFragment extends BaseCardFragment implements MyDialogListener {
     private void setShuffleButton() {
 
         shuffleButton = getView().findViewById(R.id.shuffle);
+        clearSound = MediaPlayer.create(getContext(), R.raw.clear_button);
+
         shuffleButton.setOnClickListener(view -> {
+
+            Animations.doSpinReduceIncreaseAnimation(view);
+            clearSound.start();
             viewModel.shuffle(cardList);
             updateUI(cardList);
             Toast.makeText(getContext(), R.string.card_shuffled, Toast.LENGTH_SHORT).show();
+
         });
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.d(TAG, ">>Destroy()");
+
+        // Stop timer
+        if (countDownTimer != null)
+            countDownTimer.cancel();
+
+        // Save the state of the PlayFragment
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Constants.TEAM_A_NAME, teamA.getText().toString());
+        editor.putString(Constants.TEAM_B_NAME, teamB.getText().toString());
+        editor.putInt(Constants.TEAM_A_SCORE, scoreA);
+        editor.putInt(Constants.TEAM_B_SCORE, scoreB);
+        editor.putLong(Constants.TIMER, startTimeInMillis);
+        editor.putInt(Constants.RECYCLER_CARD_POSITION, positionRecyclerCard);
+        editor.commit();
+
+    }
+
 }

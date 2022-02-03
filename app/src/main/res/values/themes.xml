@@ -31,4 +31,20 @@
         <item name="android:textColorHint">@color/dark_yellow</item>
     </style>
 
+    <style name="team_a_color_button">
+        <item name="android:backgroundTint">@color/red</item>
+    </style>
+
+    <style name="team_b_color_button">
+        <item name="android:backgroundTint">@color/blue</item>
+    </style>
+
+    <style name="team_a_color_text">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="team_b_color_text">
+        <item name="android:textColor">@color/blue</item>
+    </style>
+
 </resources>

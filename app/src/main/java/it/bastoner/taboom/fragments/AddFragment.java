@@ -1,5 +1,6 @@
 package it.bastoner.taboom.fragments;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +18,13 @@ import java.util.List;
 
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.ViewModelMainActivity;
+import it.bastoner.taboom.animations.Animations;
 import it.bastoner.taboom.database.CardEntity;
 
 
 public class AddFragment extends BaseCardFragment {
 
-    // TODO fixed lenght of editTexts; remove check words
+    // TODO fixed lenght of editTexts
 
     private static final String TAG = "AddFragment";
 
@@ -35,6 +37,9 @@ public class AddFragment extends BaseCardFragment {
     private EditText listNameEditText;
 
     private Button addCardButton;
+    private Button clearButton;
+
+    private MediaPlayer clearSound;
 
     public AddFragment(List<CardEntity> cardList) {
         super(cardList);
@@ -64,7 +69,6 @@ public class AddFragment extends BaseCardFragment {
 
     private void setView() {
 
-        // TODO next line can be null, check if empty list
         View cardIncluded = getActivity().findViewById(R.id.card_included);
         titleEditText = (EditText) cardIncluded.findViewById(R.id.title);
         taboo1EditText = (EditText) cardIncluded.findViewById(R.id.taboo_word_1);
@@ -74,6 +78,7 @@ public class AddFragment extends BaseCardFragment {
         taboo5EditText = (EditText) cardIncluded.findViewById(R.id.taboo_word_5);
         listNameEditText = getActivity().findViewById(R.id.list_name);
         addCardButton = getActivity().findViewById(R.id.add_card);
+        clearButton = getActivity().findViewById(R.id.clear);
 
         titleEditText.setHint(R.string.default_title_card);
         taboo1EditText.setHint(R.string.default_taboo);
@@ -83,7 +88,18 @@ public class AddFragment extends BaseCardFragment {
         taboo5EditText.setHint(R.string.default_taboo);
         listNameEditText.setHint(R.string.default_list_name);
 
-        addCardButton.setOnClickListener(view -> addCard());
+        clearSound = MediaPlayer.create(getContext(), R.raw.clear_button);
+
+        addCardButton.setOnClickListener(view -> {
+            Animations.doReduceIncreaseAnimation(view);
+            addCard();
+        });
+
+        clearButton.setOnClickListener(view -> {
+            clearSound.start();
+            Animations.doReduceIncreaseAnimation(view);
+            resetView();
+        });
     }
 
     private void setViewModel() {
