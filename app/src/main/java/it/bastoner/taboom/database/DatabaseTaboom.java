@@ -6,11 +6,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {CardEntity.class},
-          version = 1)
+@Database(entities = {Card.class, Tag.class, CardTagCrossRef.class},
+          version = 1,
+          exportSchema = false)
 public abstract class DatabaseTaboom extends RoomDatabase {
 
-    public static final String DATABASE_NAME = "db_taboom-1";
+    public static final String DATABASE_NAME = "db_taboom";
 
     public abstract CardDAO cardDao();
 

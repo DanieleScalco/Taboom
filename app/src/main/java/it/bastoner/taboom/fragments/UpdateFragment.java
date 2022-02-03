@@ -8,18 +8,20 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import it.bastoner.taboom.R;
-import it.bastoner.taboom.database.CardEntity;
+import it.bastoner.taboom.database.Card;
+import it.bastoner.taboom.database.CardWithTags;
+import it.bastoner.taboom.database.Tag;
 
 public class UpdateFragment extends BaseCardFragment {
 
     // TODO show total cards number
 
-    public UpdateFragment(List<CardEntity> cardList) {
+    public UpdateFragment(List<CardWithTags> cardList) {
         super(cardList);
     }
 
     @Override
-    public void updateUI(List<CardEntity> cardList) {
+    public void updateUI(List<CardWithTags> cardList, List<Tag> tagList) {
 
     }
 

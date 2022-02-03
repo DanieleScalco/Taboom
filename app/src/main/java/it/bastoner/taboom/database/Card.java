@@ -6,10 +6,10 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class CardEntity {
+public class Card {
 
     @PrimaryKey(autoGenerate = true)
-    private Long id;
+    private Long idCard;
 
     @ColumnInfo(name = "title")
     private String title;
@@ -29,11 +29,8 @@ public class CardEntity {
     @ColumnInfo(name = "taboo_word_5")
     private String tabooWord5;
 
-    @ColumnInfo(name = "list_name")
-    private String listName;
-
-    public CardEntity(String title, String tabooWord1, String tabooWord2, String tabooWord3,
-                      String tabooWord4, String tabooWord5, String listName) {
+    public Card(String title, String tabooWord1, String tabooWord2, String tabooWord3,
+                String tabooWord4, String tabooWord5) {
 
         String emptyTabooWord = "---------"; // R.string.no_taboo_word
 
@@ -58,18 +55,14 @@ public class CardEntity {
             this.tabooWord5 = emptyTabooWord;
         else
             this.tabooWord5 = tabooWord5;
-        if (listName != null && !listName.isEmpty())
-            this.listName = listName;
-        else
-            this.listName = "Lista base"; // R.string.default_list_name only with context
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdCard() {
+        return idCard;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdCard(Long idCard) {
+        this.idCard = idCard;
     }
 
     public String getTitle() {
@@ -120,26 +113,17 @@ public class CardEntity {
         this.tabooWord5 = tabooWord5;
     }
 
-    public String getListName() {
-        return listName;
-    }
-
-    public void setListName(String listName) {
-        this.listName = listName;
-    }
-
     @NonNull
     @Override
     public String toString() {
         return "CardEntity{" +
-                "id=" + id +
+                "id=" + idCard +
                 ", title='" + title + '\'' +
                 ", tabooWord1='" + tabooWord1 + '\'' +
                 ", tabooWord2='" + tabooWord2 + '\'' +
                 ", tabooWord3='" + tabooWord3 + '\'' +
                 ", tabooWord4='" + tabooWord4 + '\'' +
                 ", tabooWord5='" + tabooWord5 + '\'' +
-                ", listName='" + listName + '\'' +
                 '}';
     }
 }

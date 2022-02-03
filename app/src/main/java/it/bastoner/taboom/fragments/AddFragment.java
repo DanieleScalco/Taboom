@@ -14,17 +14,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.bastoner.taboom.R;
+import it.bastoner.taboom.Utilities;
 import it.bastoner.taboom.ViewModelMainActivity;
 import it.bastoner.taboom.animations.Animations;
-import it.bastoner.taboom.database.CardEntity;
+import it.bastoner.taboom.database.Card;
+import it.bastoner.taboom.database.CardWithTags;
+import it.bastoner.taboom.database.Tag;
 
 
 public class AddFragment extends BaseCardFragment {
-
-    // TODO fixed lenght of editTexts
 
     private static final String TAG = "AddFragment";
 
@@ -41,7 +43,7 @@ public class AddFragment extends BaseCardFragment {
 
     private MediaPlayer clearSound;
 
-    public AddFragment(List<CardEntity> cardList) {
+    public AddFragment(List<CardWithTags> cardList) {
         super(cardList);
     }
 
@@ -103,29 +105,39 @@ public class AddFragment extends BaseCardFragment {
     }
 
     private void setViewModel() {
+
         viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
-        viewModel.getAllCards().observe(getActivity(), cardList -> {
-            this.cardList = cardList;
-            Log.d(TAG, ">>List initialized. Number of items: " + cardList.size());
-            updateUI(cardList);
+        viewModel.getAllCards().observe(getActivity(), cardListLoaded -> {
+            cardList = cardListLoaded;
+            updateUI(cardList, tagList);
+        });
+
+        viewModel.getAllTags().observe(getActivity(), tagListLoaded -> {
+            tagList = tagListLoaded;
+            updateUI(cardList, tagList);
         });
     }
 
     @Override
-    public void updateUI(List<CardEntity> cardList) {
+    public void updateUI(List<CardWithTags> cardList, List<Tag> tagList) {
 
        // Nothing to do here
     }
 
     private void addCard() {
-        CardEntity card = new CardEntity(titleEditText.getText().toString(),
-                                        taboo1EditText.getText().toString(),
-                                        taboo2EditText.getText().toString(),
-                                        taboo3EditText.getText().toString(),
-                                        taboo4EditText.getText().toString(),
-                                        taboo5EditText.getText().toString(),
-                                        listNameEditText.getText().toString());
+
+        Card card = new Card(titleEditText.getText().toString(),
+                            taboo1EditText.getText().toString(),
+                            taboo2EditText.getText().toString(),
+                            taboo3EditText.getText().toString(),
+                            taboo4EditText.getText().toString(),
+                            taboo5EditText.getText().toString());
         Log.d(TAG, ">>Card: " + card);
+
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag(getResources().getString(R.string.default_tag)));
+
+        CardWithTags cardWithTags = new CardWithTags(card, tagList);
 
         if (card.getTitle() == null || card.getTitle().isEmpty()) {
             Toast.makeText(getContext(), R.string.card_title_needed, Toast.LENGTH_SHORT).show();
@@ -137,7 +149,7 @@ public class AddFragment extends BaseCardFragment {
                                 Toast.LENGTH_LONG).show();
             } else {
 
-                viewModel.insertCard(card);
+                viewModel.insertCard(cardWithTags);
                 Toast.makeText(getContext(), R.string.card_added, Toast.LENGTH_LONG).show();
 
                 resetView();
@@ -146,9 +158,9 @@ public class AddFragment extends BaseCardFragment {
         }
     }
 
-    private boolean cardAlreadyExists(CardEntity card) {
+    private boolean cardAlreadyExists(Card card) {
 
-        for (CardEntity c : cardList) {
+        for (Card c : Utilities.getCards(cardList)) {
             if (c.getTitle().equalsIgnoreCase(card.getTitle()))
                 return true;
         }

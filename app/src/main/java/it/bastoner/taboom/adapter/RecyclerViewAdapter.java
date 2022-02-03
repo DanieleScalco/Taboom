@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import it.bastoner.taboom.R;
-import it.bastoner.taboom.database.CardEntity;
+import it.bastoner.taboom.database.Card;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -21,9 +21,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
 
-    private List<CardEntity> cardList;
+    private List<Card> cardList;
 
-    public RecyclerViewAdapter(List<CardEntity> cardList) {
+    public RecyclerViewAdapter(List<Card> cardList) {
         this.cardList = cardList;
     }
 
@@ -90,7 +90,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    public void setCardList(List<CardEntity> cardList) {
+    public void setCardList(List<Card> cardList) {
         this.cardList = cardList;
     }
 }

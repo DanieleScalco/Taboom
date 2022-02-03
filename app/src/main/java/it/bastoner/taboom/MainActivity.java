@@ -8,16 +8,19 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-import it.bastoner.taboom.database.CardEntity;
+import it.bastoner.taboom.database.Card;
+import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.DatabaseTaboom;
+import it.bastoner.taboom.database.Tag;
 import it.bastoner.taboom.fragments.AddFragment;
 import it.bastoner.taboom.fragments.BaseCardFragment;
 import it.bastoner.taboom.fragments.PlayFragment;
@@ -26,21 +29,17 @@ import it.bastoner.taboom.fragments.UpdateFragment;
 public class MainActivity extends AppCompatActivity {
 
     // TODO add font
+    // TODO animation bottomNav
 
     private static final String TAG = "MainActivity";
 
-    private List<CardEntity> cardList;
+    private List<CardWithTags> cardList;
+    private List<Tag> tagList;
     private ViewModelMainActivity viewModel;
     private BottomNavigationView bottomNav;
     private BaseCardFragment selectedFragment;
 
     private SharedPreferences sharedPreferences;
-
-    // TODO add sounds to buttons
-    // TODO add labels to clickable objects
-    // TODO check for system text size
-    // TODO animation bottomNav
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // No night mode support
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(Utilities.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         deleteOldDatas();
 
@@ -105,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             // one fragment to other.
             getSupportFragmentManager()
                     .beginTransaction()
+                    //TODO.setCustomAnimations()
                     .replace(R.id.fragment_container, selectedFragment)
                     .commit();
             return true;
@@ -118,19 +118,34 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, ">>Load cardList()");
 
+        cardList = new ArrayList<>();
+        tagList = new ArrayList<>();
+
         viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
 
         checkIfDatabaseAlreadyExist();
 
-        viewModel.getAllCards().observe(this, cardList -> {
+        viewModel.getAllCards().observe(this, cardListLoaded -> {
 
-            this.cardList = cardList;
+            cardList = cardListLoaded;
 
             Log.d(TAG, ">>Total cards found: " + cardList.size());
 
-            // If cardList not loaded before creation of BottoNav update Fragment list
+            // If cardList not loaded before creation of BottomNav update Fragment list
             if (bottomNav != null && selectedFragment != null) {
-                selectedFragment.updateUI(cardList);
+                selectedFragment.updateUI(cardList, tagList);
+            }
+        });
+
+        viewModel.getAllTags().observe(this, tagListLoaded -> {
+
+            tagList = tagListLoaded;
+
+            Log.d(TAG, ">>Total tags found: " + tagList.size());
+
+            // If cardList not loaded before creation of BottomNav update Fragment list
+            if (bottomNav != null && selectedFragment != null) {
+                selectedFragment.updateUI(cardList, tagList);
             }
         });
 
@@ -145,13 +160,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createDatabase() {
-        CardEntity c1 = new CardEntity("Ventriloquo", "Parlare", "Bocca",
-                "Muovere", "Ugola", "Labbra", null);
-        CardEntity c2 = new CardEntity("Paperino","Qui", "Quo",
-                "Qua", "Topolino", "Fumetto", null);
 
-        viewModel.insertCard(c1);
-        viewModel.insertCard(c2);
+        Card c1 = new Card("Ventriloquo", "Parlare", "Bocca",
+                "Muovere", "Ugola", "Labbra");
+        Card c2 = new Card("Paperino","Qui", "Quo",
+                "Qua", "Topolino", "Fumetto");
+
+        Tag tag = new Tag(getString(R.string.default_tag));
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(tag);
+
+        CardWithTags card1 = new CardWithTags(c1, tagList);
+        CardWithTags card2 = new CardWithTags(c2, tagList);
+
+        viewModel.insertCard(card1);
+        viewModel.insertCard(card2);
 
         Log.d(TAG, ">>Database created");
     }

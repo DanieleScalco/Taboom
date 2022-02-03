@@ -28,12 +28,14 @@ import androidx.recyclerview.widget.SnapHelper;
 import java.util.List;
 import java.util.Locale;
 
-import it.bastoner.taboom.Constants;
+import it.bastoner.taboom.Utilities;
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.ViewModelMainActivity;
 import it.bastoner.taboom.adapter.RecyclerViewAdapter;
 import it.bastoner.taboom.animations.Animations;
-import it.bastoner.taboom.database.CardEntity;
+import it.bastoner.taboom.database.Card;
+import it.bastoner.taboom.database.CardWithTags;
+import it.bastoner.taboom.database.Tag;
 import it.bastoner.taboom.filters.MinMaxFilter;
 
 
@@ -74,7 +76,7 @@ public class PlayFragment extends BaseCardFragment {
 
     private int positionRecyclerCard;
 
-    public PlayFragment(List<CardEntity> cardList) {
+    public PlayFragment(List<CardWithTags> cardList) {
         super(cardList);
     }
 
@@ -94,7 +96,7 @@ public class PlayFragment extends BaseCardFragment {
         Log.d(TAG, ">>OnViewCreated()");
 
         sharedPreferences = getActivity()
-                            .getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+                            .getSharedPreferences(Utilities.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         setRecyclerView();
 
@@ -113,25 +115,33 @@ public class PlayFragment extends BaseCardFragment {
     }
 
     private void setViewModel() {
+
         viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
-        viewModel.getAllCards().observe(getActivity(), cardList -> {
-            updateUI(cardList);
+        viewModel.getAllCards().observe(getActivity(), cardListLoaded -> {
+            cardList = cardListLoaded;
+            updateUI(cardList, tagList);
+        });
+
+        viewModel.getAllTags().observe(getActivity(), tagListLoaded -> {
+            tagList = tagListLoaded;
+            updateUI(cardList, tagList);
         });
     }
 
     @Override
-    public void updateUI(List<CardEntity> cardList) {
+    public void updateUI(List<CardWithTags> cardList, List<Tag> tagList) {
 
         RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerView.getAdapter();
-        if (adapter != null) {
-            this.cardList = cardList;
-            adapter.setCardList(cardList);
+        if (adapter != null && cardList != null) {
+
+            List<Card> list = Utilities.getCards(cardList);
+            adapter.setCardList(list);
             adapter.notifyDataSetChanged();
             Log.d(TAG, ">>Update, Total cards found: " + adapter.getItemCount());
+
         } else {
             Log.d(TAG, ">>Update, Adapter is null");
         }
-
 
     }
 
@@ -176,7 +186,7 @@ public class PlayFragment extends BaseCardFragment {
 
     private void setTimer() {
 
-        startTimeInMillis = sharedPreferences.getLong(Constants.TIMER, 60000);
+        startTimeInMillis = sharedPreferences.getLong(Utilities.TIMER, 60000);
         timeLeftInMillis = startTimeInMillis;
         timerIsRunning = false;
 
@@ -200,13 +210,11 @@ public class PlayFragment extends BaseCardFragment {
         updateCountDownText();
     }
 
-    private void setTimerSound() {
-    }
-
     private void setRecyclerView() {
 
         recyclerView = getView().findViewById(R.id.recycler_view);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(cardList);
+
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(Utilities.getCards(cardList));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1,
                                                         RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -235,7 +243,7 @@ public class PlayFragment extends BaseCardFragment {
 
         });
 
-        positionRecyclerCard = sharedPreferences.getInt(Constants.RECYCLER_CARD_POSITION, 0);
+        positionRecyclerCard = sharedPreferences.getInt(Utilities.RECYCLER_CARD_POSITION, 0);
         layoutManager.scrollToPosition(positionRecyclerCard);
 
     }
@@ -268,10 +276,6 @@ public class PlayFragment extends BaseCardFragment {
         playPauseButton.setTooltipText(getResources().getString(R.string.pause_tooltip));
 
     }
-
-
-
-
 
     private void updateCountDownText() {
         int minutes = (int) (timeLeftInMillis / 1000 / 60);
@@ -320,8 +324,8 @@ public class PlayFragment extends BaseCardFragment {
         scoreATextView = getView().findViewById(R.id.team_a_score);
         scoreBTextView = getView().findViewById(R.id.team_b_score);
 
-        scoreA = sharedPreferences.getInt(Constants.TEAM_A_SCORE, 0);
-        scoreB = sharedPreferences.getInt(Constants.TEAM_B_SCORE, 0);
+        scoreA = sharedPreferences.getInt(Utilities.TEAM_A_SCORE, 0);
+        scoreB = sharedPreferences.getInt(Utilities.TEAM_B_SCORE, 0);
         scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
         scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
 
@@ -364,8 +368,8 @@ public class PlayFragment extends BaseCardFragment {
         teamA = getView().findViewById(R.id.team_a_name);
         teamB = getView().findViewById(R.id.team_b_name);
 
-        String nameA = sharedPreferences.getString(Constants.TEAM_A_NAME, getResources().getString(R.string.team_a_name));
-        String nameB = sharedPreferences.getString(Constants.TEAM_B_NAME, getResources().getString(R.string.team_b_name));
+        String nameA = sharedPreferences.getString(Utilities.TEAM_A_NAME, getResources().getString(R.string.team_a_name));
+        String nameB = sharedPreferences.getString(Utilities.TEAM_B_NAME, getResources().getString(R.string.team_b_name));
         teamA.setText(nameA);
         teamB.setText(nameB);
 
@@ -399,7 +403,7 @@ public class PlayFragment extends BaseCardFragment {
             Animations.doSpinReduceIncreaseAnimation(view);
             clearSound.start();
             viewModel.shuffle(cardList);
-            updateUI(cardList);
+            updateUI(cardList, tagList);
             Toast.makeText(getContext(), R.string.card_shuffled, Toast.LENGTH_SHORT).show();
 
         });
@@ -417,12 +421,12 @@ public class PlayFragment extends BaseCardFragment {
 
         // Save the state of the PlayFragment
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Constants.TEAM_A_NAME, teamA.getText().toString());
-        editor.putString(Constants.TEAM_B_NAME, teamB.getText().toString());
-        editor.putInt(Constants.TEAM_A_SCORE, scoreA);
-        editor.putInt(Constants.TEAM_B_SCORE, scoreB);
-        editor.putLong(Constants.TIMER, startTimeInMillis);
-        editor.putInt(Constants.RECYCLER_CARD_POSITION, positionRecyclerCard);
+        editor.putString(Utilities.TEAM_A_NAME, teamA.getText().toString());
+        editor.putString(Utilities.TEAM_B_NAME, teamB.getText().toString());
+        editor.putInt(Utilities.TEAM_A_SCORE, scoreA);
+        editor.putInt(Utilities.TEAM_B_SCORE, scoreB);
+        editor.putLong(Utilities.TIMER, startTimeInMillis);
+        editor.putInt(Utilities.RECYCLER_CARD_POSITION, positionRecyclerCard);
         editor.commit();
 
     }
