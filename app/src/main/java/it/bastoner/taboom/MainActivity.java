@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewModelMainActivity viewModel;
     private BottomNavigationView bottomNav;
     private BaseCardFragment selectedFragment;
+    private long oldIdFragment = -1;
 
     private SharedPreferences sharedPreferences;
 
@@ -102,11 +103,29 @@ public class MainActivity extends AppCompatActivity {
             }
             // It will help to replace the
             // one fragment to other.
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    //TODO.setCustomAnimations()
-                    .replace(R.id.fragment_container, selectedFragment)
-                    .commit();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+            if (oldIdFragment != -1) {
+                if (oldIdFragment == R.id.add_nav && oldIdFragment != item.getItemId()) {
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_from_right_to_left,
+                                                            R.anim.slide_out_from_right_to_left);
+                } else if (oldIdFragment == R.id.update_nav && oldIdFragment != item.getItemId()) {
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_from_left_to_right,
+                                                            R.anim.slide_out_from_left_to_right);
+                } else if (oldIdFragment == R.id.play_nav && item.getItemId() == R.id.add_nav) {
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_from_left_to_right,
+                                                            R.anim.slide_out_from_left_to_right);
+                } else if (oldIdFragment == R.id.play_nav && item.getItemId() == R.id.update_nav){
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_from_right_to_left,
+                                                            R.anim.slide_out_from_right_to_left);
+                }
+            }
+
+            fragmentTransaction.replace(R.id.fragment_container, selectedFragment)
+                               .commit();
+
+            oldIdFragment = item.getItemId();
+
             return true;
         });
 
