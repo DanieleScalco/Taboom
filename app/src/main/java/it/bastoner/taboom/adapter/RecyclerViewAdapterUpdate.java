@@ -1,5 +1,6 @@
 package it.bastoner.taboom.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.bastoner.taboom.R;
@@ -41,9 +43,28 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         if (position == 0) {
-            holder.numberOfItems.setText("" + cardList.size());
-            holder.tagName.setText("Tutte le carte");
+            holder.numberOfItems.setText(String.valueOf(cardList.size()));
+            holder.tagName.setText(R.string.all_cards_tag);
+            holder.clearTag.setVisibility(View.GONE);
+        } else {
+
+            Tag tag = tagList.get(position - 1);
+            List<CardWithTags> listOfSingleTag = new ArrayList<>();
+
+            for (CardWithTags cwt: cardList) {
+                for (Tag t: cwt.getTagList()) {
+                    if (t.getTag().equals(tag.getTag()))
+                        listOfSingleTag.add(cwt);
+                }
+            }
+
+            holder.numberOfItems.setText(String.valueOf(listOfSingleTag.size()));
+            holder.tagName.setText(tag.getTag());
+            // TODO
+            holder.tagName.setOnClickListener( v -> Log.d(TAG, ">>CLICKED"));
+            holder.clearTag.setOnClickListener( v -> Log.d(TAG, ">>CLICKED"));
         }
+
     }
 
     @Override
@@ -71,6 +92,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             checkBox = itemView.findViewById(R.id.check_box);
 
         }
+
     }
 
     public void setCardList(List<CardWithTags> cardList) {

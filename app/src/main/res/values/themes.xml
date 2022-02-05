@@ -22,7 +22,7 @@
     <style name="bottomNav">
         <item name="itemIconTint">@drawable/bottom_nav_selector</item>
         <item name="itemTextColor">@drawable/bottom_nav_selector</item>
-        <item name="itemRippleColor">@color/dark_red</item>
+        <item name="itemRippleColor">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="card">
@@ -45,6 +45,12 @@
 
     <style name="team_b_color_text">
         <item name="android:textColor">@color/blue</item>
+    </style>
+
+    <style name="card_update">
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
+        <item name="buttonTint">?attr/colorPrimaryVariant</item>
+        <item name="android:backgroundTint">?attr/colorPrimaryVariant</item>
     </style>
 
 </resources>

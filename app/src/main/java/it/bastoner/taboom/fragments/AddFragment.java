@@ -142,7 +142,7 @@ public class AddFragment extends BaseCardFragment {
         Log.d(TAG, ">>Card: " + card);
 
         List<Tag> tagList = new ArrayList<>();
-        tagList.add(new Tag(getResources().getString(R.string.default_tag)));
+        tagList.add(new Tag(getResources().getString(R.string.disney_tag)));
 
         CardWithTags cardWithTags = new CardWithTags(card, tagList);
 

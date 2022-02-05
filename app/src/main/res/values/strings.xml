@@ -27,7 +27,9 @@
     <string name="seconds_tooltip">Secondi</string>
     <string name="pause_tooltip">Pausa</string>
     <string name="clean_tooltip">Cancella</string>
-    <string name="default_tag">Default</string>
-    <string name="card_number">numero_carte</string>
+    <string name="card_number">Totale carte</string>
     <string name="delete_tag">Elimina TAG</string>
+    <string name="all_cards_tag">Tutte le carte</string>
+    <string name="disney_tag">Disney</string>
+    <string name="celebrities_tag">Personaggi famosi</string>
 </resources>

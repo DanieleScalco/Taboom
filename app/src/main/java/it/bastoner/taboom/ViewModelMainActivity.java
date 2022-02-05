@@ -65,36 +65,41 @@ public class ViewModelMainActivity extends AndroidViewModel {
 
     public void insertCard(CardWithTags card) {
 
-        Log.d(TAG, ">>insertCard(): " + card);
+        Log.d(TAG, ">>InsertCard(): " + card);
 
         executor.execute(() -> {
 
             long idCard = cardDAO.insertCard(card.getCard());
+
+            if (idCard >= 1) {
+                cardListIsUpdatedWithDb = false;
+                Log.d(TAG, ">>Inserted Card: " + card.getCard().getTitle());
+            }
+
             for (Tag t: card.getTagList()) {
                 long idTag = cardDAO.insertTag(t);
 
+                CardTagCrossRef cardTagCrossRef = new CardTagCrossRef();
+                cardTagCrossRef.idCard = idCard;
+
                 if (idTag < 1) {
-
-                    // Tag already exist
+                    // If Tag already exist, retrieve that to get id to try insert cwt
                     idTag = cardDAO.getTag(t.getTag()).getIdTag();
-                    CardTagCrossRef cardTagCrossRef = new CardTagCrossRef();
-                    cardTagCrossRef.idCard = idCard;
-                    cardTagCrossRef.idTag = idTag;
-                    cardDAO.insertCardWithTags(cardTagCrossRef);
-
                 } else {
-
-                    // Tag added
-                    CardTagCrossRef cardTagCrossRef = new CardTagCrossRef();
-                    cardTagCrossRef.idCard = idCard;
-                    cardTagCrossRef.idTag = idTag;
-                    cardDAO.insertCardWithTags(cardTagCrossRef);
+                    // New Tag
                     tagListIsUpdatedWithDb = false;
+                    Log.d(TAG, ">>Inserted Tag: " + t.getTag());
+                }
 
+                cardTagCrossRef.idTag = idTag;
+                long idCWT = cardDAO.insertCardWithTags(cardTagCrossRef);
+                if (idCWT >= 1) {
+                    Log.d(TAG, ">>Inserted CWT: [" + idCard + "," + idTag + "]");
+                    // Tag linked to a card
+                    cardListIsUpdatedWithDb = false;
                 }
             }
 
-            cardListIsUpdatedWithDb = false;
         });
 
     }

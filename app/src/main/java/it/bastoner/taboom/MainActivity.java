@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO add font
     // TODO check for max listSize;
+    // Layout percentages
 
     private static final String TAG = "MainActivity";
 
@@ -190,16 +191,28 @@ public class MainActivity extends AppCompatActivity {
                 "Muovere", "Ugola", "Labbra");
         Card c2 = new Card("Paperino","Qui", "Quo",
                 "Qua", "Topolino", "Fumetto");
+        Card c3 = new Card("Paperinik","Paperino", "PK",
+                "Uno", "Supereroe", "Fumetto");
+        Card c4 = new Card("Archimede","Principio", "Topolino",
+                "Galleggiare", "Inventore", "Fumetto");
 
-        Tag tag = new Tag(getString(R.string.default_tag));
-        List<Tag> tagList = new ArrayList<>();
-        tagList.add(tag);
-
-        CardWithTags card1 = new CardWithTags(c1, tagList);
-        CardWithTags card2 = new CardWithTags(c2, tagList);
-
+        List<Tag> tagList1 = new ArrayList<>();
+        CardWithTags card1 = new CardWithTags(c1, tagList1);
         viewModel.insertCard(card1);
+
+        List<Tag> tagList2 = new ArrayList<>();
+        Tag tagDisney = new Tag(getString(R.string.disney_tag));
+        tagList2.add(tagDisney);
+        CardWithTags card2 = new CardWithTags(c2, tagList2);
+        CardWithTags card3 = new CardWithTags(c3, tagList2);
         viewModel.insertCard(card2);
+        viewModel.insertCard(card3);
+
+        List<Tag> tagList3 = new ArrayList<>();
+        Tag tagCelebrities = new Tag(getString(R.string.celebrities_tag));
+        tagList3.add(tagCelebrities);
+        CardWithTags card4 = new CardWithTags(c4, tagList3);
+        viewModel.insertCard(card4);
 
         Log.d(TAG, ">>Database created");
     }

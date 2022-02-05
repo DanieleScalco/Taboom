@@ -22,6 +22,7 @@ public interface CardDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public long insertTag(Tag tag);
 
+    // It will return rowId
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public long insertCardWithTags(CardTagCrossRef cardTagCrossRef);
 
