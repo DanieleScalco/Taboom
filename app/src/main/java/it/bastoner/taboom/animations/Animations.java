@@ -13,6 +13,8 @@ import com.google.android.material.button.MaterialButton;
 public class Animations {
 
     // Support class to get animations
+    // Animators can modify the positions of Views for real, Animations not
+    // (you see animations but View don't move for real)
 
     public static void doReduceIncreaseAnimation(View view) {
 

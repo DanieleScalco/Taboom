@@ -43,8 +43,8 @@ public class AddFragment extends BaseCardFragment {
 
     private MediaPlayer clearSound;
 
-    public AddFragment(List<CardWithTags> cardList) {
-        super(cardList);
+    public AddFragment(List<CardWithTags> cardList, List<Tag> tagList) {
+        super(cardList, tagList);
     }
 
     @Override
@@ -70,6 +70,8 @@ public class AddFragment extends BaseCardFragment {
     }
 
     private void setView() {
+
+        Log.d(TAG, ">>SetView()");
 
         View cardIncluded = getActivity().findViewById(R.id.card_included);
         titleEditText = (EditText) cardIncluded.findViewById(R.id.title);
@@ -106,22 +108,27 @@ public class AddFragment extends BaseCardFragment {
 
     private void setViewModel() {
 
+        Log.d(TAG, ">>SetViewModel()");
+
         viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
         viewModel.getAllCards().observe(getActivity(), cardListLoaded -> {
             cardList = cardListLoaded;
+            Log.d(TAG, ">>CardList updated:" + cardList);
             updateUI(cardList, tagList);
         });
 
         viewModel.getAllTags().observe(getActivity(), tagListLoaded -> {
             tagList = tagListLoaded;
+            Log.d(TAG, ">>TagList updated:" + tagList);
             updateUI(cardList, tagList);
         });
+
     }
 
     @Override
     public void updateUI(List<CardWithTags> cardList, List<Tag> tagList) {
 
-       // Nothing to do here
+        // Nothing to do here for now
     }
 
     private void addCard() {

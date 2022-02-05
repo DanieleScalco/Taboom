@@ -14,21 +14,24 @@ import java.util.List;
 @Dao
 public interface CardDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    // Insert method can return void/long/long[] (depends if
+    // a single object is inserted or a list)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public long insertCard(Card card);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public long insertTag(Tag tag);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertCardWithTags(CardTagCrossRef cardTagCrossRef);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    public long insertCardWithTags(CardTagCrossRef cardTagCrossRef);
 
     // If called on an item not present in the DB it won't do anything
+    // @Update/@Delete return type void or int (number of raws modified/deleted)
     @Update
-    public void updateCard(Card card);
+    public int updateCard(Card card);
 
     @Delete
-    public void deleteCard(Card card);
+    public int deleteCard(Card card);
 
     // With a query method you can also perform complex inserts/updates/deletes
     // Transaction needed for relational classes

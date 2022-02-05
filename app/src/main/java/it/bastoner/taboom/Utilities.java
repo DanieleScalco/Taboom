@@ -1,5 +1,7 @@
 package it.bastoner.taboom;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,14 @@ public class Utilities {
                 list.add(card);
             }
         return list;
+    }
+
+    public static void logCardsAndTags(String tag, List<CardWithTags> cardWithTagsList, List<Tag> tagList) {
+        Log.d(tag, ">>LogCardsAndTags()");
+        Log.d(tag, ">>Cards.size() = " + cardWithTagsList.size());
+        Log.d(tag, ">>CardList = " + cardWithTagsList);
+        Log.d(tag, ">>Tags.size() = " + tagList.size());
+        Log.d(tag, ">>TagList = " + tagList);
     }
 
 }

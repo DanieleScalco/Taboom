@@ -17,8 +17,6 @@ import it.bastoner.taboom.database.Card;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    //android:inputType="textCapSentences|textNoSuggestions"
-
     private static final String TAG = "RecyclerViewAdapter";
 
     private List<Card> cardList;

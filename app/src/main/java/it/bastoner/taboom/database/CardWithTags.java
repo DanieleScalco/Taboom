@@ -9,13 +9,12 @@ import java.util.List;
 
 public class CardWithTags {
 
-    @Embedded private Card card;
-    @Relation(
-            parentColumn = "idCard",
-            entityColumn = "idTag",
-            associateBy = @Junction(CardTagCrossRef.class)
-    )
+    @Embedded
+    private Card card;
 
+    @Relation(parentColumn = "idCard",
+                entityColumn = "idTag",
+                associateBy = @Junction(CardTagCrossRef.class))
     private List<Tag> tagList;
 
     public CardWithTags() {

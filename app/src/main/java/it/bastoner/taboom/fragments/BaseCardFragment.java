@@ -15,8 +15,9 @@ public abstract class BaseCardFragment extends Fragment {
     protected List<Tag> tagList;
     protected ViewModelMainActivity viewModel;
 
-    public BaseCardFragment(List<CardWithTags> cardList) {
+    public BaseCardFragment(List<CardWithTags> cardList, List<Tag> tagList) {
         this.cardList = cardList;
+        this.tagList = tagList;
     }
 
     public abstract void updateUI(List<CardWithTags> cardList, List<Tag> tagList);

@@ -28,8 +28,8 @@ import androidx.recyclerview.widget.SnapHelper;
 import java.util.List;
 import java.util.Locale;
 
-import it.bastoner.taboom.Utilities;
 import it.bastoner.taboom.R;
+import it.bastoner.taboom.Utilities;
 import it.bastoner.taboom.ViewModelMainActivity;
 import it.bastoner.taboom.adapter.RecyclerViewAdapter;
 import it.bastoner.taboom.animations.Animations;
@@ -38,10 +38,12 @@ import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
 import it.bastoner.taboom.filters.MinMaxFilter;
 
-
+// TODO Fragment creato ancora prima di fine
 public class PlayFragment extends BaseCardFragment {
 
     // TODO longPress increaseScore;
+    // TODO Message no words
+    // TODO Max 59 seconds
 
     private static final String TAG = "PlayFragment";
 
@@ -76,8 +78,9 @@ public class PlayFragment extends BaseCardFragment {
 
     private int positionRecyclerCard;
 
-    public PlayFragment(List<CardWithTags> cardList) {
-        super(cardList);
+
+    public PlayFragment(List<CardWithTags> cardList, List<Tag> tagList) {
+        super(cardList, tagList);
     }
 
 
@@ -116,31 +119,35 @@ public class PlayFragment extends BaseCardFragment {
 
     private void setViewModel() {
 
+        Log.d(TAG, ">>SetViewModel");
+
         viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
         viewModel.getAllCards().observe(getActivity(), cardListLoaded -> {
             cardList = cardListLoaded;
+            Log.d(TAG, ">>CardList updated:" + cardList);
             updateUI(cardList, tagList);
         });
 
         viewModel.getAllTags().observe(getActivity(), tagListLoaded -> {
             tagList = tagListLoaded;
+            Log.d(TAG, ">>TagList updated:" + tagList);
             updateUI(cardList, tagList);
         });
+
     }
 
     @Override
-    public void updateUI(List<CardWithTags> cardList, List<Tag> tagList) {
+    public void updateUI(List<CardWithTags> cardListWithTags, List<Tag> tagList) {
 
         RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerView.getAdapter();
-        if (adapter != null && cardList != null) {
+        if (adapter != null && cardListWithTags != null) {
 
-            List<Card> list = Utilities.getCards(cardList);
+            List<Card> list = Utilities.getCards(cardListWithTags);
             adapter.setCardList(list);
             adapter.notifyDataSetChanged();
-            Log.d(TAG, ">>Update, Total cards found: " + adapter.getItemCount());
+            Log.d(TAG, ">>Update, Total cards: " + adapter.getItemCount());
+            Log.d(TAG, ">>Update, Total tags: " + tagList.size());
 
-        } else {
-            Log.d(TAG, ">>Update, Adapter is null");
         }
 
     }
@@ -329,8 +336,6 @@ public class PlayFragment extends BaseCardFragment {
         scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
         scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
 
-        // Setting onClick animation
-
         minusButtonA.setOnClickListener(view -> {
             Animations.doReduceIncreaseAnimation(view);
             if (scoreA > 0 )
@@ -394,6 +399,9 @@ public class PlayFragment extends BaseCardFragment {
     }
 
     private void setShuffleButton() {
+
+        String size = (cardList != null) ? "" + cardList.size() : "null";
+        Log.d(TAG, ">>SetShuffleButton(), cardList.size = " + size);
 
         shuffleButton = getView().findViewById(R.id.shuffle);
         clearSound = MediaPlayer.create(getContext(), R.raw.clear_button);

@@ -28,4 +28,6 @@
     <string name="pause_tooltip">Pausa</string>
     <string name="clean_tooltip">Cancella</string>
     <string name="default_tag">Default</string>
+    <string name="card_number">numero_carte</string>
+    <string name="delete_tag">Elimina TAG</string>
 </resources>

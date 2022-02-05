@@ -43,7 +43,6 @@ public class ViewModelMainActivity extends AndroidViewModel {
 
         if (!cardListIsUpdatedWithDb) {
             cardList = cardDAO.getAllCards();
-            Log.d(TAG, ">>Loaded cards from db: " + cardList);
             cardListIsUpdatedWithDb = true;
         }
 
@@ -57,7 +56,6 @@ public class ViewModelMainActivity extends AndroidViewModel {
 
         if (!tagListIsUpdatedWithDb) {
             tagList = cardDAO.getAllTags();
-            Log.d(TAG, ">>Loaded tags from db: " + tagList);
             tagListIsUpdatedWithDb = true;
         }
 
@@ -105,6 +103,7 @@ public class ViewModelMainActivity extends AndroidViewModel {
         if (list != null) {
             Collections.shuffle(list);
             cardList = new MutableLiveData<>(list);
+            Log.d(TAG, ">>List shuffled: " + list);
         } else {
             Log.d(TAG, ">>List is null");
         }

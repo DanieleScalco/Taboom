@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -29,7 +30,7 @@ import it.bastoner.taboom.fragments.UpdateFragment;
 public class MainActivity extends AppCompatActivity {
 
     // TODO add font
-    // TODO animation bottomNav
+    // TODO check for max listSize;
 
     private static final String TAG = "MainActivity";
 
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Tag> tagList;
     private ViewModelMainActivity viewModel;
     private BottomNavigationView bottomNav;
-    private BaseCardFragment selectedFragment;
     private long oldIdFragment = -1;
 
     private SharedPreferences sharedPreferences;
@@ -56,9 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
         deleteOldDatas();
 
-        loadCardList();
-
         setBottomNavigation();
+
+        firstLoadCardList();
+
 
     }
 
@@ -84,38 +85,41 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav.setOnItemSelectedListener(item -> {
 
-            Log.d(TAG, ">>BottomNav item selected");
+            int idItem = item.getItemId();
 
-            // By using switch we can easily get the selected fragment by using there id.
-            switch (item.getItemId()) {
+            Log.d(TAG, ">>BottomNav item selected: " + getResources().getResourceEntryName(idItem));
+
+            // By using switch we can easily get the selected fragment by using the id.
+            BaseCardFragment selectedFragment;
+            switch (idItem) {
                 case R.id.add_nav:
-                    selectedFragment = new AddFragment(cardList);
+                    selectedFragment = new AddFragment(cardList, tagList);
                     break;
                 case R.id.play_nav:
-                    selectedFragment = new PlayFragment(cardList);
+                    selectedFragment = new PlayFragment(cardList, tagList);
                     break;
                 case R.id.update_nav:
-                    selectedFragment = new UpdateFragment(cardList);
+                    selectedFragment = new UpdateFragment(cardList, tagList);
                     break;
                 default:
-                    selectedFragment = new PlayFragment(cardList);
+                    selectedFragment = new PlayFragment(cardList, tagList);
                     break;
             }
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             // It will help to replace the
             // one fragment to other.
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
             if (oldIdFragment != -1) {
-                if (oldIdFragment == R.id.add_nav && oldIdFragment != item.getItemId()) {
+                if (oldIdFragment == R.id.add_nav && oldIdFragment != idItem) {
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_from_right_to_left,
                                                             R.anim.slide_out_from_right_to_left);
-                } else if (oldIdFragment == R.id.update_nav && oldIdFragment != item.getItemId()) {
+                } else if (oldIdFragment == R.id.update_nav && oldIdFragment != idItem) {
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_from_left_to_right,
                                                             R.anim.slide_out_from_left_to_right);
-                } else if (oldIdFragment == R.id.play_nav && item.getItemId() == R.id.add_nav) {
+                } else if (oldIdFragment == R.id.play_nav && idItem == R.id.add_nav) {
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_from_left_to_right,
                                                             R.anim.slide_out_from_left_to_right);
-                } else if (oldIdFragment == R.id.play_nav && item.getItemId() == R.id.update_nav){
+                } else if (oldIdFragment == R.id.play_nav && idItem == R.id.update_nav){
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_from_right_to_left,
                                                             R.anim.slide_out_from_right_to_left);
                 }
@@ -124,21 +128,21 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.fragment_container, selectedFragment)
                                .commit();
 
-            oldIdFragment = item.getItemId();
+            oldIdFragment = idItem;
 
             return true;
         });
 
-        // As soon as the application opens the play fragment should be shown to the user
-        bottomNav.setSelectedItemId(R.id.play_nav);
     }
 
-    private void loadCardList() {
+    private void firstLoadCardList() {
 
-        Log.d(TAG, ">>Load cardList()");
+        ConstraintLayout fragmentContainer = findViewById(R.id.fragment_container);
+        ConstraintLayout progressBarContainer = findViewById(R.id.loading_container);
+        fragmentContainer.setVisibility(View.GONE);
+        progressBarContainer.setVisibility(View.VISIBLE);
 
-        cardList = new ArrayList<>();
-        tagList = new ArrayList<>();
+        Log.d(TAG, ">>FirstLoadCardList()");
 
         viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
 
@@ -147,24 +151,26 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getAllCards().observe(this, cardListLoaded -> {
 
             cardList = cardListLoaded;
-
             Log.d(TAG, ">>Total cards found: " + cardList.size());
 
-            // If cardList not loaded before creation of BottomNav update Fragment list
-            if (bottomNav != null && selectedFragment != null) {
-                selectedFragment.updateUI(cardList, tagList);
+            if (tagList != null) {
+                progressBarContainer.setVisibility(View.GONE);
+                fragmentContainer.setVisibility(View.VISIBLE);
+                bottomNav.setSelectedItemId(R.id.play_nav);
             }
         });
 
         viewModel.getAllTags().observe(this, tagListLoaded -> {
 
             tagList = tagListLoaded;
-
             Log.d(TAG, ">>Total tags found: " + tagList.size());
 
-            // If cardList not loaded before creation of BottomNav update Fragment list
-            if (bottomNav != null && selectedFragment != null) {
-                selectedFragment.updateUI(cardList, tagList);
+            // If tagList not loaded before creation of BottomNav update Fragment list
+            // and cardList already loaded
+            if (cardList!= null) {
+                progressBarContainer.setVisibility(View.GONE);
+                fragmentContainer.setVisibility(View.VISIBLE);
+                bottomNav.setSelectedItemId(R.id.play_nav);
             }
         });
 
@@ -199,6 +205,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void deleteOldDatas() {
+
+        Log.d(TAG, ">>DeleteOldDatas()");
 
         // Remove all the old shared preferences, no need to preserve
         // data between different application starts

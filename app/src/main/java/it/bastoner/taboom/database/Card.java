@@ -3,11 +3,13 @@ package it.bastoner.taboom.database;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
 public class Card {
 
+    // Inserting 0 is considered by Room as not-set
     @PrimaryKey(autoGenerate = true)
     private Long idCard;
 
@@ -29,6 +31,11 @@ public class Card {
     @ColumnInfo(name = "taboo_word_5")
     private String tabooWord5;
 
+    public Card() {
+
+    }
+
+    @Ignore
     public Card(String title, String tabooWord1, String tabooWord2, String tabooWord3,
                 String tabooWord4, String tabooWord5) {
 
