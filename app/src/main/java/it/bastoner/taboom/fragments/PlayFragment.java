@@ -121,13 +121,13 @@ public class PlayFragment extends BaseCardFragment {
         Log.d(TAG, ">>SetViewModel");
 
         viewModel = new ViewModelProvider(requireActivity()).get(ViewModelMainActivity.class);
-        viewModel.getAllCards().observe(getActivity(), cardListLoaded -> {
+        viewModel.getAllCards().observe(requireActivity(), cardListLoaded -> {
             cardList = cardListLoaded;
             Log.d(TAG, ">>CardList updated:" + cardList);
             updateUI(cardList, tagList);
         });
 
-        viewModel.getAllTags().observe(getActivity(), tagListLoaded -> {
+        viewModel.getAllTags().observe(requireActivity(), tagListLoaded -> {
             tagList = tagListLoaded;
             Log.d(TAG, ">>TagList updated:" + tagList);
             updateUI(cardList, tagList);

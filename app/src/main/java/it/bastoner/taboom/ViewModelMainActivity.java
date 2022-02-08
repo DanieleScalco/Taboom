@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardDAO;
 import it.bastoner.taboom.database.CardTagCrossRef;
 import it.bastoner.taboom.database.CardWithTags;
@@ -131,6 +132,17 @@ public class ViewModelMainActivity extends AndroidViewModel {
 
         executor.execute(() -> {
             cardDAO.deleteTag(tag);
+            tagListIsUpdatedWithDb = false;
+            cardListIsUpdatedWithDb = false;
+        });
+    }
+
+    public void deleteCard(Card card) {
+
+        Log.d(TAG, ">>DeleteCard(): " + card.getTitle());
+
+        executor.execute(() -> {
+            cardDAO.deleteCard(card);
             tagListIsUpdatedWithDb = false;
             cardListIsUpdatedWithDb = false;
         });

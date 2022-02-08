@@ -34,8 +34,10 @@
     <string name="celebrities_tag">Personaggi famosi</string>
     <string name="title_modify_tag">Modifica nome TAG</string>
     <string name="insert_new_tag">Inserisci un nuovo TAG</string>
-    <string name="destroy_dialog_message">Sei sicuro di voler eliminare questo TAG?</string>
+    <string name="delete_tag_dialog_message">Sei sicuro di voler eliminare questo TAG?</string>
+    <string name="delete_card_dialog_message">Sei sicuro di voler eliminare questa carta?</string>
     <string name="cancel">Annulla</string>
     <string name="ok">Conferma</string>
     <string name="title_delete_tag">Elimina TAG</string>
+    <string name="title_delete_card">Elimina carta</string>
 </resources>

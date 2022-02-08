@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,12 +24,13 @@ import java.util.List;
 
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.ViewModelMainActivity;
+import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
 import it.bastoner.taboom.fragments.BaseCardFragment;
 import it.bastoner.taboom.fragments.UpdateFragment;
 
-
+// TODO LayoutInflater.from(context)
 public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerViewAdapterUpdate.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapterUpdate";
@@ -65,6 +67,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             holder.numberOfItems.setText(String.valueOf(cardList.size()));
             holder.tagName.setText(R.string.all_cards_tag);
             holder.clearTag.setVisibility(View.GONE);
+            initializeLayoutCards(cardList, holder);
         } else {
 
             Tag tag = tagList.get(position - 1);
@@ -102,9 +105,9 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                     })
                     .create();
 
-            AlertDialog dialogDestroy = new AlertDialog.Builder(context)
+            AlertDialog dialogDeleteTag = new AlertDialog.Builder(context)
                     .setTitle(R.string.title_delete_tag)
-                    .setMessage(R.string.destroy_dialog_message)
+                    .setMessage(R.string.delete_tag_dialog_message)
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -125,7 +128,52 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                 return true;
             });
 
-            holder.clearTag.setOnClickListener( v -> dialogDestroy.show());
+            holder.clearTag.setOnClickListener( view -> dialogDeleteTag.show());
+
+            holder.itemView.setOnClickListener(view -> {
+
+            });
+        }
+
+
+
+    }
+
+    private void initializeLayoutCards(List<CardWithTags> cardList, ViewHolder holder) {
+
+        for (CardWithTags cwt : cardList) {
+
+            Card card = cwt.getCard();
+            View cardView = layoutInflater.inflate(R.layout.card_update, holder.linearLayout, false);
+
+            TextView textViewCardName = cardView.findViewById(R.id.card_name);
+            Button clearButton = cardView.findViewById(R.id.clear_card);
+
+            textViewCardName.setText(card.getTitle());
+
+            AlertDialog dialogDeleteCard = new AlertDialog.Builder(context)
+                    .setTitle(R.string.title_delete_card)
+                    .setMessage(R.string.delete_card_dialog_message)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            viewModelFragment.deleteCard(card);
+                            holder.linearLayout.removeAllViews();
+                            Log.d(TAG, ">>Delete TAG: " + card.getTitle());
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                    .create();
+
+            clearButton.setOnClickListener(view -> dialogDeleteCard.show());
+
+            holder.linearLayout.addView(cardView);
+
         }
 
     }
@@ -145,6 +193,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
         private final TextView tagName;
         private final Button clearTag;
         private final CheckBox checkBox;
+        private final LinearLayout linearLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -153,6 +202,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             tagName = itemView.findViewById(R.id.tag_name);
             clearTag = itemView.findViewById(R.id.clear_tag);
             checkBox = itemView.findViewById(R.id.check_box);
+            linearLayout = itemView.findViewById(R.id.layout_cards);
 
         }
 
