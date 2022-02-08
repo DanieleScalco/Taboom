@@ -42,7 +42,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:importantForAutofill="no"
                 android:inputType="textCapSentences|textNoSuggestions"
-                android:maxLength="18"/>
+                android:maxLength="@integer/max_title_length"/>
 
             <LinearLayout
                 android:id="@+id/layout_taboo_words"
@@ -71,7 +71,7 @@
                     android:textSize="24sp"
                     android:importantForAutofill="no"
                     android:inputType="textCapSentences|textNoSuggestions"
-                    android:maxLength="20"/>
+                    android:maxLength="@integer/max_taboo_length"/>
 
                 <EditText
                     android:id="@+id/taboo_word_2"
@@ -86,7 +86,7 @@
                     android:textSize="24sp"
                     android:importantForAutofill="no"
                     android:inputType="textCapSentences|textNoSuggestions"
-                    android:maxLength="20"/>
+                    android:maxLength="@integer/max_taboo_length"/>
 
                 <EditText
                     android:id="@+id/taboo_word_3"
@@ -101,7 +101,7 @@
                     android:textSize="24sp"
                     android:importantForAutofill="no"
                     android:inputType="textCapSentences|textNoSuggestions"
-                    android:maxLength="20"/>
+                    android:maxLength="@integer/max_taboo_length"/>
 
                 <EditText
                     android:id="@+id/taboo_word_4"
@@ -116,7 +116,7 @@
                     android:textSize="24sp"
                     android:importantForAutofill="no"
                     android:inputType="textCapSentences|textNoSuggestions"
-                    android:maxLength="20"/>
+                    android:maxLength="@integer/max_taboo_length"/>
 
                 <EditText
                     android:id="@+id/taboo_word_5"
@@ -131,7 +131,7 @@
                     android:textSize="24sp"
                     android:importantForAutofill="no"
                     android:inputType="textCapSentences|textNoSuggestions"
-                    android:maxLength="20"/>
+                    android:maxLength="@integer/max_taboo_length"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

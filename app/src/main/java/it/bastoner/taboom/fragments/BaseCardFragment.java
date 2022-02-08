@@ -20,5 +20,4 @@ public abstract class BaseCardFragment extends Fragment {
         this.tagList = tagList;
     }
 
-    public abstract void updateUI(List<CardWithTags> cardList, List<Tag> tagList);
 }

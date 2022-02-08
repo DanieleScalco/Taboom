@@ -32,4 +32,10 @@
     <string name="all_cards_tag">Tutte le carte</string>
     <string name="disney_tag">Disney</string>
     <string name="celebrities_tag">Personaggi famosi</string>
+    <string name="title_modify_tag">Modifica nome TAG</string>
+    <string name="insert_new_tag">Inserisci un nuovo TAG</string>
+    <string name="destroy_dialog_message">Sei sicuro di voler eliminare questo TAG?</string>
+    <string name="cancel">Annulla</string>
+    <string name="ok">Conferma</string>
+    <string name="title_delete_tag">Elimina TAG</string>
 </resources>

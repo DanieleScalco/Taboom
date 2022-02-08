@@ -30,10 +30,10 @@ import it.bastoner.taboom.fragments.UpdateFragment;
 public class MainActivity extends AppCompatActivity {
 
     // TODO add font
-    // TODO check for max listSize;
-    // Layout percentages
+    // TODO Layout percentages
 
     private static final String TAG = "MainActivity";
+    private static boolean appJustOpened = true;
 
     private List<CardWithTags> cardList;
     private List<Tag> tagList;
@@ -152,9 +152,11 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getAllCards().observe(this, cardListLoaded -> {
 
             cardList = cardListLoaded;
+
             Log.d(TAG, ">>Total cards found: " + cardList.size());
 
-            if (tagList != null) {
+            if (tagList != null && appJustOpened) {
+                appJustOpened = false;
                 progressBarContainer.setVisibility(View.GONE);
                 fragmentContainer.setVisibility(View.VISIBLE);
                 bottomNav.setSelectedItemId(R.id.play_nav);
@@ -168,7 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
             // If tagList not loaded before creation of BottomNav update Fragment list
             // and cardList already loaded
-            if (cardList!= null) {
+            if (cardList!= null && appJustOpened) {
+                appJustOpened = false;
                 progressBarContainer.setVisibility(View.GONE);
                 fragmentContainer.setVisibility(View.VISIBLE);
                 bottomNav.setSelectedItemId(R.id.play_nav);

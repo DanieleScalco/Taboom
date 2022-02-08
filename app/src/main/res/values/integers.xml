@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="max_tag_length">17</integer>
+    <integer name="max_title_length">18</integer>
+    <integer name="max_taboo_length">20</integer>
+    <integer name="max_team_name_length">11</integer>
+</resources>

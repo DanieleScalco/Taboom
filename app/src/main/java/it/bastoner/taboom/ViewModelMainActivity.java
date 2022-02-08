@@ -114,4 +114,26 @@ public class ViewModelMainActivity extends AndroidViewModel {
         }
     }
 
+    public void updateTag(Tag tag) {
+
+        Log.d(TAG, ">>UpdateTag(): " + tag);
+
+        executor.execute(() -> {
+            cardDAO.updateTag(tag);
+            tagListIsUpdatedWithDb = false;
+            cardListIsUpdatedWithDb = false;
+        });
+    }
+
+    public void deleteTag(Tag tag) {
+
+        Log.d(TAG, ">>DeleteTag(): " + tag);
+
+        executor.execute(() -> {
+            cardDAO.deleteTag(tag);
+            tagListIsUpdatedWithDb = false;
+            cardListIsUpdatedWithDb = false;
+        });
+    }
+
 }

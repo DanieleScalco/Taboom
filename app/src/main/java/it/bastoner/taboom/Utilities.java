@@ -19,6 +19,12 @@ public class Utilities {
     public static final String TEAM_B_SCORE = "team_b_score";
     public static final String RECYCLER_CARD_POSITION = "recycler_card_position";
 
+    // Following datas are also defined in res/values/integers.xml
+    public static final int MAX_TAG_LENGTH = 17;
+    public static final int MAX_TITLE_LENGTH = 18;
+    public static final int MAX_TABOO_LENGTH = 20;
+    public static final int MAX_TEAM_NAME_LENGTH = 11;
+
     public static List<Card> getCards(List<CardWithTags> cardWithTagsList) {
 
         List<Card> list = new ArrayList<>();

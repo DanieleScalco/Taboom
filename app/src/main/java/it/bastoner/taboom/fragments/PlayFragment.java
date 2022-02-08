@@ -38,12 +38,11 @@ import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
 import it.bastoner.taboom.filters.MinMaxFilter;
 
-// TODO Fragment creato ancora prima di fine
 public class PlayFragment extends BaseCardFragment {
 
     // TODO longPress increaseScore;
     // TODO Message no words
-    // TODO Max 59 seconds
+    // TODO Shuffle when application start
 
     private static final String TAG = "PlayFragment";
 
@@ -121,7 +120,7 @@ public class PlayFragment extends BaseCardFragment {
 
         Log.d(TAG, ">>SetViewModel");
 
-        viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(ViewModelMainActivity.class);
         viewModel.getAllCards().observe(getActivity(), cardListLoaded -> {
             cardList = cardListLoaded;
             Log.d(TAG, ">>CardList updated:" + cardList);
@@ -136,7 +135,6 @@ public class PlayFragment extends BaseCardFragment {
 
     }
 
-    @Override
     public void updateUI(List<CardWithTags> cardListWithTags, List<Tag> tagList) {
 
         RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerView.getAdapter();
@@ -160,7 +158,7 @@ public class PlayFragment extends BaseCardFragment {
             View viewTimer = layoutInflater.inflate(R.layout.dialog_modify_timer, null);
             EditText minutesEdit = viewTimer.findViewById(R.id.modify_minutes);
             EditText secondsEdit = viewTimer.findViewById(R.id.modify_seconds);
-            secondsEdit.setFilters(new InputFilter[] {new MinMaxFilter(0, 60)});
+            secondsEdit.setFilters(new InputFilter[] {new MinMaxFilter(0, 59)});
             int minutes = (int) (startTimeInMillis / 1000 / 60);
             int seconds = (int) (startTimeInMillis / 1000 % 60);
             String minutesString = String.format(Locale.getDefault(), "%d", minutes);

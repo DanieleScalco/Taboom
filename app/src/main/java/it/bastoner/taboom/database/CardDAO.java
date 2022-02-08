@@ -31,8 +31,14 @@ public interface CardDAO {
     @Update
     public int updateCard(Card card);
 
+    @Update
+    public int updateTag(Tag tag);
+
     @Delete
     public int deleteCard(Card card);
+
+    @Delete
+    public int deleteTag(Tag tag);
 
     // With a query method you can also perform complex inserts/updates/deletes
     // Transaction needed for relational classes

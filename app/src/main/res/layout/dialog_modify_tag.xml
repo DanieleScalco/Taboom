@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/tag_name_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/insert_new_tag"
+        style="@style/dialog_modify_edit_text"
+        android:textSize="30sp"
+        android:maxLength="@integer/max_tag_length"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -74,12 +74,12 @@ public class AddFragment extends BaseCardFragment {
         Log.d(TAG, ">>SetView()");
 
         View cardIncluded = getActivity().findViewById(R.id.card_included);
-        titleEditText = (EditText) cardIncluded.findViewById(R.id.title);
-        taboo1EditText = (EditText) cardIncluded.findViewById(R.id.taboo_word_1);
-        taboo2EditText = (EditText) cardIncluded.findViewById(R.id.taboo_word_2);
-        taboo3EditText = (EditText) cardIncluded.findViewById(R.id.taboo_word_3);
-        taboo4EditText = (EditText) cardIncluded.findViewById(R.id.taboo_word_4);
-        taboo5EditText = (EditText) cardIncluded.findViewById(R.id.taboo_word_5);
+        titleEditText = cardIncluded.findViewById(R.id.title);
+        taboo1EditText = cardIncluded.findViewById(R.id.taboo_word_1);
+        taboo2EditText = cardIncluded.findViewById(R.id.taboo_word_2);
+        taboo3EditText = cardIncluded.findViewById(R.id.taboo_word_3);
+        taboo4EditText = cardIncluded.findViewById(R.id.taboo_word_4);
+        taboo5EditText = cardIncluded.findViewById(R.id.taboo_word_5);
         listNameEditText = getActivity().findViewById(R.id.list_name);
         addCardButton = getActivity().findViewById(R.id.add_card);
         clearButton = getActivity().findViewById(R.id.clear);
@@ -110,25 +110,19 @@ public class AddFragment extends BaseCardFragment {
 
         Log.d(TAG, ">>SetViewModel()");
 
-        viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(ViewModelMainActivity.class);
         viewModel.getAllCards().observe(getActivity(), cardListLoaded -> {
             cardList = cardListLoaded;
             Log.d(TAG, ">>CardList updated:" + cardList);
-            updateUI(cardList, tagList);
+            //updateUI(cardList, tagList);
         });
 
         viewModel.getAllTags().observe(getActivity(), tagListLoaded -> {
             tagList = tagListLoaded;
             Log.d(TAG, ">>TagList updated:" + tagList);
-            updateUI(cardList, tagList);
+            //updateUI(cardList, tagList);
         });
 
-    }
-
-    @Override
-    public void updateUI(List<CardWithTags> cardList, List<Tag> tagList) {
-
-        // Nothing to do here for now
     }
 
     private void addCard() {
@@ -142,7 +136,6 @@ public class AddFragment extends BaseCardFragment {
         Log.d(TAG, ">>Card: " + card);
 
         List<Tag> tagList = new ArrayList<>();
-        tagList.add(new Tag(getResources().getString(R.string.disney_tag)));
 
         CardWithTags cardWithTags = new CardWithTags(card, tagList);
 
