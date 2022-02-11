@@ -148,4 +148,8 @@ public class ViewModelMainActivity extends AndroidViewModel {
         });
     }
 
+    public void removeTagFromCard() {
+
+    }
+
 }

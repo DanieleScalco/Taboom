@@ -20,6 +20,7 @@ import it.bastoner.taboom.adapter.RecyclerViewAdapterUpdate;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
 
+// TODO in updateUI a card less is logged from the list
 public class UpdateFragment extends BaseCardFragment {
 
     private static final String TAG = "UpdateFragment";
@@ -39,7 +40,7 @@ public class UpdateFragment extends BaseCardFragment {
             adapter.setCardList(cardListWithTags);
             adapter.setTagList(tagList);
             adapter.notifyDataSetChanged();
-            Log.d(TAG, ">>Update, Total cards: " + adapter.getItemCount());
+            Log.d(TAG, ">>Update, Total cards: " + cardListWithTags.size());
             Log.d(TAG, ">>Update, Total tags: " + tagList.size());
 
         }
@@ -88,8 +89,7 @@ public class UpdateFragment extends BaseCardFragment {
         recyclerView = getView().findViewById(R.id.recycler_view_list);
 
         RecyclerViewAdapterUpdate recyclerViewAdapter = new RecyclerViewAdapterUpdate(cardList, tagList,
-                                                                getContext(), getLayoutInflater(),
-                                                                viewModel);
+                                                                getContext(), viewModel);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
                                                             RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
