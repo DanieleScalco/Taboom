@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.Locale;
 
 import it.bastoner.taboom.R;
-import it.bastoner.taboom.Utilities;
-import it.bastoner.taboom.ViewModelMainActivity;
-import it.bastoner.taboom.adapter.RecyclerViewAdapter;
+import it.bastoner.taboom.utilities.Utilities;
+import it.bastoner.taboom.viewModel.ViewModelMainActivity;
+import it.bastoner.taboom.adapter.RecyclerViewAdapterPlay;
 import it.bastoner.taboom.animations.Animations;
 import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
@@ -137,7 +137,7 @@ public class PlayFragment extends BaseCardFragment {
 
     public void updateUI(List<CardWithTags> cardListWithTags, List<Tag> tagList) {
 
-        RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerView.getAdapter();
+        RecyclerViewAdapterPlay adapter = (RecyclerViewAdapterPlay) recyclerView.getAdapter();
         if (adapter != null && cardListWithTags != null) {
 
             List<Card> list = Utilities.getCards(cardListWithTags);
@@ -168,25 +168,28 @@ public class PlayFragment extends BaseCardFragment {
 
             resetTimer();
 
-            new AlertDialog.Builder(getContext())
-                           .setView(viewTimer)
-                           .setTitle(R.string.title_modify_timer)
-                           .setPositiveButton(R.string.modify, new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialogInterface, int i) {
-
-                                   String minutesString = String.valueOf(minutesEdit.getText());
-                                   String secondsString = String.valueOf(secondsEdit.getText());
-                                   // Check if the user deleted the input
-                                   int minutes = Integer.parseInt(!minutesString.equals("") ? minutesString : "0");
-                                   int seconds = Integer.parseInt(!secondsString.equals("") ? secondsString : "0");
-                                   sendDialogData(minutes, seconds);
-                               }
-                           })
-                           .create()
-                           .show();
+            getTimerDialog(viewTimer, minutesEdit, secondsEdit).show();
 
         });
+    }
+
+    private AlertDialog getTimerDialog(View viewTimer, EditText minutesEdit, EditText secondsEdit) {
+        return new AlertDialog.Builder(getContext())
+                .setView(viewTimer)
+                .setTitle(R.string.title_modify_timer)
+                .setPositiveButton(R.string.modify, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        String minutesString = String.valueOf(minutesEdit.getText());
+                        String secondsString = String.valueOf(secondsEdit.getText());
+                        // Check if the user deleted the input
+                        int minutes = Integer.parseInt(!minutesString.equals("") ? minutesString : "0");
+                        int seconds = Integer.parseInt(!secondsString.equals("") ? secondsString : "0");
+                        sendDialogData(minutes, seconds);
+                    }
+                })
+                .create();
     }
 
     private void setTimer() {
@@ -219,7 +222,7 @@ public class PlayFragment extends BaseCardFragment {
 
         recyclerView = getView().findViewById(R.id.recycler_view);
 
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(Utilities.getCards(cardList));
+        RecyclerViewAdapterPlay recyclerViewAdapterPlay = new RecyclerViewAdapterPlay(Utilities.getCards(cardList));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1,
                                                         RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -228,7 +231,7 @@ public class PlayFragment extends BaseCardFragment {
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
 
-        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.setAdapter(recyclerViewAdapterPlay);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

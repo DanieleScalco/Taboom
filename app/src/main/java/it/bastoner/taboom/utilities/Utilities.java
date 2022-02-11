@@ -1,4 +1,4 @@
-package it.bastoner.taboom;
+package it.bastoner.taboom.utilities;
 
 import android.util.Log;
 

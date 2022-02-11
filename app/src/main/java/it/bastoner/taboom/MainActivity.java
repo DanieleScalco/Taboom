@@ -26,6 +26,8 @@ import it.bastoner.taboom.fragments.AddFragment;
 import it.bastoner.taboom.fragments.BaseCardFragment;
 import it.bastoner.taboom.fragments.PlayFragment;
 import it.bastoner.taboom.fragments.UpdateFragment;
+import it.bastoner.taboom.utilities.Utilities;
+import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
             int idItem = item.getItemId();
 
             Log.d(TAG, ">>BottomNav item selected: " + getResources().getResourceEntryName(idItem));
+
+            if (idItem == oldIdFragment) {
+                Log.d(TAG, ">>BottomNav item reselected");
+                return true;
+            }
 
             // By using switch we can easily get the selected fragment by using the id.
             BaseCardFragment selectedFragment;

@@ -4,8 +4,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.List;
 
-import it.bastoner.taboom.ViewModelMainActivity;
-import it.bastoner.taboom.database.Card;
+import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
 

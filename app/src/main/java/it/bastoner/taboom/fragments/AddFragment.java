@@ -1,5 +1,7 @@
 package it.bastoner.taboom.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,17 +15,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import it.bastoner.taboom.R;
-import it.bastoner.taboom.Utilities;
-import it.bastoner.taboom.ViewModelMainActivity;
+import it.bastoner.taboom.adapter.RecyclerViewAdapterAdd;
+import it.bastoner.taboom.adapter.RecyclerViewAdapterUpdate;
 import it.bastoner.taboom.animations.Animations;
 import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
+import it.bastoner.taboom.utilities.Utilities;
+import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
 
 public class AddFragment extends BaseCardFragment {
@@ -36,10 +42,12 @@ public class AddFragment extends BaseCardFragment {
     private EditText taboo3EditText;
     private EditText taboo4EditText;
     private EditText taboo5EditText;
-    private EditText listNameEditText;
 
     private Button addCardButton;
     private Button clearButton;
+    private Button addTags;
+
+    private RecyclerView recyclerView;
 
     private MediaPlayer clearSound;
 
@@ -80,9 +88,9 @@ public class AddFragment extends BaseCardFragment {
         taboo3EditText = cardIncluded.findViewById(R.id.taboo_word_3);
         taboo4EditText = cardIncluded.findViewById(R.id.taboo_word_4);
         taboo5EditText = cardIncluded.findViewById(R.id.taboo_word_5);
-        listNameEditText = getActivity().findViewById(R.id.list_name);
         addCardButton = getActivity().findViewById(R.id.add_card);
         clearButton = getActivity().findViewById(R.id.clear);
+        addTags = getActivity().findViewById(R.id.add_tag);
 
         titleEditText.setHint(R.string.default_title_card);
         taboo1EditText.setHint(R.string.default_taboo);
@@ -90,7 +98,6 @@ public class AddFragment extends BaseCardFragment {
         taboo3EditText.setHint(R.string.default_taboo);
         taboo4EditText.setHint(R.string.default_taboo);
         taboo5EditText.setHint(R.string.default_taboo);
-        listNameEditText.setHint(R.string.default_list_name);
 
         clearSound = MediaPlayer.create(getContext(), R.raw.clear_button);
 
@@ -104,6 +111,24 @@ public class AddFragment extends BaseCardFragment {
             Animations.doReduceIncreaseAnimation(view);
             resetView();
         });
+
+        addTags.setOnClickListener(view -> {
+            View dialogTags = LayoutInflater.from(getContext()).inflate(R.layout.dialog_tags, null);
+            setRecyclerViewDialog(dialogTags);
+            getDialogTags(dialogTags).show();
+        });
+
+    }
+
+    private void setRecyclerViewDialog(View dialogTags) {
+
+        recyclerView = dialogTags.findViewById(R.id.recycler_view_tags);
+        RecyclerViewAdapterAdd recyclerViewAdapter = new RecyclerViewAdapterAdd(tagList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
+                RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setAdapter(recyclerViewAdapter);
     }
 
     private void setViewModel() {
@@ -111,13 +136,13 @@ public class AddFragment extends BaseCardFragment {
         Log.d(TAG, ">>SetViewModel()");
 
         viewModel = new ViewModelProvider(requireActivity()).get(ViewModelMainActivity.class);
-        viewModel.getAllCards().observe(getActivity(), cardListLoaded -> {
+        viewModel.getAllCards().observe(requireActivity(), cardListLoaded -> {
             cardList = cardListLoaded;
             Log.d(TAG, ">>CardList updated:" + cardList);
             //updateUI(cardList, tagList);
         });
 
-        viewModel.getAllTags().observe(getActivity(), tagListLoaded -> {
+        viewModel.getAllTags().observe(requireActivity(), tagListLoaded -> {
             tagList = tagListLoaded;
             Log.d(TAG, ">>TagList updated:" + tagList);
             //updateUI(cardList, tagList);
@@ -169,6 +194,7 @@ public class AddFragment extends BaseCardFragment {
     }
 
     private void resetView() {
+
         titleEditText.setHint(R.string.default_title_card);
         taboo1EditText.setHint(R.string.default_taboo);
         taboo2EditText.setHint(R.string.default_taboo);
@@ -183,5 +209,30 @@ public class AddFragment extends BaseCardFragment {
         taboo3EditText.setText(emptyString);
         taboo4EditText.setText(emptyString);
         taboo5EditText.setText(emptyString);
+
+    }
+
+    private AlertDialog getDialogTags(View view) {
+        return new AlertDialog.Builder(getContext())
+                .setView(view)
+                .setTitle(R.string.title_choose_tag)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        setTags(tagList);
+                    }
+                })
+                .setNegativeButton(R.string.button_add_tag, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .create();
+    }
+
+    private void setTags(List<Tag> tagList) {
+        // TODO
     }
 }

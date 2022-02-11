@@ -15,12 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import it.bastoner.taboom.R;
-import it.bastoner.taboom.ViewModelMainActivity;
+import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 import it.bastoner.taboom.adapter.RecyclerViewAdapterUpdate;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
 
-// TODO in updateUI a card less is logged from the list
 public class UpdateFragment extends BaseCardFragment {
 
     private static final String TAG = "UpdateFragment";
@@ -69,13 +68,13 @@ public class UpdateFragment extends BaseCardFragment {
 
         Log.d(TAG, ">>SetViewModel()");
 
-        viewModel.getAllCards().observe(getActivity(), cardListLoaded -> {
+        viewModel.getAllCards().observe(requireActivity(), cardListLoaded -> {
             cardList = cardListLoaded;
             Log.d(TAG, ">>CardList updated:" + cardList);
             updateUI(cardList, tagList);
         });
 
-        viewModel.getAllTags().observe(getActivity(), tagListLoaded -> {
+        viewModel.getAllTags().observe(requireActivity(), tagListLoaded -> {
             tagList = tagListLoaded;
             Log.d(TAG, ">>TagList updated:" + tagList);
             updateUI(cardList, tagList);

@@ -35,6 +35,7 @@ public class Animations {
 
     public  static void doSpinReduceIncreaseAnimation(View view) {
 
+        // TODO duration
         ObjectAnimator animatorSpin = ObjectAnimator.ofFloat(view, Button.ROTATION, 0, 360);
         animatorSpin.setDuration(350);
         animatorSpin.setInterpolator(new LinearInterpolator());

@@ -15,13 +15,13 @@ import it.bastoner.taboom.R;
 import it.bastoner.taboom.database.Card;
 
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapterPlay extends RecyclerView.Adapter<RecyclerViewAdapterPlay.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
 
     private List<Card> cardList;
 
-    public RecyclerViewAdapter(List<Card> cardList) {
+    public RecyclerViewAdapterPlay(List<Card> cardList) {
         this.cardList = cardList;
     }
 

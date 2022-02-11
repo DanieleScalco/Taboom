@@ -42,4 +42,8 @@
     <string name="delete_card_tag_dialog_message_2">o soltanto rimuovere il TAG</string>
     <string name="delete_card">Elimina carta</string>
     <string name="remove_tag">Rimuovi tag</string>
+    <string name="delete">Elimina</string>
+    <string name="button_add_tag">Aggiungi TAG</string>
+    <string name="title_choose_tag">Seleziona i TAG</string>
+    <string name="tag">TAG</string>
 </resources>

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.bastoner.taboom.R;
-import it.bastoner.taboom.ViewModelMainActivity;
+import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
@@ -87,7 +87,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             holder.numberOfItems.setText(String.valueOf(listOfSingleTag.size()));
             holder.tagName.setText(tag.getTag());
 
-            View viewDialogTag = LayoutInflater.from(context).inflate(R.layout.dialog_modify_tag, null);
+            View viewDialogTag = LayoutInflater.from(context).inflate(R.layout.dialog_modify_tag, (ViewGroup) null);
             EditText tagNameEditText = viewDialogTag.findViewById(R.id.tag_name_dialog);
             tagNameEditText.setText(tag.getTag());
 
@@ -150,11 +150,12 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
     private AlertDialog getDialogDeleteCardOrTag(Card card, Tag tag) {
         return new AlertDialog.Builder(context)
+                .setTitle(R.string.delete)
                 .setMessage(context.getResources().getString(R.string.delete_card_tag_dialog_message_1)
                             + " \"" + card.getTitle() + "\" "
                             + context.getResources().getString(R.string.delete_card_tag_dialog_message_2)
                             + " \"" + tag.getTag() + "\"?")
-                .setNeutralButton(R.string.delete_card, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.delete_card, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         viewModelFragment.deleteCard(card);
@@ -165,10 +166,12 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // TODO
-                        viewModelFragment.removeTagFromCard();
+                        viewModelFragment.removeTagFromCard(card, tag);
+                        Log.d(TAG, ">>Remove tag \"" + tag.getTag() + "\" from card \""
+                                + card.getTitle() + "\"");
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -235,7 +238,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
     }
 
     private void openCloseCardList(ViewHolder holder) {
-        Log.d(TAG, ">>Clicked");
+
         if (!holder.isOpen) {
 
             holder.linearLayout.setVisibility(View.VISIBLE);
@@ -252,6 +255,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
             holder.linearLayout.startAnimation(animation);
             holder.isOpen = true;
+
         } else {
 
             AnimationSet animation = new AnimationSet(true);
@@ -280,6 +284,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
                 }
             });
+
             holder.linearLayout.startAnimation(animation);
             holder.isOpen = false;
         }

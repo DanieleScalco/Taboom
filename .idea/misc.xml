@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/chip_background.xml" value="0.143" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/ic_baseline_pause_24_dark_red.xml" value="0.12" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/pause_button.xml" value="0.12" />
@@ -13,6 +14,8 @@
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/border.xml" value="0.2203125" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/bottom_nav_selector.xml" value="0.2203125" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/bottom_nav_selector_background.xml" value="0.2203125" />
+        <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/chip.xml" value="0.143" />
+        <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/chip_text_color.xml" value="0.143" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/clear_button.xml" value="0.12" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2203125" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_add_24_secondary.xml" value="0.12" />
@@ -39,10 +42,12 @@
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/layout/card_update.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/layout/dialog_modify_tag.xml" value="0.1" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/layout/dialog_modify_timer.xml" value="0.18425925925925926" />
+        <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/layout/dialog_tags.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/layout/fragment_add.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/layout/fragment_play.xml" value="0.25" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/layout/fragment_update.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/layout/item_update.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/layout/tag.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/menu/bottom_navigation.xml" value="0.1" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.12" />
       </map>

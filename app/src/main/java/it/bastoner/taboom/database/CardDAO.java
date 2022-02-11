@@ -40,6 +40,10 @@ public interface CardDAO {
     @Delete
     public int deleteTag(Tag tag);
 
+    @Delete
+    public int deleteCardWithTags(CardTagCrossRef cardTagCrossRef);
+
+
     // With a query method you can also perform complex inserts/updates/deletes
     // Transaction needed for relational classes
     @Transaction

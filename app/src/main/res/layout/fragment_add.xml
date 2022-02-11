@@ -41,19 +41,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <EditText
-            android:id="@+id/list_name"
+        <Button
+            android:id="@+id/add_tag"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textAlignment="center"
             android:gravity="center"
-            android:hint="@string/default_list_name"
-            android:textSize="40sp"
-            android:inputType="textCapSentences"
-            android:textColor="@color/dark_red"
+            android:text="@string/button_add_tag"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:importantForAutofill="no" />
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <android.widget.Button
             android:id="@+id/add_card"
@@ -62,7 +59,7 @@
             android:gravity="center"
             android:tooltipText="@string/add_tooltip"
             android:background="@drawable/ic_baseline_add_24"
-            app:layout_constraintStart_toEndOf="@id/list_name"
+            app:layout_constraintStart_toEndOf="@id/add_tag"
             app:layout_constraintEnd_toStartOf="@id/clear"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

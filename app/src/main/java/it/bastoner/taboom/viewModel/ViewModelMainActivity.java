@@ -1,4 +1,4 @@
-package it.bastoner.taboom;
+package it.bastoner.taboom.viewModel;
 
 import android.app.Application;
 import android.util.Log;
@@ -148,8 +148,16 @@ public class ViewModelMainActivity extends AndroidViewModel {
         });
     }
 
-    public void removeTagFromCard() {
+    public void removeTagFromCard(Card card, Tag tag) {
 
+        Log.d(TAG, ">>RemoveTagFromCard()");
+
+        executor.execute(() -> {
+            CardTagCrossRef ctcr = new CardTagCrossRef(card.getIdCard(), tag.getIdTag());
+            cardDAO.deleteCardWithTags(ctcr);
+            tagListIsUpdatedWithDb = false;
+            cardListIsUpdatedWithDb = false;
+        });
     }
 
 }
