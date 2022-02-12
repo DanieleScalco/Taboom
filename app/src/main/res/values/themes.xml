@@ -57,9 +57,4 @@
         <item name="android:textColor">?attr/colorPrimaryVariant</item>
     </style>
 
-    <style name="chip">
-        <item name="android:textColor">@drawable/chip_text_color</item>
-        <item name="chipBackgroundColor">@color/grey</item>
-    </style>
-
 </resources>

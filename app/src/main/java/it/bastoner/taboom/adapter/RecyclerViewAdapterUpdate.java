@@ -154,7 +154,8 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                 .setMessage(context.getResources().getString(R.string.delete_card_tag_dialog_message_1)
                             + " \"" + card.getTitle() + "\" "
                             + context.getResources().getString(R.string.delete_card_tag_dialog_message_2)
-                            + " \"" + tag.getTag() + "\"?")
+                            + " \"" + tag.getTag() + "\""
+                            + context.getResources().getString(R.string.delete_card_tag_dialog_message_3))
                 .setPositiveButton(R.string.delete_card, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

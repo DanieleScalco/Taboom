@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="-4dp"
     android:layout_marginBottom="-4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -12,13 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/tag"
-        style="@style/chip"
-        android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:checkable="true"
-        app:checkedIconVisible="false"/>
+        android:checked="false"
+        android:text="@string/tag"
+        android:textColor="@drawable/chip_text_color"
+        app:chipBackgroundColor="@color/chip_background_color"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

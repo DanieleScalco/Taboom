@@ -23,7 +23,6 @@ import java.util.List;
 
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.adapter.RecyclerViewAdapterAdd;
-import it.bastoner.taboom.adapter.RecyclerViewAdapterUpdate;
 import it.bastoner.taboom.animations.Animations;
 import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
@@ -34,6 +33,7 @@ import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
 public class AddFragment extends BaseCardFragment {
 
+    // TODO too much tags go over border
     private static final String TAG = "AddFragment";
 
     private EditText titleEditText;
@@ -48,8 +48,14 @@ public class AddFragment extends BaseCardFragment {
     private Button addTags;
 
     private RecyclerView recyclerView;
+    private RecyclerViewAdapterAdd recyclerViewAdapter;
+
+    private Button newTagButton;
+    private EditText newTagEditText;
 
     private MediaPlayer clearSound;
+
+    private List<Tag> chosenTags = new ArrayList<>();
 
     public AddFragment(List<CardWithTags> cardList, List<Tag> tagList) {
         super(cardList, tagList);
@@ -112,18 +118,44 @@ public class AddFragment extends BaseCardFragment {
             resetView();
         });
 
-        addTags.setOnClickListener(view -> {
-            View dialogTags = LayoutInflater.from(getContext()).inflate(R.layout.dialog_tags, null);
-            setRecyclerViewDialog(dialogTags);
-            getDialogTags(dialogTags).show();
+        View dialogTags = LayoutInflater.from(getContext()).inflate(R.layout.dialog_tags, null);
+        setRecyclerViewDialog(dialogTags);
+
+        newTagButton = dialogTags.findViewById(R.id.new_tag_button_dialog);
+        newTagEditText = dialogTags.findViewById(R.id.insert_new_tag);
+        newTagButton.setOnClickListener(view -> {
+
+            Animations.doReduceIncreaseAnimation(view);
+            addTag();
         });
 
+        AlertDialog dialog = getDialogTags(dialogTags);
+
+        addTags.setOnClickListener(view -> {
+            dialog.show();
+            Log.d(TAG, ">>Show dialog");
+        });
+
+    }
+
+    private void addTag() {
+        Tag newTag = new Tag(-1, newTagEditText.getText().toString());
+
+        if (tagAlreadyExists(newTag)) {
+            Toast.makeText(getContext(), getResources().getString(R.string.tag_already_exist)
+                            + " \"" + newTag.getTag()
+                            + "\" "+ getResources().getString(R.string.tag_already_exists_2),
+                    Toast.LENGTH_LONG).show();
+        } else {
+            recyclerViewAdapter.addTag(newTag);
+            recyclerViewAdapter.notifyDataSetChanged();
+        }
     }
 
     private void setRecyclerViewDialog(View dialogTags) {
 
         recyclerView = dialogTags.findViewById(R.id.recycler_view_tags);
-        RecyclerViewAdapterAdd recyclerViewAdapter = new RecyclerViewAdapterAdd(tagList);
+        recyclerViewAdapter = new RecyclerViewAdapterAdd(new ArrayList<>(tagList), chosenTags);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -158,19 +190,18 @@ public class AddFragment extends BaseCardFragment {
                             taboo3EditText.getText().toString(),
                             taboo4EditText.getText().toString(),
                             taboo5EditText.getText().toString());
+
+        CardWithTags cardWithTags = new CardWithTags(card, chosenTags);
         Log.d(TAG, ">>Card: " + card);
-
-        List<Tag> tagList = new ArrayList<>();
-
-        CardWithTags cardWithTags = new CardWithTags(card, tagList);
+        Log.d(TAG, ">>Tags: " + chosenTags);
 
         if (card.getTitle() == null || card.getTitle().isEmpty()) {
             Toast.makeText(getContext(), R.string.card_title_needed, Toast.LENGTH_SHORT).show();
         } else {
 
             if (cardAlreadyExists(card)) {
-                Toast.makeText(getContext(), "La carta \"" + titleEditText.getText().toString()
-                                + "\" "+ getResources().getString(R.string.card_already_exists),
+                Toast.makeText(getContext(), getResources().getString(R.string.card_already_exists_1) + " \"" + titleEditText.getText().toString()
+                                + "\" "+ getResources().getString(R.string.card_already_exists_2),
                                 Toast.LENGTH_LONG).show();
             } else {
 
@@ -187,6 +218,16 @@ public class AddFragment extends BaseCardFragment {
 
         for (Card c : Utilities.getCards(cardList)) {
             if (c.getTitle().equalsIgnoreCase(card.getTitle()))
+                return true;
+        }
+        return false;
+
+    }
+
+    private boolean tagAlreadyExists(Tag tag) {
+
+        for (Tag t : tagList) {
+            if (t.getTag().equalsIgnoreCase(tag.getTag()))
                 return true;
         }
         return false;
@@ -220,19 +261,11 @@ public class AddFragment extends BaseCardFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        setTags(tagList);
-                    }
-                })
-                .setNegativeButton(R.string.button_add_tag, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
+                        chosenTags = recyclerViewAdapter.getTagListChosen();
+                        Log.d(TAG, ">>ChosenTags: " + chosenTags);
                     }
                 })
                 .create();
     }
 
-    private void setTags(List<Tag> tagList) {
-        // TODO
-    }
 }

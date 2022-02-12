@@ -12,7 +12,7 @@
     <string name="card_added">Carta salvata con successo!</string>
     <string name="default_title_card">Inserisci il titolo</string>
     <string name="default_taboo">Inserisci tabù</string>
-    <string name="card_already_exists">è gia stata salvata</string>
+    <string name="card_already_exists_2">è gia stata salvata</string>
     <string name="team_a_name">Squadra A</string>
     <string name="team_b_name">Squadra B</string>
     <string name="reset_score">Azzera\npunteggio</string>
@@ -46,4 +46,9 @@
     <string name="button_add_tag">Aggiungi TAG</string>
     <string name="title_choose_tag">Seleziona i TAG</string>
     <string name="tag">TAG</string>
+    <string name="create_tag">Crea TAG</string>
+    <string name="card_already_exists_1">La carta</string>
+    <string name="tag_already_exist">Il TAG</string>
+    <string name="tag_already_exists_2">è gia stato salvato</string>
+    <string name="delete_card_tag_dialog_message_3">dalla carta?</string>
 </resources>

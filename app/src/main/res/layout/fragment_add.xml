@@ -48,6 +48,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:text="@string/button_add_tag"
+            android:tooltipText="@string/button_add_tag"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

@@ -18,6 +18,11 @@ public class Tag {
         this.tag = tag;
     }
 
+    public Tag(long id, String tag) {
+        this.idTag = id;
+        this.tag = tag;
+    }
+
     public long getIdTag() {
         return idTag;
     }

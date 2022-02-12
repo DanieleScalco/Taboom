@@ -4,7 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 
@@ -33,9 +36,8 @@ public class Animations {
         animatorSet.start();
     }
 
-    public  static void doSpinReduceIncreaseAnimation(View view) {
+    public static void doSpinReduceIncreaseAnimation(View view) {
 
-        // TODO duration
         ObjectAnimator animatorSpin = ObjectAnimator.ofFloat(view, Button.ROTATION, 0, 360);
         animatorSpin.setDuration(350);
         animatorSpin.setInterpolator(new LinearInterpolator());
@@ -56,4 +58,5 @@ public class Animations {
         animatorSet.start();
 
     }
+
 }
