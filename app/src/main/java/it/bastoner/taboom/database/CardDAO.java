@@ -47,10 +47,10 @@ public interface CardDAO {
     // With a query method you can also perform complex inserts/updates/deletes
     // Transaction needed for relational classes
     @Transaction
-    @Query("SELECT * FROM Card")
+    @Query("SELECT * FROM Card ORDER BY title")
     LiveData<List<CardWithTags>> getAllCards();
 
-    @Query("SELECT * FROM Tag")
+    @Query("SELECT * FROM Tag ORDER BY tag")
     LiveData<List<Tag>> getAllTags();
 
     @Query("SELECT * FROM Tag WHERE tag = :tag")

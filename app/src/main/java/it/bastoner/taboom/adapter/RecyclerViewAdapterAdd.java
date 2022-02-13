@@ -26,7 +26,7 @@ public class RecyclerViewAdapterAdd extends RecyclerView.Adapter<RecyclerViewAda
     private List<Tag> tagList;
     private List<Tag> tagListChosen = new ArrayList<>();
 
-    // TagList is a COPY of the TagList in ViewModel
+    // TagList is a COPY of the TagList in ViewModel!!!
     public RecyclerViewAdapterAdd(List<Tag> tagList, List tagListChosen) {
         this.tagList = tagList;
         this.tagListChosen = tagListChosen;
@@ -45,7 +45,7 @@ public class RecyclerViewAdapterAdd extends RecyclerView.Adapter<RecyclerViewAda
 
         Tag actualTag = tagList.get(position);
         holder.tag = actualTag;
-        if (actualTag.getIdTag() == -1) {
+        if (actualTag.getIdTag() == 0) {
             holder.chip.setChecked(true);
         }
         if (holder.chip.isChecked() && !tagListChosen.contains(actualTag))

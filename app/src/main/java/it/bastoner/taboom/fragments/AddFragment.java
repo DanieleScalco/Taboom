@@ -56,6 +56,7 @@ public class AddFragment extends BaseCardFragment {
     private MediaPlayer clearSound;
 
     private List<Tag> chosenTags = new ArrayList<>();
+    private List<Tag> tagsRecycler = new ArrayList<>();
 
     public AddFragment(List<CardWithTags> cardList, List<Tag> tagList) {
         super(cardList, tagList);
@@ -133,13 +134,14 @@ public class AddFragment extends BaseCardFragment {
 
         addTags.setOnClickListener(view -> {
             dialog.show();
+            Animations.doReduceIncreaseAnimation(view);
             Log.d(TAG, ">>Show dialog");
         });
 
     }
 
     private void addTag() {
-        Tag newTag = new Tag(-1, newTagEditText.getText().toString());
+        Tag newTag = new Tag(newTagEditText.getText().toString());
 
         if (tagAlreadyExists(newTag)) {
             Toast.makeText(getContext(), getResources().getString(R.string.tag_already_exist)
@@ -147,7 +149,8 @@ public class AddFragment extends BaseCardFragment {
                             + "\" "+ getResources().getString(R.string.tag_already_exists_2),
                     Toast.LENGTH_LONG).show();
         } else {
-            recyclerViewAdapter.addTag(newTag);
+            tagsRecycler.add(newTag);
+            recyclerViewAdapter.setTagList(tagsRecycler);
             recyclerViewAdapter.notifyDataSetChanged();
         }
     }
@@ -155,7 +158,8 @@ public class AddFragment extends BaseCardFragment {
     private void setRecyclerViewDialog(View dialogTags) {
 
         recyclerView = dialogTags.findViewById(R.id.recycler_view_tags);
-        recyclerViewAdapter = new RecyclerViewAdapterAdd(new ArrayList<>(tagList), chosenTags);
+        tagsRecycler = new ArrayList<>(tagList);
+        recyclerViewAdapter = new RecyclerViewAdapterAdd(tagsRecycler, chosenTags);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -226,7 +230,7 @@ public class AddFragment extends BaseCardFragment {
 
     private boolean tagAlreadyExists(Tag tag) {
 
-        for (Tag t : tagList) {
+        for (Tag t : tagsRecycler) {
             if (t.getTag().equalsIgnoreCase(tag.getTag()))
                 return true;
         }

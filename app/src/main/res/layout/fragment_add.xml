@@ -25,11 +25,11 @@
         app:layout_constraintHeight_percent="0.80"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_layout"
-        app:layout_constraintBottom_toTopOf="@id/layout_menu_timer"
+        app:layout_constraintBottom_toTopOf="@id/layout_menu_add"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_menu_timer"
+        android:id="@+id/layout_menu_add"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintHeight_percent="0.10"
@@ -41,17 +41,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
+        <android.widget.Button
             android:id="@+id/add_tag"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textAlignment="center"
             android:gravity="center"
-            android:text="@string/button_add_tag"
-            android:tooltipText="@string/button_add_tag"
-            android:textSize="20sp"
+            android:text="@string/tag"
+            android:tooltipText="@string/tag"
+            android:textColor="@color/dark_red"
+            android:drawableStart="@drawable/ic_baseline_add_24"
+            android:drawableTint="@color/dark_red"
+            android:paddingStart="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:background="@drawable/circular_button"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <android.widget.Button
             android:id="@+id/add_card"
@@ -59,20 +68,22 @@
             android:layout_height="72dp"
             android:gravity="center"
             android:tooltipText="@string/add_tooltip"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/ic_baseline_add_24"
             app:layout_constraintStart_toEndOf="@id/add_tag"
             app:layout_constraintEnd_toStartOf="@id/clear"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <Button
             android:id="@+id/clear"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="4dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="20dp"
             android:gravity="center"
             android:tooltipText="@string/clean_tooltip"
             android:background="@drawable/ic_baseline_delete_24"
-            app:layout_constraintStart_toEndOf="@id/add_card"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

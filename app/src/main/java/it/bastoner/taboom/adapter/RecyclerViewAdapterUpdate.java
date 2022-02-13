@@ -252,7 +252,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             Animation animationY = new ScaleAnimation(1, 1, 0, 1);
             animationY.setInterpolator(new LinearInterpolator());
             animation.addAnimation(animationY);
-            animation.setDuration(500);
+            animation.setDuration(250);
 
             holder.linearLayout.startAnimation(animation);
             holder.isOpen = true;
@@ -267,7 +267,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             Animation animationY = new ScaleAnimation(1, 1, 1, 0);
             animationY.setInterpolator(new LinearInterpolator());
             animation.addAnimation(animationY);
-            animation.setDuration(500);
+            animation.setDuration(250);
 
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
