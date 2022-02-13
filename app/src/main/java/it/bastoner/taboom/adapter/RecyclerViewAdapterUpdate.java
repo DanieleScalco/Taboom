@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -215,6 +216,10 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             TextView textViewCardName = cardView.findViewById(R.id.card_name);
             Button clearButton = cardView.findViewById(R.id.clear_card);
             textViewCardName.setText(card.getTitle());
+
+            textViewCardName.setOnClickListener(view -> {
+                //TODO update card
+            });
 
             AlertDialog dialogDeleteCard;
             if (!isAllCards)

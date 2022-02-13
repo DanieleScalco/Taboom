@@ -51,4 +51,7 @@
     <string name="tag_already_exist">Il TAG</string>
     <string name="tag_already_exists_2">è gia stato salvato</string>
     <string name="delete_card_tag_dialog_message_3">dalla carta?</string>
+    <string name="number_of_tags_chosen_1">Hai selezionato</string>
+    <string name="number_of_tags_chosen_2">TAG</string>
+    <string name="tag_name_required">Aggiungi il nome del TAG</string>
 </resources>

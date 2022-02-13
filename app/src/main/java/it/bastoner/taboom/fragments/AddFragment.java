@@ -1,7 +1,9 @@
 package it.bastoner.taboom.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +35,6 @@ import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
 public class AddFragment extends BaseCardFragment {
 
-    // TODO too much tags go over border
     private static final String TAG = "AddFragment";
 
     private EditText titleEditText;
@@ -46,6 +47,8 @@ public class AddFragment extends BaseCardFragment {
     private Button addCardButton;
     private Button clearButton;
     private Button addTags;
+
+    private SharedPreferences sharedPreferences;
 
     private RecyclerView recyclerView;
     private RecyclerViewAdapterAdd recyclerViewAdapter;
@@ -77,6 +80,9 @@ public class AddFragment extends BaseCardFragment {
         super.onViewCreated(view, savedInstanceState);
 
         Log.d(TAG, ">>OnViewCreated()");
+
+        sharedPreferences = getActivity()
+                .getSharedPreferences(Utilities.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         setViewModel();
 
@@ -142,6 +148,11 @@ public class AddFragment extends BaseCardFragment {
 
     private void addTag() {
         Tag newTag = new Tag(newTagEditText.getText().toString());
+
+        if (newTag.getTag().isEmpty()) {
+            Toast.makeText(getContext(), R.string.tag_name_required, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (tagAlreadyExists(newTag)) {
             Toast.makeText(getContext(), getResources().getString(R.string.tag_already_exist)
@@ -211,8 +222,12 @@ public class AddFragment extends BaseCardFragment {
 
                 viewModel.insertCard(cardWithTags);
                 Toast.makeText(getContext(), R.string.card_added, Toast.LENGTH_LONG).show();
-
                 resetView();
+
+                // Reset position of cardList in PlayFragment
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
+                editor.commit();
             }
 
         }
@@ -266,6 +281,9 @@ public class AddFragment extends BaseCardFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         chosenTags = recyclerViewAdapter.getTagListChosen();
+                        Toast.makeText(getContext(), getResources().getString(R.string.number_of_tags_chosen_1)
+                                + " " + chosenTags.size() + " "
+                                + getResources().getString(R.string.number_of_tags_chosen_2), Toast.LENGTH_SHORT).show();
                         Log.d(TAG, ">>ChosenTags: " + chosenTags);
                     }
                 })

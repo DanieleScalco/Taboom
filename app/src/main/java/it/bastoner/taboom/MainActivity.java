@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static boolean appJustOpened = true;
+    public static List<CardWithTags> recyclerCardList;
 
     private List<CardWithTags> cardList;
     private List<Tag> tagList;

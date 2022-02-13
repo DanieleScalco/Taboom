@@ -105,16 +105,6 @@ public class ViewModelMainActivity extends AndroidViewModel {
 
     }
 
-    public void shuffle(List<CardWithTags> list) {
-        if (list != null) {
-            Collections.shuffle(list);
-            cardList = new MutableLiveData<>(list);
-            Log.d(TAG, ">>List shuffled: " + list);
-        } else {
-            Log.d(TAG, ">>List is null");
-        }
-    }
-
     public void updateTag(Tag tag) {
 
         Log.d(TAG, ">>UpdateTag(): " + tag);
