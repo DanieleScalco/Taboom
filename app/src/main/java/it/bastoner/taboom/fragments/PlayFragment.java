@@ -48,6 +48,7 @@ public class PlayFragment extends BaseCardFragment {
     // TODO When shuffle set position recycler to start
 
     private static final String TAG = "PlayFragment";
+    private static boolean fragmentIsActive;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -123,25 +124,43 @@ public class PlayFragment extends BaseCardFragment {
 
         Log.d(TAG, ">>SetViewModel");
 
+        // Needed causa viewModel persist even when Fragment is destroyed
+        fragmentIsActive = true;
+
         viewModel = new ViewModelProvider(requireActivity()).get(ViewModelMainActivity.class);
         viewModel.getAllCards().observe(requireActivity(), cardListLoaded -> {
-            if (cardListLoaded != cardList) {
+
+            if (fragmentIsActive) {
                 cardList = cardListLoaded;
-                MainActivity.recyclerCardList = new ArrayList<>(cardListLoaded);
+                initializeRecyclerCardList();
                 updateUI();
                 Log.d(TAG, ">>CardList updated:" + cardList);
             }
+
         });
 
         viewModel.getAllTags().observe(requireActivity(), tagListLoaded -> {
-            tagList = tagListLoaded;
-            Log.d(TAG, ">>TagList updated:" + tagList);
+
+            if (fragmentIsActive) {
+                tagList = tagListLoaded;
+                //initializeRecyclerCardList();
+                //updateUI(); Not needed
+                Log.d(TAG, ">>TagList updated:" + tagList);
+            }
         });
 
     }
 
     private void updateUI() {
+        Log.d(TAG, ">>UpdateUI()");
         RecyclerViewAdapterPlay adapter = (RecyclerViewAdapterPlay) recyclerView.getAdapter();
+        boolean shouldShuffle = sharedPreferences.getBoolean(Utilities.SHOULD_SHUFFLE, false);
+        if (shouldShuffle) {
+            shuffle(MainActivity.recyclerCardList);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove(Utilities.SHOULD_SHUFFLE);
+            editor.commit();
+        }
         adapter.setCardList(Utilities.getCards(MainActivity.recyclerCardList));
         adapter.notifyDataSetChanged();
     }
@@ -216,11 +235,17 @@ public class PlayFragment extends BaseCardFragment {
 
     private void setRecyclerView() {
 
+        Log.d(TAG, ">>SetRecyclerView()");
+
         recyclerView = getView().findViewById(R.id.recycler_view);
 
         // Recycler use a COPY of cardList
-        if (MainActivity.recyclerCardList == null)
+        if (MainActivity.recyclerCardList == null) {
             MainActivity.recyclerCardList = new ArrayList<>(cardList);
+        }
+        // TODO problem?
+        //else
+        //    initializeRecyclerCardList();
 
         RecyclerViewAdapterPlay recyclerViewAdapterPlay = new RecyclerViewAdapterPlay(Utilities.getCards(MainActivity.recyclerCardList));
         layoutManager = new GridLayoutManager(getContext(), 1,
@@ -254,6 +279,32 @@ public class PlayFragment extends BaseCardFragment {
         positionRecyclerCard = sharedPreferences.getInt(Utilities.RECYCLER_CARD_POSITION, 0);
         layoutManager.scrollToPosition(positionRecyclerCard);
 
+    }
+
+    private void initializeRecyclerCardList() {
+
+        Log.d(TAG, ">>InitializeRecyclerCardList()");
+
+        MainActivity.recyclerCardList = new ArrayList<>();
+
+        Log.d(TAG, ">>TagListChosen: " + MainActivity.recyclerTagList);
+
+        if (MainActivity.recyclerTagList.isEmpty()) {
+            MainActivity.recyclerCardList = cardList;
+        } else {
+
+            for (CardWithTags c : cardList) {
+                for (Tag t1 : c.getTagList()) {
+                    for (Tag t2 : MainActivity.recyclerTagList) {
+                        if (t1.getTag().equalsIgnoreCase(t2.getTag()) && !MainActivity.recyclerCardList.contains(c))
+                            MainActivity.recyclerCardList.add(c);
+                    }
+                }
+            }
+
+        }
+
+        Log.d(TAG, ">>Cards: " + MainActivity.recyclerCardList);
     }
 
     private void startTimer() {
@@ -418,7 +469,8 @@ public class PlayFragment extends BaseCardFragment {
     public void shuffle(List<CardWithTags> list) {
         if (list != null) {
             Collections.shuffle(list);
-            layoutManager.scrollToPosition(0);
+            if (layoutManager != null)
+                layoutManager.scrollToPosition(0);
             Log.d(TAG, ">>List shuffled: " + list);
         } else {
             Log.d(TAG, ">>List is not shuffled cause is null");
@@ -429,7 +481,7 @@ public class PlayFragment extends BaseCardFragment {
     public void onDestroy() {
         super.onDestroy();
 
-        //Log.d(TAG, ">>Destroy()");
+        Log.d(TAG, ">>Destroy()");
 
         // Stop timer
         if (countDownTimer != null)
@@ -444,6 +496,8 @@ public class PlayFragment extends BaseCardFragment {
         editor.putLong(Utilities.TIMER, startTimeInMillis);
         editor.putInt(Utilities.RECYCLER_CARD_POSITION, positionRecyclerCard);
         editor.commit();
+
+        fragmentIsActive = false;
 
     }
 

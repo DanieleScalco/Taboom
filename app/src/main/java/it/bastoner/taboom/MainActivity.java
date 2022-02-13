@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static boolean appJustOpened = true;
-    public static List<CardWithTags> recyclerCardList;
+    public static List<CardWithTags> recyclerCardList; // Cards in play
+    public static List<Tag> recyclerTagList = new ArrayList<>(); // Tags chosen by user
 
     private List<CardWithTags> cardList;
     private List<Tag> tagList;
@@ -59,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(Utilities.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         deleteOldDatas();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
+        editor.commit();
 
         setBottomNavigation();
 
@@ -222,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
         List<Tag> tagList3 = new ArrayList<>();
         Tag tagCelebrities = new Tag(getString(R.string.celebrities_tag));
         tagList3.add(tagCelebrities);
+        tagList3.add(tagDisney);
         CardWithTags card4 = new CardWithTags(c4, tagList3);
         viewModel.insertCard(card4);
 

@@ -1,5 +1,7 @@
 package it.bastoner.taboom.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import it.bastoner.taboom.R;
+import it.bastoner.taboom.utilities.Utilities;
 import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 import it.bastoner.taboom.adapter.RecyclerViewAdapterUpdate;
 import it.bastoner.taboom.database.CardWithTags;
@@ -25,6 +28,7 @@ public class UpdateFragment extends BaseCardFragment {
     private static final String TAG = "UpdateFragment";
 
     private RecyclerView recyclerView;
+    private SharedPreferences sharedPreferences;
 
     public UpdateFragment(List<CardWithTags> cardList, List<Tag> tagList) {
         super(cardList, tagList);
@@ -58,6 +62,9 @@ public class UpdateFragment extends BaseCardFragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(ViewModelMainActivity.class);
 
+        sharedPreferences = getActivity()
+                .getSharedPreferences(Utilities.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+
         setRecyclerView();
 
         setViewModel();
@@ -88,7 +95,7 @@ public class UpdateFragment extends BaseCardFragment {
         recyclerView = getView().findViewById(R.id.recycler_view_list);
 
         RecyclerViewAdapterUpdate recyclerViewAdapter = new RecyclerViewAdapterUpdate(cardList, tagList,
-                                                                getContext(), viewModel);
+                                                                getContext(), viewModel, sharedPreferences);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
                                                             RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);

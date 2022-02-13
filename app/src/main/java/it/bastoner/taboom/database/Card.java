@@ -124,13 +124,13 @@ public class Card {
     @Override
     public String toString() {
         return "CardEntity{" +
-                "id=" + idCard +
+                //"id=" + idCard +
                 ", title='" + title + '\'' +
-                ", tabooWord1='" + tabooWord1 + '\'' +
+                /*", tabooWord1='" + tabooWord1 + '\'' +
                 ", tabooWord2='" + tabooWord2 + '\'' +
                 ", tabooWord3='" + tabooWord3 + '\'' +
                 ", tabooWord4='" + tabooWord4 + '\'' +
-                ", tabooWord5='" + tabooWord5 + '\'' +
+                ", tabooWord5='" + tabooWord5 + '\'' +*/
                 '}';
     }
 }

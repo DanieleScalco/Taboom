@@ -18,6 +18,8 @@ public class Utilities {
     public static final String TEAM_A_SCORE = "team_a_score";
     public static final String TEAM_B_SCORE = "team_b_score";
     public static final String RECYCLER_CARD_POSITION = "recycler_card_position";
+    public static final String SELECTED_TAGS = "selected_tags";
+    public static final String SHOULD_SHUFFLE = "should_shuffle";
 
     // Following datas are also defined in res/values/integers.xml
     public static final int MAX_TAG_LENGTH = 17;

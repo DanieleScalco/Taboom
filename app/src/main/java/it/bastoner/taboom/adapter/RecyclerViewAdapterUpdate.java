@@ -3,6 +3,7 @@ package it.bastoner.taboom.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,19 +19,23 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import it.bastoner.taboom.MainActivity;
 import it.bastoner.taboom.R;
-import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
+import it.bastoner.taboom.utilities.Utilities;
+import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
 public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerViewAdapterUpdate.ViewHolder> {
 
@@ -38,16 +43,30 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
     private List<CardWithTags> cardList;
     private List<Tag> tagList;
-    private Context context;
-    private ViewModelMainActivity viewModelFragment;
+    private final Context context;
+    private final ViewModelMainActivity viewModelFragment;
+    private boolean allCardIsChecked;
+    private int numberOfSelected;
+    private final SharedPreferences sharedPreferences;
+    private Set<String> selectedTags;
 
 
     public RecyclerViewAdapterUpdate(List<CardWithTags> cardList, List<Tag> tagList, Context context,
-                                     ViewModelMainActivity viewModelFragment) {
+                                     ViewModelMainActivity viewModelFragment, SharedPreferences sharedPreferences) {
         this.cardList = cardList;
         this.tagList = tagList;
         this.context = context;
         this.viewModelFragment = viewModelFragment;
+        this.sharedPreferences = sharedPreferences;
+        selectedTags = sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
+        if (selectedTags.isEmpty()) {
+            this.allCardIsChecked = true;
+            this.numberOfSelected = 1;
+        }
+        else {
+            this.allCardIsChecked = false;
+            this.numberOfSelected = selectedTags.size();
+        }
 
     }
 
@@ -68,6 +87,40 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             holder.numberOfItems.setText(String.valueOf(cardList.size()));
             holder.tagName.setText(R.string.all_cards_tag);
             holder.clearTag.setVisibility(View.GONE);
+            holder.checkBox.setChecked(allCardIsChecked);
+            holder.checkBox.setOnClickListener(view -> {
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
+                editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
+                editor.commit();
+
+                if (holder.checkBox.isChecked()) {
+
+                    MainActivity.recyclerTagList.clear();
+                    editor.putStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
+                    editor.commit();
+                    Log.d(TAG, ">>Tags selected: " + MainActivity.recyclerTagList);
+
+                    if (!allCardIsChecked) {
+                        allCardIsChecked = true;
+                        numberOfSelected = 1;
+                        notifyDataSetChanged();
+                    } else
+                        ++numberOfSelected;
+                } else {
+                    if (numberOfSelected == 1) {
+                        holder.checkBox.setChecked(true);
+                        Toast.makeText(context, R.string.min_one_tag, Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        --numberOfSelected;
+                        allCardIsChecked = false;
+                    }
+                }
+
+            });
+
             initializeLayoutCards(cardList,null,  holder, true);
 
         } else {
@@ -87,6 +140,52 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
             holder.numberOfItems.setText(String.valueOf(listOfSingleTag.size()));
             holder.tagName.setText(tag.getTag());
+            if (allCardIsChecked)
+                holder.checkBox.setChecked(false);
+            else {
+                holder.checkBox.setChecked(false);
+                for (String s: selectedTags) {
+                    if (s.equalsIgnoreCase(tag.getTag()))
+                        holder.checkBox.setChecked(true);
+                }
+            }
+            holder.checkBox.setOnClickListener(view -> {
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
+                editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
+                editor.commit();
+
+                if (holder.checkBox.isChecked()) {
+                    MainActivity.recyclerTagList.add(tag);
+                    selectedTags = sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
+                    selectedTags.add(tag.getTag());
+                    editor.putStringSet(Utilities.SELECTED_TAGS, selectedTags);
+                    editor.commit();
+
+                    Log.d(TAG, ">>Tags selected: " +MainActivity.recyclerTagList);
+                    if (allCardIsChecked) {
+                        allCardIsChecked = false;
+                        notifyDataSetChanged();
+                    } else {
+                        ++numberOfSelected;
+                    }
+                } else {
+                    if (numberOfSelected == 1) {
+                        Toast.makeText(context, R.string.min_one_tag, Toast.LENGTH_SHORT).show();
+                        holder.checkBox.setChecked(true);
+                    }
+                    else {
+                        --numberOfSelected;
+                        MainActivity.recyclerTagList.remove(tag);
+                        selectedTags = sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
+                        selectedTags.remove(tag.getTag());
+                        editor.putStringSet(Utilities.SELECTED_TAGS, selectedTags);
+                        editor.commit();
+                    }
+                }
+
+            });
 
             View viewDialogTag = LayoutInflater.from(context).inflate(R.layout.dialog_modify_tag, (ViewGroup) null);
             EditText tagNameEditText = viewDialogTag.findViewById(R.id.tag_name_dialog);
@@ -137,6 +236,10 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         viewModelFragment.deleteTag(tag);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
+                        editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
+                        editor.commit();
                         Log.d(TAG, ">>Delete TAG: " + tag.getTag());
                     }
                 })
@@ -160,17 +263,28 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                 .setPositiveButton(R.string.delete_card, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         viewModelFragment.deleteCard(card);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
+                        editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
+                        editor.commit();
                         Log.d(TAG, ">>Delete card: " + card.getTitle());
+
                     }
                 })
                 .setNegativeButton(R.string.remove_tag, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // TODO
+
                         viewModelFragment.removeTagFromCard(card, tag);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
+                        editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
+                        editor.commit();
                         Log.d(TAG, ">>Remove tag \"" + tag.getTag() + "\" from card \""
                                 + card.getTitle() + "\"");
+
                     }
                 })
                 .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -191,6 +305,10 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         viewModelFragment.deleteCard(card);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
+                        editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
+                        editor.commit();
                         Log.d(TAG, ">>Delete card: " + card.getTitle());
                     }
                 })

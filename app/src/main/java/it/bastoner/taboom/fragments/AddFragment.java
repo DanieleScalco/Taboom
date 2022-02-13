@@ -226,6 +226,7 @@ public class AddFragment extends BaseCardFragment {
 
                 // Reset position of cardList in PlayFragment
                 SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
                 editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
                 editor.commit();
             }
