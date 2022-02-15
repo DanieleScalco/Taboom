@@ -44,8 +44,6 @@ public class PlayFragment extends BaseCardFragment {
 
     // TODO longPress increaseScore;
     // TODO Message no words
-    // TODO Shuffle when application start
-    // TODO When shuffle set position recycler to start
 
     private static final String TAG = "PlayFragment";
     private static boolean fragmentIsActive;
@@ -243,9 +241,6 @@ public class PlayFragment extends BaseCardFragment {
         if (MainActivity.recyclerCardList == null) {
             MainActivity.recyclerCardList = new ArrayList<>(cardList);
         }
-        // TODO problem?
-        //else
-        //    initializeRecyclerCardList();
 
         RecyclerViewAdapterPlay recyclerViewAdapterPlay = new RecyclerViewAdapterPlay(Utilities.getCards(MainActivity.recyclerCardList));
         layoutManager = new GridLayoutManager(getContext(), 1,

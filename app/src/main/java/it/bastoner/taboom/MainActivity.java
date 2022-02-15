@@ -32,7 +32,7 @@ import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 public class MainActivity extends AppCompatActivity {
 
     // TODO add font
-    // TODO Layout percentages
+    // TODO Layout percentages and Buttons
 
     private static final String TAG = "MainActivity";
     private static boolean appJustOpened = true;

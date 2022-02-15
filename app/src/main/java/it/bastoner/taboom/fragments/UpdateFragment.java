@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashSet;
 import java.util.List;
 
 import it.bastoner.taboom.R;
@@ -26,6 +27,7 @@ import it.bastoner.taboom.database.Tag;
 public class UpdateFragment extends BaseCardFragment {
 
     private static final String TAG = "UpdateFragment";
+    private static boolean fragmentIsActive;
 
     private RecyclerView recyclerView;
     private SharedPreferences sharedPreferences;
@@ -75,16 +77,22 @@ public class UpdateFragment extends BaseCardFragment {
 
         Log.d(TAG, ">>SetViewModel()");
 
+        fragmentIsActive = true;
+
         viewModel.getAllCards().observe(requireActivity(), cardListLoaded -> {
-            cardList = cardListLoaded;
-            Log.d(TAG, ">>CardList updated:" + cardList);
-            updateUI(cardList, tagList);
+            if (fragmentIsActive) {
+                cardList = cardListLoaded;
+                Log.d(TAG, ">>CardList updated:" + cardList);
+                updateUI(cardList, tagList);
+            }
         });
 
         viewModel.getAllTags().observe(requireActivity(), tagListLoaded -> {
-            tagList = tagListLoaded;
-            Log.d(TAG, ">>TagList updated:" + tagList);
-            updateUI(cardList, tagList);
+            if (fragmentIsActive) {
+                tagList = tagListLoaded;
+                Log.d(TAG, ">>TagList updated:" + tagList);
+                updateUI(cardList, tagList);
+            }
         });
 
     }
@@ -104,4 +112,14 @@ public class UpdateFragment extends BaseCardFragment {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.d(TAG, "OnDestroy()");
+
+        fragmentIsActive = false;
+        Log.d(TAG, ">>SelectedTags: " + sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>()));
+
+    }
 }

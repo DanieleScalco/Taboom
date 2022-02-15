@@ -6,7 +6,6 @@
     <string name="reset">RESET</string>
     <string name="title_modify_timer">Modifica il timer</string>
     <string name="modify">MODIFICA</string>
-    <string name="default_list_name">Lista base</string>
     <string name="card_title_needed">Per il salvataggio di una carta è obbligatorio il titolo</string>
     <string name="no_taboo_word">---------</string>
     <string name="card_added">Carta salvata con successo!</string>
@@ -55,4 +54,11 @@
     <string name="number_of_tags_chosen_2">TAG</string>
     <string name="tag_name_required">Aggiungi il nome del TAG</string>
     <string name="min_one_tag">Almeno un gruppo dev\'essere selezionato</string>
+    <string name="title">Titolo:</string>
+    <string name="taboo1">Taboo 1:</string>
+    <string name="taboo2">Taboo 2:</string>
+    <string name="taboo3">Taboo 3:</string>
+    <string name="taboo4">Taboo 4:</string>
+    <string name="taboo5">Taboo 5:</string>
+    <string name="save">SALVA</string>
 </resources>

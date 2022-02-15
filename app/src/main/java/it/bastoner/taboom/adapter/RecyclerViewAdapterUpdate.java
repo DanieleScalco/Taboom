@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ import it.bastoner.taboom.database.Tag;
 import it.bastoner.taboom.utilities.Utilities;
 import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
+// TODO close all inner views item
+// TODO bug update if tag change name
 public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerViewAdapterUpdate.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapterUpdate";
@@ -86,38 +89,33 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             // All the cards
             holder.numberOfItems.setText(String.valueOf(cardList.size()));
             holder.tagName.setText(R.string.all_cards_tag);
-            holder.clearTag.setVisibility(View.GONE);
+            holder.clearTag.setVisibility(View.GONE); // Can't delete all cards
             holder.checkBox.setChecked(allCardIsChecked);
             holder.checkBox.setOnClickListener(view -> {
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
                 editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
-                editor.commit();
 
                 if (holder.checkBox.isChecked()) {
 
                     MainActivity.recyclerTagList.clear();
                     editor.putStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
-                    editor.commit();
                     Log.d(TAG, ">>Tags selected: " + MainActivity.recyclerTagList);
 
+                    numberOfSelected = 1;
                     if (!allCardIsChecked) {
                         allCardIsChecked = true;
-                        numberOfSelected = 1;
                         notifyDataSetChanged();
-                    } else
-                        ++numberOfSelected;
+                    }
+
                 } else {
-                    if (numberOfSelected == 1) {
-                        holder.checkBox.setChecked(true);
-                        Toast.makeText(context, R.string.min_one_tag, Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        --numberOfSelected;
-                        allCardIsChecked = false;
-                    }
+                    // Can't deselect all cards, at least one group chosen
+                    holder.checkBox.setChecked(true);
+                    Toast.makeText(context, R.string.min_one_tag, Toast.LENGTH_SHORT).show();
                 }
+
+                editor.commit();
 
             });
 
@@ -125,10 +123,10 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
         } else {
 
-            // Single TAG
+            // Single TAG after all cards
             Tag tag = tagList.get(position - 1);
-            List<CardWithTags> listOfSingleTag = new ArrayList<>();
 
+            List<CardWithTags> listOfSingleTag = new ArrayList<>();
             for (CardWithTags cwt: cardList) {
                 for (Tag t: cwt.getTagList()) {
                     if (t.getTag().equals(tag.getTag()))
@@ -154,16 +152,14 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
                 editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
-                editor.commit();
 
                 if (holder.checkBox.isChecked()) {
                     MainActivity.recyclerTagList.add(tag);
                     selectedTags = sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
                     selectedTags.add(tag.getTag());
                     editor.putStringSet(Utilities.SELECTED_TAGS, selectedTags);
-                    editor.commit();
+                    Log.d(TAG, ">>Tags selected: " + MainActivity.recyclerTagList);
 
-                    Log.d(TAG, ">>Tags selected: " +MainActivity.recyclerTagList);
                     if (allCardIsChecked) {
                         allCardIsChecked = false;
                         notifyDataSetChanged();
@@ -181,9 +177,11 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                         selectedTags = sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
                         selectedTags.remove(tag.getTag());
                         editor.putStringSet(Utilities.SELECTED_TAGS, selectedTags);
-                        editor.commit();
+                        Log.d(TAG, ">>Tags selected: " + MainActivity.recyclerTagList);
                     }
                 }
+
+                editor.commit();
 
             });
 
@@ -196,7 +194,9 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             AlertDialog dialogDeleteTag = getDialogDeleteTag(tag);
 
             holder.tagName.setOnLongClickListener( view -> {
-                dialogTag.show();
+                // Change tag name only if closed
+                if (holder.linearLayout.getVisibility() == View.GONE)
+                    dialogTag.show();
                 return true;
             });
 
@@ -218,9 +218,26 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
                         String newTag = tagNameEditText.getText().toString();
                         if (!newTag.isEmpty() && !newTag.equalsIgnoreCase(tag.getTag())) {
-                            tag.setTag(newTag);
-                            viewModelFragment.updateTag(tag);
+
+                            // If tag was selected update selectedTags and MainActivityRecyclerCardList
+                            // with new name
+                            MainActivity.recyclerTagList.remove(tag);
+                            selectedTags = sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                            for (String s: selectedTags) {
+                                if (s.equalsIgnoreCase(tag.getTag())) {
+                                    selectedTags.remove(s);
+                                    selectedTags.add(newTag);
+                                    editor.putStringSet(Utilities.SELECTED_TAGS, selectedTags);
+                                }
+                            }
+
+                            editor.commit();
                             Log.d(TAG, ">>Update TAG: " + tag.getTag() + "->" + newTag);
+                            tag.setTag(newTag);
+                            MainActivity.recyclerTagList.add(tag);
+                            viewModelFragment.updateTag(tag);
                         }
                     }
                 })
@@ -333,10 +350,26 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             View cardView = LayoutInflater.from(context).inflate(R.layout.card_update, holder.linearLayout, false);
             TextView textViewCardName = cardView.findViewById(R.id.card_name);
             Button clearButton = cardView.findViewById(R.id.clear_card);
+            ConstraintLayout layoutCardUpdate = cardView.findViewById(R.id.layout_update_card);
+            EditText title = cardView.findViewById(R.id.update_title_edit_text);
+            EditText taboo1 = cardView.findViewById(R.id.update_taboo_1_edit_text);
+            EditText taboo2 = cardView.findViewById(R.id.update_taboo_2_edit_text);
+            EditText taboo3 = cardView.findViewById(R.id.update_taboo_3_edit_text);
+            EditText taboo4 = cardView.findViewById(R.id.update_taboo_4_edit_text);
+            EditText taboo5 = cardView.findViewById(R.id.update_taboo_5_edit_text);
+            Button saveButton = cardView.findViewById(R.id.save_button);
+            Button tagButton = cardView.findViewById(R.id.tag_button);
+
             textViewCardName.setText(card.getTitle());
+            title.setText(card.getTitle());
+            taboo1.setText(card.getTabooWord1());
+            taboo2.setText(card.getTabooWord2());
+            taboo3.setText(card.getTabooWord3());
+            taboo4.setText(card.getTabooWord4());
+            taboo5.setText(card.getTabooWord5());
 
             textViewCardName.setOnClickListener(view -> {
-                //TODO update card
+                openCloseView(layoutCardUpdate);
             });
 
             AlertDialog dialogDeleteCard;
@@ -349,10 +382,10 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
             // Set the click on both number of items and tag name
             holder.tagName.setOnClickListener(view -> {
-                openCloseCardList(holder);
+                openCloseView(holder.linearLayout);
             });
             holder.numberOfItems.setOnClickListener(view -> {
-                openCloseCardList(holder);
+                openCloseView(holder.linearLayout);
             });
 
             holder.linearLayout.addView(cardView);
@@ -361,36 +394,35 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
     }
 
-    private void openCloseCardList(ViewHolder holder) {
+    private void openCloseView(View view) {
 
-        if (!holder.isOpen) {
+        if (view.getVisibility() == View.GONE) {
 
-            holder.linearLayout.setVisibility(View.VISIBLE);
+            view.setVisibility(View.VISIBLE);
 
             AnimationSet animation = new AnimationSet(true);
             Animation animationAlpha = new AlphaAnimation(0, 1);
             animation.addAnimation(animationAlpha);
-            Animation animationTranslate = new TranslateAnimation(0, 0, -holder.linearLayout.getHeight(), 0);
+            Animation animationTranslate = new TranslateAnimation(0, 0, -view.getHeight(), 0);
             animation.addAnimation(animationTranslate);
             Animation animationY = new ScaleAnimation(1, 1, 0, 1);
             animationY.setInterpolator(new LinearInterpolator());
             animation.addAnimation(animationY);
-            animation.setDuration(250);
+            animation.setDuration(200);
 
-            holder.linearLayout.startAnimation(animation);
-            holder.isOpen = true;
+            view.startAnimation(animation);
 
         } else {
 
             AnimationSet animation = new AnimationSet(true);
             Animation animationAlpha = new AlphaAnimation(1, 0);
             animation.addAnimation(animationAlpha);
-            Animation animationTranslate = new TranslateAnimation(0, 0, 0, -holder.linearLayout.getHeight());
+            Animation animationTranslate = new TranslateAnimation(0, 0, 0, -view.getHeight());
             animation.addAnimation(animationTranslate);
             Animation animationY = new ScaleAnimation(1, 1, 1, 0);
             animationY.setInterpolator(new LinearInterpolator());
             animation.addAnimation(animationY);
-            animation.setDuration(250);
+            animation.setDuration(200);
 
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -400,7 +432,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    holder.linearLayout.setVisibility(View.GONE);
+                    view.setVisibility(View.GONE);
                 }
 
                 @Override
@@ -409,8 +441,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                 }
             });
 
-            holder.linearLayout.startAnimation(animation);
-            holder.isOpen = false;
+            view.startAnimation(animation);
         }
     }
 

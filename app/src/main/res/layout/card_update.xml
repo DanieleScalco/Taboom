@@ -21,15 +21,16 @@
 
             <TextView
                 android:id="@+id/card_name"
-                android:layout_width="240dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                app:layout_constraintWidth_percent="0.9"
+                android:textSize="18sp"
                 android:maxLength="17"
                 style="@style/card_update"
                 android:layout_marginStart="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toTopOf="@id/layout_update_card"/>
 
             <android.widget.Button
                 android:id="@+id/clear_card"
@@ -39,9 +40,264 @@
                 android:background="@drawable/ic_baseline_delete_24"
                 android:tooltipText="@string/delete_tag"
                 style="@style/card_update"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/layout_update_card"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_update_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_name"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/layout_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/update_title_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:textAlignment="center"
+                        android:text="@string/title" />
+
+                    <EditText
+                        android:id="@+id/update_title_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.85"
+                        android:layout_marginEnd="24dp"
+                        android:layout_gravity="center"
+                        android:hint="@string/default_title_card"
+                        android:maxLength="@integer/max_title_length"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_taboo_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_title">
+
+                    <TextView
+                        android:id="@+id/update_taboo_1_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/taboo1"
+                        android:textAlignment="center"/>
+
+                    <EditText
+                        android:id="@+id/update_taboo_1_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.85"
+                        android:layout_marginEnd="24dp"
+                        android:layout_gravity="center"
+                        android:hint="@string/default_taboo"
+                        android:maxLength="@integer/max_taboo_length"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_taboo_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_taboo_1">
+
+                    <TextView
+                        android:id="@+id/update_taboo_2_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/taboo2"
+                        android:textAlignment="center"/>
+
+                    <EditText
+                        android:id="@+id/update_taboo_2_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.85"
+                        android:layout_marginEnd="24dp"
+                        android:layout_gravity="center"
+                        android:hint="@string/default_taboo"
+                        android:maxLength="@integer/max_taboo_length"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_taboo_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_taboo_2">
+
+                    <TextView
+                        android:id="@+id/update_taboo_3_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/taboo3"
+                        android:textAlignment="center"/>
+
+                    <EditText
+                        android:id="@+id/update_taboo_3_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.85"
+                        android:layout_marginEnd="24dp"
+                        android:layout_gravity="center"
+                        android:hint="@string/default_taboo"
+                        android:maxLength="@integer/max_taboo_length"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_taboo_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_taboo_3">
+
+                    <TextView
+                        android:id="@+id/update_taboo_4_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/taboo4"
+                        android:textAlignment="center"/>
+
+                    <EditText
+                        android:id="@+id/update_taboo_4_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.85"
+                        android:layout_marginEnd="24dp"
+                        android:layout_gravity="center"
+                        android:hint="@string/default_taboo"
+                        android:maxLength="@integer/max_taboo_length"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_taboo_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_taboo_4">
+
+                    <TextView
+                        android:id="@+id/update_taboo_5_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/taboo5"
+                        android:textAlignment="center"/>
+
+                    <EditText
+                        android:id="@+id/update_taboo_5_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.85"
+                        android:layout_marginEnd="24dp"
+                        android:layout_gravity="center"
+                        android:hint="@string/default_taboo"
+                        android:maxLength="@integer/max_taboo_length"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_bottom_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_taboo_5">
+
+                    <android.widget.Button
+                        android:id="@+id/tag_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:layout_marginStart="24dp"
+                        android:textAlignment="center"
+                        android:text="@string/tag"
+                        android:textSize="16sp"
+                        android:tooltipText="@string/tag"
+                        android:textColor="@color/dark_red"
+                        android:drawableStart="@drawable/ic_baseline_more_vert_24"
+                        android:drawableTint="@color/dark_red"
+                        android:background="@drawable/border" />
+
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5" />
+
+                    <android.widget.Button
+                        android:id="@+id/save_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:layout_marginEnd="24dp"
+                        android:textAlignment="center"
+                        android:text="@string/save"
+                        android:textSize="16sp"
+                        android:tooltipText="@string/tag"
+                        android:textColor="@color/dark_red"
+                        android:drawableEnd="@drawable/ic_baseline_check_24"
+                        android:drawableTint="@color/dark_red"
+                        android:paddingEnd="8dp"
+                        android:paddingStart="8dp"
+                        android:background="@drawable/border" />
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout> <!-- Layout_update_card -->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
