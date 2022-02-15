@@ -88,7 +88,7 @@ public class PlayFragment extends BaseCardFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Log.d(TAG, ">>OnCreateView()");
+        //Log.d(TAG, ">>OnCreateView()");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_play, container, false);
     }
@@ -97,7 +97,7 @@ public class PlayFragment extends BaseCardFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.d(TAG, ">>OnViewCreated()");
+        //Log.d(TAG, ">>OnViewCreated()");
 
         sharedPreferences = getActivity()
                             .getSharedPreferences(Utilities.SHARED_PREFERENCES, Context.MODE_PRIVATE);

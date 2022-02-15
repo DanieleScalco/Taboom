@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.HashSet;
 import java.util.List;
 
+import it.bastoner.taboom.MainActivity;
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.utilities.Utilities;
 import it.bastoner.taboom.viewModel.ViewModelMainActivity;
@@ -120,6 +121,7 @@ public class UpdateFragment extends BaseCardFragment {
 
         fragmentIsActive = false;
         Log.d(TAG, ">>SelectedTags: " + sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>()));
+        Log.d(TAG, ">>MainActivityRecyclerTagList: " + MainActivity.recyclerTagList);
 
     }
 }

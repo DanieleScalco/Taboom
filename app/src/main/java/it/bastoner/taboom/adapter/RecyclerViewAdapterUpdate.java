@@ -173,7 +173,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                     }
                     else {
                         --numberOfSelected;
-                        MainActivity.recyclerTagList.remove(tag);
+                        MainActivity.recyclerTagList.removeIf(t -> t.getTag().equalsIgnoreCase(tag.getTag()));
                         selectedTags = sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
                         selectedTags.remove(tag.getTag());
                         editor.putStringSet(Utilities.SELECTED_TAGS, selectedTags);
@@ -221,7 +221,13 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
                             // If tag was selected update selectedTags and MainActivityRecyclerCardList
                             // with new name
-                            MainActivity.recyclerTagList.remove(tag);
+                            boolean removed = false;
+                            for (Tag t: MainActivity.recyclerTagList) {
+                                if (t.getTag().equalsIgnoreCase(tag.getTag())) {
+                                    MainActivity.recyclerTagList.remove(t);
+                                    removed = true;
+                                }
+                            }
                             selectedTags = sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
                             SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -236,7 +242,8 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                             editor.commit();
                             Log.d(TAG, ">>Update TAG: " + tag.getTag() + "->" + newTag);
                             tag.setTag(newTag);
-                            MainActivity.recyclerTagList.add(tag);
+                            if (removed)
+                                MainActivity.recyclerTagList.add(tag);
                             viewModelFragment.updateTag(tag);
                         }
                     }
@@ -254,6 +261,9 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                     public void onClick(DialogInterface dialogInterface, int i) {
                         viewModelFragment.deleteTag(tag);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                        selectedTags = sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
+                        selectedTags.removeIf(string -> string.equalsIgnoreCase(tag.getTag()));
+                        MainActivity.recyclerTagList.removeIf(t -> tag.getTag().equalsIgnoreCase(t.getTag()));
                         editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
                         editor.putInt(Utilities.RECYCLER_CARD_POSITION, 0);
                         editor.commit();
