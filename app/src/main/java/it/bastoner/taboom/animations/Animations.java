@@ -38,6 +38,36 @@ public class Animations {
         animatorSet.start();
     }
 
+    public static void doReduceAnimation(View view, Animator.AnimatorListener listener) {
+
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, Button.SCALE_Y, 0.8f);
+        animatorX.setDuration(150);
+
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(view, Button.SCALE_X, 0.8f);
+        animatorY.setDuration(150);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        if (listener != null)
+            animatorSet.addListener(listener);
+        animatorSet.play(animatorX).with(animatorY);
+        animatorSet.start();
+    }
+
+    public static void doIncreaseAnimation(View view, Animator.AnimatorListener listener) {
+
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, Button.SCALE_Y, 1f);
+        animatorX.setDuration(150);
+
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(view, Button.SCALE_X, 1f);
+        animatorY.setDuration(150);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        if (listener != null)
+            animatorSet.addListener(listener);
+        animatorSet.play(animatorX).with(animatorY);
+        animatorSet.start();
+    }
+
     public static void doSpinReduceIncreaseAnimation(View view) {
 
         ObjectAnimator animatorSpin = ObjectAnimator.ofFloat(view, Button.ROTATION, 0, 360);

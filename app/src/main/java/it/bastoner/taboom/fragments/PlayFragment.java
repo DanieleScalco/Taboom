@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +44,6 @@ import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 public class PlayFragment extends BaseCardFragment {
 
     // TODO longPress increaseScore;
-    // TODO Message no words
 
     private static final String TAG = "PlayFragment";
     private static boolean fragmentIsActive;
@@ -70,6 +70,8 @@ public class PlayFragment extends BaseCardFragment {
     private TextView scoreBTextView;
     private int scoreA;
     private int scoreB;
+    private Runnable runnable;
+    private Handler handler = new Handler();
 
     private EditText teamA;
     private EditText teamB;
@@ -383,6 +385,7 @@ public class PlayFragment extends BaseCardFragment {
         scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
         scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
 
+        // OnClick()
         minusButtonA.setOnClickListener(view -> {
             Animations.doReduceIncreaseAnimation(view, null);
             if (scoreA > 0 )
@@ -411,6 +414,101 @@ public class PlayFragment extends BaseCardFragment {
                 scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
             } else
                 scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", ++scoreB));
+        });
+
+        // OnLongClick
+        minusButtonA.setOnLongClickListener(view -> {
+
+            Animations.doReduceAnimation(view, null);
+
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (!view.isPressed()) {
+                        Animations.doIncreaseAnimation(view, null);
+                        return;
+                    }
+                    if (scoreA > 0 )
+                        scoreATextView.setText(String.format(Locale.getDefault(), "%02d", --scoreA));
+
+                    handler.postDelayed(runnable, 100);
+                }
+            };
+
+            handler.post(runnable);
+            return true;
+        });
+
+        plusButtonA.setOnLongClickListener(view -> {
+
+            Animations.doReduceAnimation(view, null);
+
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (!view.isPressed()) {
+                        Animations.doIncreaseAnimation(view, null);
+                        return;
+                    }
+                    if (scoreA >= 99) {
+                        scoreA = 0;
+                        scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
+                    } else
+                        scoreATextView.setText(String.format(Locale.getDefault(), "%02d", ++scoreA));
+
+                    handler.postDelayed(runnable, 100);
+                }
+            };
+
+            handler.post(runnable);
+            return true;
+        });
+
+        minusButtonB.setOnLongClickListener(view -> {
+
+            Animations.doReduceAnimation(view, null);
+
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (!view.isPressed()) {
+                        Animations.doIncreaseAnimation(view, null);
+                        return;
+                    }
+                    if (scoreB > 0 )
+                        scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", --scoreB));
+
+                    handler.postDelayed(runnable, 100);
+                }
+            };
+
+            handler.post(runnable);
+            return true;
+        });
+
+        plusButtonB.setOnLongClickListener(view -> {
+
+            Animations.doReduceAnimation(view, null);
+
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (!view.isPressed()) {
+                        Animations.doIncreaseAnimation(view, null);
+                        return;
+                    }
+                    if (scoreB >= 99) {
+                        scoreB = 0;
+                        scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
+                    } else
+                        scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", ++scoreB));
+
+                    handler.postDelayed(runnable, 100);
+                }
+            };
+
+            handler.post(runnable);
+            return true;
         });
 
     }
