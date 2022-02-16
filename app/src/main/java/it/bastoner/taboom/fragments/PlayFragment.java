@@ -43,8 +43,6 @@ import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
 public class PlayFragment extends BaseCardFragment {
 
-    // TODO longPress increaseScore;
-
     private static final String TAG = "PlayFragment";
     private static boolean fragmentIsActive;
 
@@ -550,7 +548,7 @@ public class PlayFragment extends BaseCardFragment {
 
         shuffleButton.setOnClickListener(view -> {
 
-            Animations.doSpinReduceIncreaseAnimation(view);
+            Animations.doSpinReduceIncreaseAnimation(view, null);
             clearSound.start();
             shuffle(MainActivity.recyclerCardList);
             updateUI();

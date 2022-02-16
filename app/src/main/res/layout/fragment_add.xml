@@ -64,8 +64,10 @@
 
         <android.widget.Button
             android:id="@+id/add_card"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.25"
+            app:layout_constraintHeight_percent="1"
             android:gravity="center"
             android:tooltipText="@string/add_tooltip"
             android:layout_marginEnd="20dp"
@@ -77,8 +79,10 @@
 
         <Button
             android:id="@+id/clear"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.16"
+            app:layout_constraintHeight_percent="0.85"
             android:layout_marginEnd="20dp"
             android:gravity="center"
             android:tooltipText="@string/clean_tooltip"

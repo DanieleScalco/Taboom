@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_top_add_tags"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -16,22 +16,29 @@
 
         <EditText
             android:id="@+id/insert_new_tag"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/insert_new_tag"
             android:maxLines="1"
             android:maxLength="@integer/max_tag_length"
-            android:inputType="textCapSentences|textNoSuggestions"/>
+            android:inputType="textCapSentences|textNoSuggestions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <android.widget.Button
             android:id="@+id/new_tag_button_dialog"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="8dp"
-            android:gravity="right"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.15"
+            app:layout_constraintHeight_percent="0.8"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
             android:tooltipText="@string/create_tag"
-            android:background="@drawable/ic_baseline_add_24"/>
-    </LinearLayout>
+            android:background="@drawable/ic_baseline_add_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/insert_new_tag"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_tags"

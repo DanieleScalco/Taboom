@@ -63,8 +63,10 @@
 
                 <android.widget.Button
                     android:id="@+id/team_a_minus"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintWidth_percent="0.33"
+                    app:layout_constraintHeight_percent="0.82"
                     android:layout_margin="4dp"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -91,8 +93,10 @@
 
                 <android.widget.Button
                     android:id="@+id/team_a_plus"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintWidth_percent="0.33"
+                    app:layout_constraintHeight_percent="0.82"
                     android:layout_margin="4dp"
                     android:textSize="16sp"
                     style="@style/team_a_color_button"
@@ -153,8 +157,10 @@
                 -->
                 <android.widget.Button
                     android:id="@+id/team_b_minus"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintWidth_percent="0.33"
+                    app:layout_constraintHeight_percent="0.82"
                     android:layout_margin="4dp"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -181,8 +187,10 @@
 
                 <android.widget.Button
                     android:id="@+id/team_b_plus"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintWidth_percent="0.33"
+                    app:layout_constraintHeight_percent="0.82"
                     android:layout_margin="4dp"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -197,8 +205,10 @@
 
         <Button
             android:id="@+id/shuffle"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.10"
+            app:layout_constraintHeight_percent="0.6"
             android:layout_margin="16dp"
             android:tooltipText="@string/tooltip_shuffle"
             android:background="@drawable/ic_rotate_solid"
@@ -248,8 +258,10 @@
 
         <android.widget.Button
             android:id="@+id/play"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.22"
+            app:layout_constraintHeight_percent="1"
             android:gravity="center"
             android:tooltipText="@string/play_tooltip"
             android:background="@drawable/play_button"

@@ -68,7 +68,7 @@ public class Animations {
         animatorSet.start();
     }
 
-    public static void doSpinReduceIncreaseAnimation(View view) {
+    public static void doSpinReduceIncreaseAnimation(View view, Animator.AnimatorListener listener) {
 
         ObjectAnimator animatorSpin = ObjectAnimator.ofFloat(view, Button.ROTATION, 0, 360);
         animatorSpin.setDuration(350);
@@ -86,6 +86,8 @@ public class Animations {
         animatorY.setRepeatCount(1);
 
         AnimatorSet animatorSet = new AnimatorSet();
+        if (listener != null)
+            animatorSet.addListener(listener);
         animatorSet.play(animatorSpin).with(animatorX).with(animatorY);
         animatorSet.start();
 
