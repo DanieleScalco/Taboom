@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -30,9 +31,6 @@ import it.bastoner.taboom.utilities.Utilities;
 import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
 public class MainActivity extends AppCompatActivity {
-
-    // TODO add font
-    // TODO Layout percentages and Buttons
 
     private static final String TAG = "MainActivity";
     private static boolean appJustOpened = true;

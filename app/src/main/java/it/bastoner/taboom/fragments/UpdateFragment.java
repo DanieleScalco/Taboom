@@ -1,15 +1,22 @@
 package it.bastoner.taboom.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +39,7 @@ public class UpdateFragment extends BaseCardFragment {
 
     private RecyclerView recyclerView;
     private SharedPreferences sharedPreferences;
+    private Toolbar toolbar;
 
     public UpdateFragment(List<CardWithTags> cardList, List<Tag> tagList) {
         super(cardList, tagList);
@@ -74,6 +82,31 @@ public class UpdateFragment extends BaseCardFragment {
 
         setViewModel();
 
+        toolbar = getActivity().findViewById(R.id.toolbar_update);
+        setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.update_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        AlertDialog dialogInfo = getDialogInfo();
+
+        switch (item.getItemId()) {
+            case (R.id.info):
+                dialogInfo.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     private void setViewModel() {
@@ -113,6 +146,14 @@ public class UpdateFragment extends BaseCardFragment {
 
         recyclerView.setAdapter(recyclerViewAdapter);
 
+    }
+
+    private AlertDialog getDialogInfo() {
+        return new AlertDialog.Builder(getContext())
+                .setMessage(R.string.info_message_update)
+                .setTitle(R.string.info)
+                .setIcon(AppCompatResources.getDrawable(getContext(), R.drawable.ic_baseline_info_24_red))
+                .create();
     }
 
     @Override

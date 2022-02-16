@@ -8,6 +8,9 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,6 +19,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +54,8 @@ public class AddFragment extends BaseCardFragment {
     private Button addCardButton;
     private Button clearButton;
     private Button addTags;
+
+    private Toolbar toolbar;
 
     private SharedPreferences sharedPreferences;
 
@@ -104,6 +113,7 @@ public class AddFragment extends BaseCardFragment {
         addCardButton = getActivity().findViewById(R.id.add_card);
         clearButton = getActivity().findViewById(R.id.clear);
         addTags = getActivity().findViewById(R.id.add_tag);
+        toolbar = getActivity().findViewById(R.id.toolbar);
 
         titleEditText.setHint(R.string.default_title_card);
         taboo1EditText.setHint(R.string.default_taboo);
@@ -144,6 +154,29 @@ public class AddFragment extends BaseCardFragment {
             Log.d(TAG, ">>Show dialog");
         });
 
+        setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.add_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        AlertDialog dialogInfo = getDialogInfo();
+
+        switch (item.getItemId()) {
+            case (R.id.info):
+                dialogInfo.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     private void addTag() {
@@ -275,6 +308,14 @@ public class AddFragment extends BaseCardFragment {
                         Log.d(TAG, ">>ChosenTags: " + chosenTags);
                     }
                 })
+                .create();
+    }
+
+    private AlertDialog getDialogInfo() {
+        return new AlertDialog.Builder(getContext())
+                .setMessage(R.string.info_message_add)
+                .setTitle(R.string.info)
+                .setIcon(AppCompatResources.getDrawable(getContext(), R.drawable.ic_baseline_info_24_red))
                 .create();
     }
 

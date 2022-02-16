@@ -64,4 +64,9 @@
     <string name="title_already_exists">Titolo già esistente</string>
     <string name="card_updated">Carta aggiornata</string>
     <string name="invalid_tag_name">Nome TAG non valido</string>
+    <string name="add_card_title_toolbar">Aggiungi carta</string>
+    <string name="info">Info</string>
+    <string name="info_message_add">Qui puoi aggiungere tutte le carte che vuoi (attenzione che ogni \"Titolo\" è unico).\nAggiungi i TAG che preferisci per creare dei gruppi personalizzati di parole.</string>
+    <string name="update_title_toolbar">Modifica carte</string>
+    <string name="info_message_update">Qui puoi modificare le carte e scegliere i gruppi di carte (TAG) con cui desideri giocare.</string>
 </resources>
