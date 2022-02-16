@@ -32,6 +32,7 @@ import java.util.Set;
 
 import it.bastoner.taboom.MainActivity;
 import it.bastoner.taboom.R;
+import it.bastoner.taboom.animations.Animations;
 import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
@@ -39,7 +40,6 @@ import it.bastoner.taboom.utilities.Utilities;
 import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
 // TODO close all inner views item
-// TODO bug update if tag change name
 public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerViewAdapterUpdate.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapterUpdate";
@@ -91,6 +91,8 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             holder.tagName.setText(R.string.all_cards_tag);
             holder.clearTag.setVisibility(View.GONE); // Can't delete all cards
             holder.checkBox.setChecked(allCardIsChecked);
+            holder.isOpen = sharedPreferences.getBoolean(context.getResources().getString(R.string.all_cards_tag),
+                                                        false);
             holder.checkBox.setOnClickListener(view -> {
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -138,6 +140,9 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
             holder.numberOfItems.setText(String.valueOf(listOfSingleTag.size()));
             holder.tagName.setText(tag.getTag());
+            holder.clearTag.setVisibility(View.VISIBLE);
+            holder.isOpen = sharedPreferences.getBoolean(tag.getTag(), false);
+
             if (allCardIsChecked)
                 holder.checkBox.setChecked(false);
             else {
@@ -204,7 +209,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
         }
 
-
+        holder.linearLayout.setVisibility(holder.isOpen? View.VISIBLE : View.GONE);
 
     }
 
@@ -361,25 +366,68 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             TextView textViewCardName = cardView.findViewById(R.id.card_name);
             Button clearButton = cardView.findViewById(R.id.clear_card);
             ConstraintLayout layoutCardUpdate = cardView.findViewById(R.id.layout_update_card);
-            EditText title = cardView.findViewById(R.id.update_title_edit_text);
-            EditText taboo1 = cardView.findViewById(R.id.update_taboo_1_edit_text);
-            EditText taboo2 = cardView.findViewById(R.id.update_taboo_2_edit_text);
-            EditText taboo3 = cardView.findViewById(R.id.update_taboo_3_edit_text);
-            EditText taboo4 = cardView.findViewById(R.id.update_taboo_4_edit_text);
-            EditText taboo5 = cardView.findViewById(R.id.update_taboo_5_edit_text);
+            EditText titleEditText = cardView.findViewById(R.id.update_title_edit_text);
+            EditText taboo1EditText = cardView.findViewById(R.id.update_taboo_1_edit_text);
+            EditText taboo2EditText = cardView.findViewById(R.id.update_taboo_2_edit_text);
+            EditText taboo3EditText = cardView.findViewById(R.id.update_taboo_3_edit_text);
+            EditText taboo4EditText = cardView.findViewById(R.id.update_taboo_4_edit_text);
+            EditText taboo5EditText = cardView.findViewById(R.id.update_taboo_5_edit_text);
             Button saveButton = cardView.findViewById(R.id.save_button);
             Button tagButton = cardView.findViewById(R.id.tag_button);
 
             textViewCardName.setText(card.getTitle());
-            title.setText(card.getTitle());
-            taboo1.setText(card.getTabooWord1());
-            taboo2.setText(card.getTabooWord2());
-            taboo3.setText(card.getTabooWord3());
-            taboo4.setText(card.getTabooWord4());
-            taboo5.setText(card.getTabooWord5());
+            titleEditText.setText(card.getTitle());
+            taboo1EditText.setText(card.getTabooWord1());
+            taboo2EditText.setText(card.getTabooWord2());
+            taboo3EditText.setText(card.getTabooWord3());
+            taboo4EditText.setText(card.getTabooWord4());
+            taboo5EditText.setText(card.getTabooWord5());
+
+            saveButton.setOnClickListener(view -> {
+
+                Animations.doReduceIncreaseAnimation(view);
+
+                String title = titleEditText.getText().toString();
+                String taboo1 = taboo1EditText.getText().toString();
+                String taboo2 = taboo2EditText.getText().toString();
+                String taboo3 = taboo3EditText.getText().toString();
+                String taboo4 = taboo4EditText.getText().toString();
+                String taboo5 = taboo5EditText.getText().toString();
+
+                if (title.equalsIgnoreCase(card.getTitle()) &&
+                    taboo1.equalsIgnoreCase(card.getTabooWord1()) &&
+                    taboo2.equalsIgnoreCase(card.getTabooWord2()) &&
+                    taboo3.equalsIgnoreCase(card.getTabooWord3()) &&
+                    taboo4.equalsIgnoreCase(card.getTabooWord4()) &&
+                    taboo5.equalsIgnoreCase(card.getTabooWord5())) {
+                    Log.d(TAG, ">>Change something before saving card");
+                    return;
+                }
+
+                Card newCard = new Card(title, taboo1, taboo2, taboo3, taboo4, taboo5);
+                newCard.setIdCard(card.getIdCard());
+
+                // Check if new title already exists
+                for (CardWithTags c: this.cardList) {
+                    if (!c.getCard().getTitle().equalsIgnoreCase(card.getTitle()) && c.getCard().getTitle().equalsIgnoreCase(title)) {
+                        Toast.makeText(context, R.string.title_already_exists, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                cwt.setCard(newCard);
+                Log.d(TAG, ">>New cwt: " + cwt);
+                viewModelFragment.updateCWT(cwt);
+                Toast.makeText(context, R.string.card_updated, Toast.LENGTH_SHORT).show();
+            });
+
+            tagButton.setOnClickListener(view -> {
+
+                Animations.doReduceIncreaseAnimation(view);
+            });
 
             textViewCardName.setOnClickListener(view -> {
-                openCloseView(layoutCardUpdate);
+                openCloseView(layoutCardUpdate, null);
             });
 
             AlertDialog dialogDeleteCard;
@@ -390,12 +438,14 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
             clearButton.setOnClickListener(view -> dialogDeleteCard.show());
 
+            String tagName;
+            tagName = (tag != null) ? tag.getTag() : context.getResources().getString(R.string.all_cards_tag);
             // Set the click on both number of items and tag name
             holder.tagName.setOnClickListener(view -> {
-                openCloseView(holder.linearLayout);
+                openCloseView(holder.linearLayout, tagName);
             });
             holder.numberOfItems.setOnClickListener(view -> {
-                openCloseView(holder.linearLayout);
+                openCloseView(holder.linearLayout, tagName);
             });
 
             holder.linearLayout.addView(cardView);
@@ -404,11 +454,16 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
     }
 
-    private void openCloseView(View view) {
+    private void openCloseView(View view, String tagName) {
 
         if (view.getVisibility() == View.GONE) {
 
             view.setVisibility(View.VISIBLE);
+            if (tagName != null) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(tagName, true);
+                editor.commit();
+            }
 
             AnimationSet animation = new AnimationSet(true);
             Animation animationAlpha = new AlphaAnimation(0, 1);
@@ -443,6 +498,11 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     view.setVisibility(View.GONE);
+                    if (tagName != null) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove(tagName);
+                        editor.commit();
+                    }
                 }
 
                 @Override
@@ -454,6 +514,8 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             view.startAnimation(animation);
         }
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -471,7 +533,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
         private final Button clearTag;
         private final CheckBox checkBox;
         private final LinearLayout linearLayout;
-        private boolean isOpen;
+        private boolean isOpen = false;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -481,7 +543,6 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             clearTag = itemView.findViewById(R.id.clear_tag);
             checkBox = itemView.findViewById(R.id.check_box);
             linearLayout = itemView.findViewById(R.id.layout_cards);
-            isOpen = false;
 
         }
 

@@ -150,4 +150,42 @@ public class ViewModelMainActivity extends AndroidViewModel {
         });
     }
 
+
+    public void updateCWT(CardWithTags cwt) {
+
+        Log.d(TAG, ">>UpdateCWT()");
+
+        executor.execute(() -> {
+
+            Card card = cwt.getCard();
+            cardDAO.updateCard(card);
+            Log.d(TAG, ">>Updated card: " + card.getTitle());
+            cardDAO.deleteCardTags(card.getIdCard());
+            Log.d(TAG, ">>Deleted old cwt");
+            for (Tag tag: cwt.getTagList()) {
+                long idTag = tag.getIdTag();
+                if (!tagListContainsTag(tag)) { // If it's a new tag
+                    idTag = cardDAO.insertTag(tag);
+                    Log.d(TAG, ">>Inserted tag: " + tag);
+                }
+                cardDAO.insertCardWithTags(new CardTagCrossRef(card.getIdCard(), idTag));
+                Log.d(TAG, ">>Inserted cwt: [" + card.getIdCard() + "," + idTag + "]");
+            }
+            tagListIsUpdatedWithDb = false;
+            cardListIsUpdatedWithDb = false;
+        });
+    }
+
+    private boolean tagListContainsTag(Tag tag) {
+        if (tagList.getValue() == null) {
+            Log.d(TAG, ">>TagList is null");
+            return false;
+        }
+        for (Tag t: tagList.getValue()) {
+            if (t.getTag().equalsIgnoreCase(tag.getTag()))
+                return true;
+        }
+        return true;
+    }
+
 }

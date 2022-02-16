@@ -61,4 +61,7 @@
     <string name="taboo4">Taboo 4:</string>
     <string name="taboo5">Taboo 5:</string>
     <string name="save">SALVA</string>
+    <string name="title_already_exists">Titolo già esistente</string>
+    <string name="card_updated">Carta aggiornata</string>
+    <string name="invalid_tag_name">Nome TAG non valido</string>
 </resources>

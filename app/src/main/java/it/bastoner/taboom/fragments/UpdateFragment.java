@@ -43,6 +43,8 @@ public class UpdateFragment extends BaseCardFragment {
 
         if (adapter != null && cardListWithTags != null && tagList != null) {
 
+            Log.d(TAG, ">>Update, cards: " + cardListWithTags);
+            Log.d(TAG, ">>Update, tags: " + tagList);
             adapter.setCardList(cardListWithTags);
             adapter.setTagList(tagList);
             adapter.notifyDataSetChanged();

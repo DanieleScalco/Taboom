@@ -11,7 +11,7 @@ public class Card {
 
     // Inserting 0 is considered by Room as not-set
     @PrimaryKey(autoGenerate = true)
-    private Long idCard;
+    private long idCard;
 
     @ColumnInfo(name = "title")
     private String title;
@@ -64,11 +64,11 @@ public class Card {
             this.tabooWord5 = tabooWord5;
     }
 
-    public Long getIdCard() {
+    public long getIdCard() {
         return idCard;
     }
 
-    public void setIdCard(Long idCard) {
+    public void setIdCard(long idCard) {
         this.idCard = idCard;
     }
 
@@ -124,13 +124,13 @@ public class Card {
     @Override
     public String toString() {
         return "CardEntity{" +
-                //"id=" + idCard +
+                "id=" + idCard +
                 ", title='" + title + '\'' +
-                /*", tabooWord1='" + tabooWord1 + '\'' +
+                ", tabooWord1='" + tabooWord1 + '\'' +
                 ", tabooWord2='" + tabooWord2 + '\'' +
                 ", tabooWord3='" + tabooWord3 + '\'' +
                 ", tabooWord4='" + tabooWord4 + '\'' +
-                ", tabooWord5='" + tabooWord5 + '\'' +*/
+                ", tabooWord5='" + tabooWord5 + '\'' +
                 '}';
     }
 }

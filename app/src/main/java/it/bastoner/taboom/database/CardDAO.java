@@ -55,4 +55,7 @@ public interface CardDAO {
 
     @Query("SELECT * FROM Tag WHERE tag = :tag")
     Tag getTag(String tag);
+
+    @Query("DELETE FROM cardtagcrossref WHERE idCard = :id")
+    int deleteCardTags(long id);
 }

@@ -153,6 +153,10 @@ public class AddFragment extends BaseCardFragment {
             Toast.makeText(getContext(), R.string.tag_name_required, Toast.LENGTH_SHORT).show();
             return;
         }
+        if (newTag.getTag().equalsIgnoreCase(getResources().getString(R.string.all_cards_tag))) {
+            Toast.makeText(getContext(), R.string.invalid_tag_name, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (tagAlreadyExists(newTag)) {
             Toast.makeText(getContext(), getResources().getString(R.string.tag_already_exist)
