@@ -185,7 +185,7 @@ public class ViewModelMainActivity extends AndroidViewModel {
             if (t.getTag().equalsIgnoreCase(tag.getTag()))
                 return true;
         }
-        return true;
+        return false;
     }
 
 }

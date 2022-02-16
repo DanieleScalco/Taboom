@@ -115,13 +115,13 @@ public class AddFragment extends BaseCardFragment {
         clearSound = MediaPlayer.create(getContext(), R.raw.clear_button);
 
         addCardButton.setOnClickListener(view -> {
-            Animations.doReduceIncreaseAnimation(view);
+            Animations.doReduceIncreaseAnimation(view, null);
             addCard();
         });
 
         clearButton.setOnClickListener(view -> {
             clearSound.start();
-            Animations.doReduceIncreaseAnimation(view);
+            Animations.doReduceIncreaseAnimation(view, null);
             resetView();
         });
 
@@ -132,7 +132,7 @@ public class AddFragment extends BaseCardFragment {
         newTagEditText = dialogTags.findViewById(R.id.insert_new_tag);
         newTagButton.setOnClickListener(view -> {
 
-            Animations.doReduceIncreaseAnimation(view);
+            Animations.doReduceIncreaseAnimation(view, null);
             addTag();
         });
 
@@ -140,7 +140,7 @@ public class AddFragment extends BaseCardFragment {
 
         addTags.setOnClickListener(view -> {
             dialog.show();
-            Animations.doReduceIncreaseAnimation(view);
+            Animations.doReduceIncreaseAnimation(view, null);
             Log.d(TAG, ">>Show dialog");
         });
 
@@ -158,17 +158,20 @@ public class AddFragment extends BaseCardFragment {
             return;
         }
 
-        if (tagAlreadyExists(newTag)) {
+        if (Utilities.tagAlreadyExists(newTag, tagsRecycler)) {
             Toast.makeText(getContext(), getResources().getString(R.string.tag_already_exist)
                             + " \"" + newTag.getTag()
                             + "\" "+ getResources().getString(R.string.tag_already_exists_2),
                     Toast.LENGTH_LONG).show();
         } else {
             tagsRecycler.add(newTag);
+            chosenTags.add(newTag);
             recyclerViewAdapter.setTagList(tagsRecycler);
+            recyclerViewAdapter.setTagListChosen(chosenTags);
             recyclerViewAdapter.notifyDataSetChanged();
         }
     }
+
 
     private void setRecyclerViewDialog(View dialogTags) {
 
@@ -218,7 +221,7 @@ public class AddFragment extends BaseCardFragment {
             Toast.makeText(getContext(), R.string.card_title_needed, Toast.LENGTH_SHORT).show();
         } else {
 
-            if (cardAlreadyExists(card)) {
+            if (Utilities.cardAlreadyExists(card, cardList)) {
                 Toast.makeText(getContext(), getResources().getString(R.string.card_already_exists_1) + " \"" + titleEditText.getText().toString()
                                 + "\" "+ getResources().getString(R.string.card_already_exists_2),
                                 Toast.LENGTH_LONG).show();
@@ -236,26 +239,6 @@ public class AddFragment extends BaseCardFragment {
             }
 
         }
-    }
-
-    private boolean cardAlreadyExists(Card card) {
-
-        for (Card c : Utilities.getCards(cardList)) {
-            if (c.getTitle().equalsIgnoreCase(card.getTitle()))
-                return true;
-        }
-        return false;
-
-    }
-
-    private boolean tagAlreadyExists(Tag tag) {
-
-        for (Tag t : tagsRecycler) {
-            if (t.getTag().equalsIgnoreCase(tag.getTag()))
-                return true;
-        }
-        return false;
-
     }
 
     private void resetView() {

@@ -47,4 +47,27 @@ public class Utilities {
         Log.d(tag, ">>TagList = " + tagList);
     }
 
+    public static boolean tagAlreadyExists(Tag tag, List<Tag> tagList) {
+
+        for (Tag t : tagList) {
+            if (t.getTag().equalsIgnoreCase(tag.getTag()))
+                return true;
+        }
+        return false;
+
+    }
+
+    public static boolean cardAlreadyExists(Card card, List<CardWithTags> cardList) {
+
+        for (Card c : Utilities.getCards(cardList)) {
+            if (c.getTitle().equalsIgnoreCase(card.getTitle()))
+                return true;
+        }
+        return false;
+
+    }
+
+    public static void removeTag(Tag tag, List<Tag> tagList) {
+        tagList.removeIf(t -> t.getTag().equalsIgnoreCase(tag.getTag()));
+    }
 }

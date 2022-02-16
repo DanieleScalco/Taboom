@@ -17,6 +17,7 @@ import java.util.List;
 
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.database.Tag;
+import it.bastoner.taboom.utilities.Utilities;
 
 
 public class RecyclerViewAdapterAdd extends RecyclerView.Adapter<RecyclerViewAdapterAdd.ViewHolder> {
@@ -45,6 +46,20 @@ public class RecyclerViewAdapterAdd extends RecyclerView.Adapter<RecyclerViewAda
 
         Tag actualTag = tagList.get(position);
         holder.tag = actualTag;
+        if (Utilities.tagAlreadyExists(actualTag, tagListChosen))
+            holder.chip.setChecked(true);
+        if (holder.chip.isChecked() && !Utilities.tagAlreadyExists(actualTag, tagListChosen))
+            tagListChosen.add(actualTag);
+        holder.chip.setText(actualTag.getTag());
+        holder.chip.setOnClickListener(view -> {
+            if (holder.chip.isChecked()) {
+                tagListChosen.add(actualTag);
+            } else {
+                Utilities.removeTag(actualTag, tagListChosen);
+                Log.d(TAG, ">>" +tagListChosen);
+            }
+        });
+        /*
         if (actualTag.getIdTag() == 0) {
             holder.chip.setChecked(true);
         }
@@ -58,6 +73,7 @@ public class RecyclerViewAdapterAdd extends RecyclerView.Adapter<RecyclerViewAda
                 tagListChosen.remove(actualTag);
             }
         });
+         */
     }
 
     @Override
@@ -86,9 +102,8 @@ public class RecyclerViewAdapterAdd extends RecyclerView.Adapter<RecyclerViewAda
         this.tagList = tagList;
     }
 
-    public void addTag(Tag tag) {
-        if (tagList != null)
-            tagList.add(tag);
+    public void setTagListChosen(List<Tag> tagListChosen) {
+        this.tagListChosen = tagListChosen;
     }
 
     public List<Tag> getTagListChosen() {

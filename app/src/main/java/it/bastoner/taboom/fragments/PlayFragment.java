@@ -384,13 +384,13 @@ public class PlayFragment extends BaseCardFragment {
         scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));
 
         minusButtonA.setOnClickListener(view -> {
-            Animations.doReduceIncreaseAnimation(view);
+            Animations.doReduceIncreaseAnimation(view, null);
             if (scoreA > 0 )
                 scoreATextView.setText(String.format(Locale.getDefault(), "%02d", --scoreA));
         });
 
         plusButtonA.setOnClickListener(view -> {
-            Animations.doReduceIncreaseAnimation(view);
+            Animations.doReduceIncreaseAnimation(view, null);
             if (scoreA >= 99) {
                 scoreA = 0;
                 scoreATextView.setText(String.format(Locale.getDefault(), "%02d", scoreA));
@@ -399,13 +399,13 @@ public class PlayFragment extends BaseCardFragment {
         });
 
         minusButtonB.setOnClickListener(view -> {
-            Animations.doReduceIncreaseAnimation(view);
+            Animations.doReduceIncreaseAnimation(view, null);
             if (scoreB > 0)
                 scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", --scoreB));
         });
 
         plusButtonB.setOnClickListener(view -> {
-            Animations.doReduceIncreaseAnimation(view);
+            Animations.doReduceIncreaseAnimation(view, null);
             if (scoreB >= 99) {
                 scoreB = 0;
                 scoreBTextView.setText(String.format(Locale.getDefault(), "%02d", scoreB));

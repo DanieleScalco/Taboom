@@ -1,5 +1,6 @@
 package it.bastoner.taboom.adapter;
 
+import android.animation.Animator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -36,6 +39,8 @@ import it.bastoner.taboom.animations.Animations;
 import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
+import it.bastoner.taboom.fragments.AddFragment;
+import it.bastoner.taboom.fragments.UpdateFragment;
 import it.bastoner.taboom.utilities.Utilities;
 import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
@@ -50,9 +55,16 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
     private final ViewModelMainActivity viewModelFragment;
     private boolean allCardIsChecked;
     private int numberOfSelected;
+
     private final SharedPreferences sharedPreferences;
     private Set<String> selectedTags;
 
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapterAdd recyclerViewAdapter;
+    private EditText newTagEditText;
+    private Button newTagButton;
+    private List<Tag> tagsRecycler;
+    private List<Tag> chosenTags;
 
     public RecyclerViewAdapterUpdate(List<CardWithTags> cardList, List<Tag> tagList, Context context,
                                      ViewModelMainActivity viewModelFragment, SharedPreferences sharedPreferences) {
@@ -353,6 +365,24 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                 .create();
     }
 
+    private AlertDialog getDialogTags(View view) {
+        return new AlertDialog.Builder(context)
+                .setView(view)
+                .setTitle(R.string.title_choose_tag)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        chosenTags = recyclerViewAdapter.getTagListChosen();
+                        Toast.makeText(context, context.getResources().getString(R.string.number_of_tags_chosen_1)
+                                + " " + chosenTags.size() + " "
+                                + context.getResources().getString(R.string.number_of_tags_chosen_2), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, ">>ChosenTags: " + chosenTags);
+                    }
+                })
+                .create();
+    }
+
     private void initializeLayoutCards(List<CardWithTags> cardList, Tag tag, ViewHolder holder, boolean isAllCards) {
 
         // Or it will add already added cards
@@ -385,24 +415,12 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
             saveButton.setOnClickListener(view -> {
 
-                Animations.doReduceIncreaseAnimation(view);
-
                 String title = titleEditText.getText().toString();
                 String taboo1 = taboo1EditText.getText().toString();
                 String taboo2 = taboo2EditText.getText().toString();
                 String taboo3 = taboo3EditText.getText().toString();
                 String taboo4 = taboo4EditText.getText().toString();
                 String taboo5 = taboo5EditText.getText().toString();
-
-                if (title.equalsIgnoreCase(card.getTitle()) &&
-                    taboo1.equalsIgnoreCase(card.getTabooWord1()) &&
-                    taboo2.equalsIgnoreCase(card.getTabooWord2()) &&
-                    taboo3.equalsIgnoreCase(card.getTabooWord3()) &&
-                    taboo4.equalsIgnoreCase(card.getTabooWord4()) &&
-                    taboo5.equalsIgnoreCase(card.getTabooWord5())) {
-                    Log.d(TAG, ">>Change something before saving card");
-                    return;
-                }
 
                 Card newCard = new Card(title, taboo1, taboo2, taboo3, taboo4, taboo5);
                 newCard.setIdCard(card.getIdCard());
@@ -416,14 +434,69 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                 }
 
                 cwt.setCard(newCard);
+                cwt.setTagList(chosenTags);
                 Log.d(TAG, ">>New cwt: " + cwt);
-                viewModelFragment.updateCWT(cwt);
-                Toast.makeText(context, R.string.card_updated, Toast.LENGTH_SHORT).show();
+                Animator.AnimatorListener listener = new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        viewModelFragment.updateCWT(cwt);
+                        Toast.makeText(context, R.string.card_updated, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                };
+
+                Animations.doReduceIncreaseAnimation(view, listener);
+
+
             });
 
             tagButton.setOnClickListener(view -> {
 
-                Animations.doReduceIncreaseAnimation(view);
+                chosenTags = new ArrayList<>();
+                for (Tag t: cwt.getTagList()) {
+                    chosenTags.add(t);
+                }
+
+                Animator.AnimatorListener listener = new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        setRecyclerViewDialog(chosenTags).show();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                };
+
+                Animations.doReduceIncreaseAnimation(view, listener);
+
+                Log.d(TAG, ">>Tags of " + card.getTitle() + ": " + chosenTags);
+
             });
 
             textViewCardName.setOnClickListener(view -> {
@@ -452,6 +525,62 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
         }
 
+    }
+
+    private void addTag() {
+
+        Tag newTag = new Tag(newTagEditText.getText().toString());
+
+        if (newTag.getTag().isEmpty()) {
+            Toast.makeText(context, R.string.tag_name_required, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (newTag.getTag().equalsIgnoreCase(context.getResources().getString(R.string.all_cards_tag))) {
+            Toast.makeText(context, R.string.invalid_tag_name, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (Utilities.tagAlreadyExists(newTag, tagsRecycler)) {
+            Toast.makeText(context, context.getResources().getString(R.string.tag_already_exist)
+                            + " \"" + newTag.getTag()
+                            + "\" "+ context.getResources().getString(R.string.tag_already_exists_2),
+                    Toast.LENGTH_LONG).show();
+        } else {
+            tagsRecycler.add(newTag);
+            chosenTags.add(newTag);
+            Log.d(TAG, ">>chosenTags: " + chosenTags);
+            recyclerViewAdapter.setTagList(tagsRecycler);
+            recyclerViewAdapter.setTagListChosen(chosenTags);
+            recyclerViewAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private AlertDialog setRecyclerViewDialog(List<Tag> chosenTags) {
+
+        // 1) Create dialog
+        View dialogTags = LayoutInflater.from(context).inflate(R.layout.dialog_tags, null);
+        newTagButton = dialogTags.findViewById(R.id.new_tag_button_dialog);
+        newTagEditText = dialogTags.findViewById(R.id.insert_new_tag);
+
+        newTagButton.setOnClickListener(v -> {
+
+            Animations.doReduceIncreaseAnimation(v, null);
+            addTag();
+        });
+
+        AlertDialog dialogTagCard = getDialogTags(dialogTags);
+
+        // 2) Set RecyclerView
+        recyclerView = dialogTags.findViewById(R.id.recycler_view_tags);
+        tagsRecycler = new ArrayList<>(tagList);
+        recyclerViewAdapter = new RecyclerViewAdapterAdd(tagsRecycler, chosenTags);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,
+                RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setAdapter(recyclerViewAdapter);
+
+        return  dialogTagCard;
     }
 
     private void openCloseView(View view, String tagName) {
@@ -514,8 +643,6 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             view.startAnimation(animation);
         }
     }
-
-
 
     @Override
     public int getItemCount() {
