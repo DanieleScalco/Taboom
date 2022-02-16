@@ -73,17 +73,17 @@ public class RecyclerViewAdapterPlay extends RecyclerView.Adapter<RecyclerViewAd
             super(itemView);
 
             title = itemView.findViewById(R.id.title);
-            title.setAutoSizeTextTypeUniformWithConfiguration(20, 28, 2, TypedValue.COMPLEX_UNIT_SP);
+            title.setAutoSizeTextTypeUniformWithConfiguration(20, 34, 2, TypedValue.COMPLEX_UNIT_SP);
             tabooWord1 = itemView.findViewById(R.id.taboo_word_1);
-            tabooWord1.setAutoSizeTextTypeUniformWithConfiguration(16, 24, 2, TypedValue.COMPLEX_UNIT_SP);
+            tabooWord1.setAutoSizeTextTypeUniformWithConfiguration(16, 30, 2, TypedValue.COMPLEX_UNIT_SP);
             tabooWord2 = itemView.findViewById(R.id.taboo_word_2);
-            tabooWord2.setAutoSizeTextTypeUniformWithConfiguration(16, 24, 2, TypedValue.COMPLEX_UNIT_SP);
+            tabooWord2.setAutoSizeTextTypeUniformWithConfiguration(16, 30, 2, TypedValue.COMPLEX_UNIT_SP);
             tabooWord3 = itemView.findViewById(R.id.taboo_word_3);
-            tabooWord3.setAutoSizeTextTypeUniformWithConfiguration(16, 24, 2, TypedValue.COMPLEX_UNIT_SP);
+            tabooWord3.setAutoSizeTextTypeUniformWithConfiguration(16, 30, 2, TypedValue.COMPLEX_UNIT_SP);
             tabooWord4 = itemView.findViewById(R.id.taboo_word_4);
-            tabooWord4.setAutoSizeTextTypeUniformWithConfiguration(16, 24, 2, TypedValue.COMPLEX_UNIT_SP);
+            tabooWord4.setAutoSizeTextTypeUniformWithConfiguration(16, 30, 2, TypedValue.COMPLEX_UNIT_SP);
             tabooWord5 = itemView.findViewById(R.id.taboo_word_5);
-            tabooWord5.setAutoSizeTextTypeUniformWithConfiguration(16, 24, 2, TypedValue.COMPLEX_UNIT_SP);
+            tabooWord5.setAutoSizeTextTypeUniformWithConfiguration(16, 30, 2, TypedValue.COMPLEX_UNIT_SP);
 
         }
     }

@@ -17,24 +17,23 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+            <!-- No textSize cause in code I use setAutoSizeTextTypeUniformWithConfiguration() -->
             <TextView
                 android:id="@+id/title"
                 style="@style/card"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="8dp"
+                android:fontFamily="@font/kalam_bold"
                 android:gravity="center"
                 android:hint="@string/default_title_card"
+                android:importantForAutofill="no"
                 android:maxLines="1"
                 android:textAlignment="center"
-                android:textSize="28sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.17"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:importantForAutofill="no"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/layout_taboo_words"
@@ -53,6 +52,7 @@
                 <TextView
                     android:id="@+id/taboo_word_1"
                     style="@style/card"
+                    android:fontFamily="@font/kalam"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -60,12 +60,12 @@
                     android:hint="@string/default_taboo"
                     android:maxLines="1"
                     android:textAlignment="center"
-                    android:textSize="24sp"
                     android:importantForAutofill="no"/>
 
                 <TextView
                     android:id="@+id/taboo_word_2"
                     style="@style/card"
+                    android:fontFamily="@font/kalam"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -73,12 +73,12 @@
                     android:hint="@string/default_taboo"
                     android:maxLines="1"
                     android:textAlignment="center"
-                    android:textSize="24sp"
                     android:importantForAutofill="no"/>
 
                 <TextView
                     android:id="@+id/taboo_word_3"
                     style="@style/card"
+                    android:fontFamily="@font/kalam"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -86,12 +86,12 @@
                     android:hint="@string/default_taboo"
                     android:maxLines="1"
                     android:textAlignment="center"
-                    android:textSize="24sp"
                     android:importantForAutofill="no"/>
 
                 <TextView
                     android:id="@+id/taboo_word_4"
                     style="@style/card"
+                    android:fontFamily="@font/kalam"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -99,7 +99,6 @@
                     android:hint="@string/default_taboo"
                     android:maxLines="1"
                     android:textAlignment="center"
-                    android:textSize="24sp"
                     android:importantForAutofill="no"/>
 
                 <TextView
@@ -108,12 +107,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/kalam"
                     android:gravity="center"
                     android:hint="@string/default_taboo"
+                    android:importantForAutofill="no"
                     android:maxLines="1"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:importantForAutofill="no"/>
+                    android:textAlignment="center" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
