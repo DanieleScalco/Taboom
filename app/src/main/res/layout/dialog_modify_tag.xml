@@ -8,8 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/insert_new_tag"
+        android:inputType="textCapSentences|textNoSuggestions"
         style="@style/dialog_modify_edit_text"
         android:textSize="30sp"
-        android:maxLength="@integer/max_tag_length"/>
+        android:maxLength="@integer/max_tag_length"
+        android:importantForAutofill="no" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

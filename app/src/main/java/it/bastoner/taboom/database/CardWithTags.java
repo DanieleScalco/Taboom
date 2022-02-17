@@ -1,5 +1,6 @@
 package it.bastoner.taboom.database;
 
+import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Junction;
@@ -43,18 +44,19 @@ public class CardWithTags {
         this.tagList = tagList;
     }
 
+    @NonNull
     @Override
     public String toString() {
 
-        String s = getCard().toString();
-        s += ", TAG[";
+        StringBuilder s = new StringBuilder(getCard().toString());
+        s.append(", TAG[");
 
         for (Tag t: getTagList()) {
-            s += t + "";
+            s.append(t);
         }
 
-        s+="]";
+        s.append("]");
 
-        return s;
+        return s.toString();
     }
 }

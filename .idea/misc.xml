@@ -5,7 +5,9 @@
       <map>
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/chip_background.xml" value="0.143" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/ic_baseline_info_24_black.xml" value="0.142" />
+        <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/ic_baseline_info_24_red.xml" value="0.1" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/ic_baseline_pause_24_dark_red.xml" value="0.12" />
+        <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/ic_baseline_pause_24_secondary.xml" value="0.1" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/pause_button.xml" value="0.12" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable-v24/pause_button_on_clicked.xml" value="0.12" />
@@ -24,7 +26,10 @@
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.12" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_apps_24.xml" value="0.2203125" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_change_circle_24.xml" value="0.12" />
+        <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.1" />
+        <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.1" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.142" />
+        <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.1" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.12" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_pause_circle_filled_24.xml" value="0.2203125" />
         <entry key="..\:/Users/danie/Desktop/Dani/Progetti/Taboo/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.2203125" />

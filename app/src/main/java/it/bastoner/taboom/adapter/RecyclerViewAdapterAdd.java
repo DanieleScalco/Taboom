@@ -1,11 +1,9 @@
 package it.bastoner.taboom.adapter;
 
-import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,21 +57,7 @@ public class RecyclerViewAdapterAdd extends RecyclerView.Adapter<RecyclerViewAda
                 Log.d(TAG, ">>" +tagListChosen);
             }
         });
-        /*
-        if (actualTag.getIdTag() == 0) {
-            holder.chip.setChecked(true);
-        }
-        if (holder.chip.isChecked() && !tagListChosen.contains(actualTag))
-            tagListChosen.add(actualTag);
-        holder.chip.setText(actualTag.getTag());
-        holder.chip.setOnClickListener(view -> {
-            if (holder.chip.isChecked()) {
-                tagListChosen.add(actualTag);
-            } else {
-                tagListChosen.remove(actualTag);
-            }
-        });
-         */
+
     }
 
     @Override

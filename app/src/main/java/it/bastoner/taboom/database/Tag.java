@@ -1,5 +1,6 @@
 package it.bastoner.taboom.database;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
@@ -40,6 +41,7 @@ public class Tag {
     }
 
 
+    @NonNull
     @Override
     public String toString() {
         return getTag();

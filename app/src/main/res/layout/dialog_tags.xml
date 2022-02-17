@@ -23,7 +23,8 @@
             android:maxLength="@integer/max_tag_length"
             android:inputType="textCapSentences|textNoSuggestions"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAutofill="no" />
 
         <android.widget.Button
             android:id="@+id/new_tag_button_dialog"

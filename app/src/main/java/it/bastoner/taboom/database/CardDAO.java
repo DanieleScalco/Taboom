@@ -17,31 +17,31 @@ public interface CardDAO {
     // Insert method can return void/long/long[] (depends if
     // a single object is inserted or a list)
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public long insertCard(Card card);
+    long insertCard(Card card);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public long insertTag(Tag tag);
+    long insertTag(Tag tag);
 
     // It will return rowId
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public long insertCardWithTags(CardTagCrossRef cardTagCrossRef);
+    long insertCardWithTags(CardTagCrossRef cardTagCrossRef);
 
     // If called on an item not present in the DB it won't do anything
     // @Update/@Delete return type void or int (number of raws modified/deleted)
     @Update
-    public int updateCard(Card card);
+    int updateCard(Card card);
 
     @Update
-    public int updateTag(Tag tag);
+    int updateTag(Tag tag);
 
     @Delete
-    public int deleteCard(Card card);
+    int deleteCard(Card card);
 
     @Delete
-    public int deleteTag(Tag tag);
+    int deleteTag(Tag tag);
 
     @Delete
-    public int deleteCardWithTags(CardTagCrossRef cardTagCrossRef);
+    int deleteCardWithTags(CardTagCrossRef cardTagCrossRef);
 
 
     // With a query method you can also perform complex inserts/updates/deletes
