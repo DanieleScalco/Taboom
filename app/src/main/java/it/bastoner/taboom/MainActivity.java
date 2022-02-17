@@ -1,6 +1,8 @@
 package it.bastoner.taboom;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +35,7 @@ import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private static boolean appJustOpened = true;
+    public static boolean appJustOpened;
     public static List<CardWithTags> recyclerCardList; // Cards in play
     public static List<Tag> recyclerTagList = new ArrayList<>(); // Tags chosen by user
 
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Tag> tagList;
     private ViewModelMainActivity viewModel;
     private BottomNavigationView bottomNav;
-    private long oldIdFragment = -1;
+    private int oldIdFragment = -1;
 
     private SharedPreferences sharedPreferences;
 
@@ -50,14 +52,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d(TAG, ">>MainActivity created()");
+        Log.d(TAG, ">>OnCreate()");
 
         // No night mode support
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         sharedPreferences = getSharedPreferences(Utilities.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
-        deleteOldDatas();
+        // Need cause if user exits application isn't closed for real
+        appJustOpened = true;
+        PlayFragment.appJustOpened = true;
+
+        deleteOldData();
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(Utilities.SHOULD_SHUFFLE, true);
@@ -73,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+        Log.d(TAG, ">>OnBackPressed()");
+
         // Remove focus from editText
         if (bottomNav.getSelectedItemId() == R.id.play_nav) {
             View teamA = findViewById(R.id.team_a_name);
@@ -83,7 +91,19 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-        super.onBackPressed();
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.warning)
+                .setMessage(R.string.want_to_exit)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        finish();
+                    }
+                })
+                .create()
+                .show();
     }
 
     private void setBottomNavigation() {
@@ -94,12 +114,12 @@ public class MainActivity extends AppCompatActivity {
 
             int idItem = item.getItemId();
 
-            Log.d(TAG, ">>BottomNav item selected: " + getResources().getResourceEntryName(idItem));
 
             if (idItem == oldIdFragment) {
-                Log.d(TAG, ">>BottomNav item reselected");
+                Log.d(TAG, ">>BottomNav item reselected: " + getResources().getResourceEntryName(idItem));
                 return true;
-            }
+            } else
+                Log.d(TAG, ">>BottomNav item selected: " + getResources().getResourceEntryName(idItem));
 
             // By using switch we can easily get the selected fragment by using the id.
             BaseCardFragment selectedFragment;
@@ -149,12 +169,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void firstLoadCardList() {
 
+        Log.d(TAG, ">>FirstLoadCardList()");
+
         ConstraintLayout fragmentContainer = findViewById(R.id.fragment_container);
         ConstraintLayout progressBarContainer = findViewById(R.id.loading_container);
         fragmentContainer.setVisibility(View.GONE);
         progressBarContainer.setVisibility(View.VISIBLE);
-
-        Log.d(TAG, ">>FirstLoadCardList()");
 
         viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
 
@@ -232,9 +252,36 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, ">>Database created");
     }
 
-    private void deleteOldDatas() {
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, ">>OnPause()");
+    }
 
-        Log.d(TAG, ">>DeleteOldDatas()");
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, ">>OnStop()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, ">>OnResume()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, ">>OnDestroy()");
+
+        // Need cause if user exits application isn't closed for real
+        viewModel.reloadAll();
+    }
+
+    private void deleteOldData() {
+
+        Log.d(TAG, ">>DeleteOldData()");
 
         // Remove all the old shared preferences, no need to preserve
         // data between different application starts

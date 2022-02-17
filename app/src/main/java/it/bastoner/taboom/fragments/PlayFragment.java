@@ -45,6 +45,7 @@ public class PlayFragment extends BaseCardFragment {
 
     private static final String TAG = "PlayFragment";
     private static boolean fragmentIsActive;
+    public static boolean appJustOpened;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -97,10 +98,15 @@ public class PlayFragment extends BaseCardFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Log.d(TAG, ">>OnViewCreated()");
+        Log.d(TAG, ">>OnViewCreated()");
 
         sharedPreferences = getActivity()
                             .getSharedPreferences(Utilities.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+
+        if (appJustOpened) {
+            Toast.makeText(getContext(), R.string.welcome, Toast.LENGTH_LONG).show();
+            appJustOpened = false;
+        }
 
         setRecyclerView();
 
@@ -375,6 +381,7 @@ public class PlayFragment extends BaseCardFragment {
         plusButtonA = getView().findViewById(R.id.team_a_plus);
         minusButtonB = getView().findViewById(R.id.team_b_minus);
         plusButtonB = getView().findViewById(R.id.team_b_plus);
+
         scoreATextView = getView().findViewById(R.id.team_a_score);
         scoreBTextView = getView().findViewById(R.id.team_b_score);
 
@@ -569,14 +576,15 @@ public class PlayFragment extends BaseCardFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        Log.d(TAG, ">>Destroy()");
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, ">>OnStop()");
 
         // Stop timer
-        if (countDownTimer != null)
+        if (countDownTimer != null) {
             countDownTimer.cancel();
+            Log.d(TAG, ">>Timer canceled");
+        }
 
         // Save the state of the PlayFragment
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -589,6 +597,12 @@ public class PlayFragment extends BaseCardFragment {
         editor.commit();
 
         fragmentIsActive = false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, ">>OnDestroy()");
 
     }
 

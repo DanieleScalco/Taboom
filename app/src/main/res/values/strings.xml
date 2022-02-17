@@ -68,5 +68,8 @@
     <string name="info">Info</string>
     <string name="info_message_add">Qui puoi aggiungere tutte le carte che vuoi (attenzione che ogni \"Titolo\" è unico).\nAggiungi i TAG che preferisci per creare dei gruppi personalizzati di parole.</string>
     <string name="update_title_toolbar">Modifica carte</string>
-    <string name="info_message_update">Qui puoi modificare le carte e scegliere i gruppi di carte (TAG) con cui desideri giocare.</string>
+    <string name="info_message_update">Lo scopo del gioco è far indovinare ai propri compagni il titolo della carta senza usare le parole taboo o loro derivati.\n\nIn questa sezione puoi modificare le carte e scegliere i gruppi di carte (TAG) con cui desideri giocare.</string>
+    <string name="warning">Attenzione</string>
+    <string name="want_to_exit">Sicuro di voler uscire dall\'applicazione?</string>
+    <string name="welcome">Benvenuto!</string>
 </resources>

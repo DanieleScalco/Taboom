@@ -188,4 +188,9 @@ public class ViewModelMainActivity extends AndroidViewModel {
         return false;
     }
 
+    public void reloadAll() {
+        tagListIsUpdatedWithDb = false;
+        cardListIsUpdatedWithDb = false;
+    }
+
 }

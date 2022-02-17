@@ -287,12 +287,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                         Log.d(TAG, ">>Delete TAG: " + tag.getTag());
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })
+                .setNegativeButton(R.string.cancel, null)
                 .create();
     }
 
@@ -331,12 +326,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
                     }
                 })
-                .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })
+                .setNeutralButton(R.string.cancel, null)
                 .create();
     }
 
@@ -356,12 +346,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                         Log.d(TAG, ">>Delete card: " + card.getTitle());
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })
+                .setNegativeButton(R.string.cancel, null)
                 .create();
     }
 
@@ -436,6 +421,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                 cwt.setCard(newCard);
                 cwt.setTagList(chosenTags);
                 Log.d(TAG, ">>New cwt: " + cwt);
+
                 Animator.AnimatorListener listener = new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
