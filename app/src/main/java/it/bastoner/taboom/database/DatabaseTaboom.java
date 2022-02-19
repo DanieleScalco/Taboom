@@ -21,6 +21,7 @@ public abstract class DatabaseTaboom extends RoomDatabase {
     public static DatabaseTaboom getDatabase(Context applicationContext) {
         if (db == null) {
             db = Room.databaseBuilder(applicationContext, DatabaseTaboom.class, DATABASE_NAME)
+                    .createFromAsset("db_taboom") // From assets folder
                     //.allowMainThreadQueries()
                     .build();
         }

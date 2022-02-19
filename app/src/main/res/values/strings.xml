@@ -72,4 +72,9 @@
     <string name="warning">Attenzione</string>
     <string name="want_to_exit">Sicuro di voler uscire dall\'applicazione?</string>
     <string name="welcome">Benvenuto!</string>
+    <string name="file_saved">File salvato con successo!</string>
+    <string name="upload">Carica carte</string>
+    <string name="save_cards">Salva carte</string>
+    <string name="cards_uploaded">Carte caricate con successo!</string>
+    <string name="operation_canceled">Operazione annullata</string>
 </resources>

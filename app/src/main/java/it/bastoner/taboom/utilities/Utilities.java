@@ -20,7 +20,6 @@ public class Utilities {
     public static final String RECYCLER_CARD_POSITION = "recycler_card_position";
     public static final String SELECTED_TAGS = "selected_tags";
     public static final String SHOULD_SHUFFLE = "should_shuffle";
-    public static final String ID_FRAGMENT = "id_fragment";
 
     // Following datas are also defined in res/values/integers.xml
     public static final int MAX_TAG_LENGTH = 17;

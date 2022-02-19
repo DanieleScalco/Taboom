@@ -212,10 +212,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkIfDatabaseAlreadyExist() {
         File databaseFile = new File(getDatabasePath(DatabaseTaboom.DATABASE_NAME).getAbsolutePath());
-        if (!databaseFile.exists())
+        /*if (!databaseFile.exists())
             createDatabase();
         else
-            Log.d(TAG, ">>Database found");
+            Log.d(TAG, ">>Database found");*/
     }
 
     private void createDatabase() {
