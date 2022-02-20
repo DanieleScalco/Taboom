@@ -196,6 +196,7 @@ public class AddFragment extends BaseCardFragment {
                             + "\" "+ getResources().getString(R.string.tag_already_exists_2),
                     Toast.LENGTH_LONG).show();
         } else {
+            newTagEditText.setText("");
             tagsRecycler.add(newTag);
             chosenTags.add(newTag);
             recyclerViewAdapter.setTagList(tagsRecycler);

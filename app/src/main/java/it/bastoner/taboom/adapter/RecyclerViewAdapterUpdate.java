@@ -526,6 +526,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                             + "\" "+ context.getResources().getString(R.string.tag_already_exists_2),
                     Toast.LENGTH_LONG).show();
         } else {
+            newTagEditText.setText("");
             tagsRecycler.add(newTag);
             chosenTags.add(newTag);
             Log.d(TAG, ">>chosenTags: " + chosenTags);

@@ -26,12 +26,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,11 +37,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import it.bastoner.taboom.MainActivity;
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.adapter.RecyclerViewAdapterUpdate;
-import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
 import it.bastoner.taboom.utilities.MyCreateDocument;
@@ -61,7 +59,7 @@ public class UpdateFragment extends BaseCardFragment {
 
     private ActivityResultLauncher<String> activityResultLauncherSave;
     private ActivityResultLauncher<String[]> activityResultLauncherUpload;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private String fileContent = "";
 
 
@@ -126,8 +124,9 @@ public class UpdateFragment extends BaseCardFragment {
                             try {
                                 OutputStream outputStream = getActivity().getContentResolver()
                                                                          .openOutputStream(result);
+
                                 String cardListJSON = objectMapper.writerWithDefaultPrettyPrinter()
-                                                                  .writeValueAsString(cardList);
+                                                                  .writeValueAsString(getSelectedCards());
                                 outputStream.write(cardListJSON.getBytes());
                                 outputStream.flush();
                                 outputStream.close();
@@ -154,11 +153,9 @@ public class UpdateFragment extends BaseCardFragment {
 
                             try(InputStream inputStream = getActivity().getContentResolver().openInputStream(result);
                                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
+                                BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
 
-                                bufferedReader.lines().forEach(line -> {
-                                    fileContent += line;
-                                });
+                                bufferedReader.lines().forEach(line -> fileContent += line);
 
                                 // Log.d(TAG, ">>:" + fileContent);
                                 List<CardWithTags> uploadedCards = objectMapper.readerForListOf(CardWithTags.class).readValue(fileContent);
@@ -169,6 +166,9 @@ public class UpdateFragment extends BaseCardFragment {
                                 inputStreamReader.close();
                                 bufferedReader.close();
                                 Toast.makeText(getContext(), R.string.cards_uploaded, Toast.LENGTH_SHORT).show();
+                            } catch (JacksonException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getContext(), R.string.cant_read_file, Toast.LENGTH_SHORT).show();
                             } catch (IOException e) {
                                 e.printStackTrace();
                                 Log.d(TAG, ">>Failed to open file");
@@ -181,8 +181,32 @@ public class UpdateFragment extends BaseCardFragment {
                 });
     }
 
+    private List<CardWithTags> getSelectedCards() {
+
+        Set<String> selectedTags = sharedPreferences.getStringSet(Utilities.SELECTED_TAGS, new HashSet<>());
+        List<CardWithTags> listReturned = new ArrayList<>();
+        if (selectedTags.isEmpty())
+            listReturned = new ArrayList<>(cardList);
+        else {
+            for (CardWithTags cwt: cardList) {
+                for (Tag t: cwt.getTagList()) {
+                    if (selectedTags.contains(t.getTag()) && !listReturned.contains(cwt)) {
+                        listReturned.add(cwt);
+                    }
+
+                }
+            }
+        }
+
+        Log.d(TAG, ">>ListReturned: " + listReturned);
+        return listReturned;
+
+    }
+
     private void uploadCards(List<CardWithTags> cardList) {
-        // TODO
+        for (CardWithTags cwt: cardList) {
+            viewModel.insertLoadedCard(cwt);
+        }
     }
 
 

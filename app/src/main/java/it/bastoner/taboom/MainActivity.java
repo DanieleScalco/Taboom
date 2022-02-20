@@ -16,13 +16,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
-import it.bastoner.taboom.database.DatabaseTaboom;
 import it.bastoner.taboom.database.Tag;
 import it.bastoner.taboom.fragments.AddFragment;
 import it.bastoner.taboom.fragments.BaseCardFragment;
@@ -177,8 +174,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(ViewModelMainActivity.class);
 
-        checkIfDatabaseAlreadyExist();
-
         viewModel.getAllCards().observe(this, cardListLoaded -> {
 
             cardList = cardListLoaded;
@@ -208,47 +203,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void checkIfDatabaseAlreadyExist() {
-        File databaseFile = new File(getDatabasePath(DatabaseTaboom.DATABASE_NAME).getAbsolutePath());
-        /*if (!databaseFile.exists())
-            createDatabase();
-        else
-            Log.d(TAG, ">>Database found");*/
-    }
-
-    private void createDatabase() {
-
-        Card c1 = new Card("Ventriloquo", "Parlare", "Bocca",
-                "Muovere", "Ugola", "Labbra");
-        Card c2 = new Card("Paperino","Qui", "Quo",
-                "Qua", "Topolino", "Fumetto");
-        Card c3 = new Card("Paperinik","Paperino", "PK",
-                "Uno", "Supereroe", "Fumetto");
-        Card c4 = new Card("Archimede","Principio", "Topolino",
-                "Galleggiare", "Inventore", "Fumetto");
-
-        List<Tag> tagList1 = new ArrayList<>();
-        CardWithTags card1 = new CardWithTags(c1, tagList1);
-        viewModel.insertCard(card1);
-
-        List<Tag> tagList2 = new ArrayList<>();
-        Tag tagDisney = new Tag(getString(R.string.disney_tag));
-        tagList2.add(tagDisney);
-        CardWithTags card2 = new CardWithTags(c2, tagList2);
-        CardWithTags card3 = new CardWithTags(c3, tagList2);
-        viewModel.insertCard(card2);
-        viewModel.insertCard(card3);
-
-        List<Tag> tagList3 = new ArrayList<>();
-        Tag tagCelebrities = new Tag(getString(R.string.celebrities_tag));
-        tagList3.add(tagCelebrities);
-        tagList3.add(tagDisney);
-        CardWithTags card4 = new CardWithTags(c4, tagList3);
-        viewModel.insertCard(card4);
-
-        Log.d(TAG, ">>Database created");
     }
 
     @Override

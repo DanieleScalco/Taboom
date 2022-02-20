@@ -70,7 +70,7 @@ public class PlayFragment extends BaseCardFragment {
     private int scoreA;
     private int scoreB;
     private Runnable runnable;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     private EditText teamA;
     private EditText teamB;
@@ -156,17 +156,23 @@ public class PlayFragment extends BaseCardFragment {
     }
 
     private void updateUI() {
+
         Log.d(TAG, ">>UpdateUI()");
         RecyclerViewAdapterPlay adapter = (RecyclerViewAdapterPlay) recyclerView.getAdapter();
         boolean shouldShuffle = sharedPreferences.getBoolean(Utilities.SHOULD_SHUFFLE, false);
+
         if (shouldShuffle) {
             shuffle(MainActivity.recyclerCardList);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.remove(Utilities.SHOULD_SHUFFLE);
             editor.commit();
         }
-        adapter.setCardList(Utilities.getCards(MainActivity.recyclerCardList));
-        adapter.notifyDataSetChanged();
+
+        if (adapter != null) {
+            adapter.setCardList(Utilities.getCards(MainActivity.recyclerCardList));
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
     private void setDialogModifyTimer() {

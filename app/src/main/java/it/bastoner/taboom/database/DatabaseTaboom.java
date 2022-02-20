@@ -17,6 +17,9 @@ public abstract class DatabaseTaboom extends RoomDatabase {
 
     public static DatabaseTaboom db;
 
+    // To get db file in an Activity
+    // File databaseFile = new File(getDatabasePath(DatabaseTaboom.DATABASE_NAME).getAbsolutePath());
+
     // Singleton pattern
     public static DatabaseTaboom getDatabase(Context applicationContext) {
         if (db == null) {

@@ -64,6 +64,17 @@ public class Card {
             this.tabooWord5 = tabooWord5;
     }
 
+    // Copy constructor doesn't copy id
+    @Ignore
+    public Card(Card c) {
+        this.title = c.title;
+        this.tabooWord1 = c.tabooWord1;
+        this.tabooWord2 = c.tabooWord2;
+        this.tabooWord3 = c.tabooWord3;
+        this.tabooWord4 = c.tabooWord4;
+        this.tabooWord5 = c.tabooWord5;
+    }
+
     public long getIdCard() {
         return idCard;
     }

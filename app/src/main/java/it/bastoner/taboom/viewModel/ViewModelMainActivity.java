@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -94,7 +95,8 @@ public class ViewModelMainActivity extends AndroidViewModel {
                 cardTagCrossRef.idTag = idTag;
                 long idCWT = cardDAO.insertCardWithTags(cardTagCrossRef);
                 if (idCWT >= 1) {
-                    Log.d(TAG, ">>Inserted CWT: [" + idCard + "," + idTag + "]");
+                    Log.d(TAG, ">>Inserted CWT: " + card.getCard().getTitle() + "-" +
+                            t.getTag() + ", [" + idCard + "," + idTag + "]");
                     // Tag linked to a card
                     cardListIsUpdatedWithDb = false;
                 }
@@ -161,6 +163,7 @@ public class ViewModelMainActivity extends AndroidViewModel {
             Log.d(TAG, ">>Updated card: " + card.getTitle());
             cardDAO.deleteCardTags(card.getIdCard());
             Log.d(TAG, ">>Deleted old cwt");
+
             for (Tag tag: cwt.getTagList()) {
                 long idTag = tag.getIdTag();
                 if (!tagListContainsTag(tag)) { // If it's a new tag
@@ -168,7 +171,8 @@ public class ViewModelMainActivity extends AndroidViewModel {
                     Log.d(TAG, ">>Inserted tag: " + tag);
                 }
                 cardDAO.insertCardWithTags(new CardTagCrossRef(card.getIdCard(), idTag));
-                Log.d(TAG, ">>Inserted cwt: [" + card.getIdCard() + "," + idTag + "]");
+                Log.d(TAG, ">>Inserted cwt: " + card.getTitle() + "-" +
+                        tag.getTag() + ", [" + card.getIdCard() + "," + idTag + "]");
             }
             tagListIsUpdatedWithDb = false;
             cardListIsUpdatedWithDb = false;
@@ -190,6 +194,71 @@ public class ViewModelMainActivity extends AndroidViewModel {
     public void reloadAll() {
         tagListIsUpdatedWithDb = false;
         cardListIsUpdatedWithDb = false;
+    }
+
+    public void insertLoadedCard(CardWithTags cwt) {
+
+        Log.d(TAG, ">>InsertLoadedCard(): " + cwt);
+
+        executor.execute(() -> {
+
+            // Create a copy of the card to insert (with ids = 0)
+            Card newCard = new Card(cwt.getCard());
+            cwt.setCard(newCard);
+            List<Tag> copiedTags = new ArrayList<>();
+            for (Tag t: cwt.getTagList()) {
+                copiedTags.add(new Tag(t));
+            }
+            cwt.setTagList(copiedTags);
+
+            // Start inserting
+            long idCard;
+            long idTag;
+            CardWithTags cardRetrieved = cardDAO.getCard(newCard.getTitle());
+            if (cardRetrieved == null) {
+                newCard.setIdCard(cardDAO.insertCard(newCard)); // Insert Card
+                idCard = newCard.getIdCard();
+                Log.d(TAG, ">>Inserted Card: " + newCard);
+                cardListIsUpdatedWithDb = false;
+            } else {
+                idCard = cardRetrieved.getCard().getIdCard();
+                Log.d(TAG, ">>Card " + newCard.getTitle() + " already exists");
+            }
+
+            for (Tag t : cwt.getTagList()) {
+
+                Tag tagRetrieved = cardDAO.getTag(t.getTag());
+                if (tagRetrieved == null) {
+                    t.setIdTag(cardDAO.insertTag(t)); // Insert Tag
+                    idTag = t.getIdTag();
+                    Log.d(TAG, ">>Inserted Tag: " + t);
+                    tagListIsUpdatedWithDb = false;
+                } else {
+                    idTag = tagRetrieved.getIdTag();
+                    Log.d(TAG, ">>Tag " + t + " already exists");
+                }
+
+                // Check if Card already linked with Tag
+                CardTagCrossRef c = cardDAO.getCardTagCrossRef(newCard.getTitle(), t.getTag());
+                if (c == null) {
+
+                    CardTagCrossRef cardTagCrossRef = new CardTagCrossRef();
+                    cardTagCrossRef.idCard = idCard;
+                    cardTagCrossRef.idTag = idTag;
+                    cardDAO.insertCardWithTags(cardTagCrossRef);
+                    Log.d(TAG, ">>Inserted CWT: " + newCard.getTitle() + "-" +
+                            t.getTag() + ", [" + idCard + "," + idTag + "]");
+                    cardListIsUpdatedWithDb = false;
+
+                } else {
+                    Log.d(TAG, ">>CWT already exists: " + newCard.getTitle() + "-" +
+                            t.getTag() + ", [" + idCard + "," + idTag + "]");
+                }
+
+            }
+
+        });
+
     }
 
 }
