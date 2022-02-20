@@ -429,6 +429,7 @@ public class PlayFragment extends BaseCardFragment {
             runnable = new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(TAG, ">>Called");
                     if (!view.isPressed()) {
                         Animations.doIncreaseAnimation(view, null);
                         return;

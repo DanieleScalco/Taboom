@@ -26,6 +26,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,12 +36,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import it.bastoner.taboom.MainActivity;
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.adapter.RecyclerViewAdapterUpdate;
+import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
 import it.bastoner.taboom.utilities.MyCreateDocument;
@@ -54,9 +59,10 @@ public class UpdateFragment extends BaseCardFragment {
     private SharedPreferences sharedPreferences;
     private Toolbar toolbar;
 
-    ActivityResultLauncher<String> activityResultLauncherSave;
-    ActivityResultLauncher<String[]> activityResultLauncherUpload;
-    String fileContent = "";
+    private ActivityResultLauncher<String> activityResultLauncherSave;
+    private ActivityResultLauncher<String[]> activityResultLauncherUpload;
+    private ObjectMapper objectMapper = new ObjectMapper();
+    private String fileContent = "";
 
 
     public UpdateFragment(List<CardWithTags> cardList, List<Tag> tagList) {
@@ -116,9 +122,13 @@ public class UpdateFragment extends BaseCardFragment {
                     @Override
                     public void onActivityResult(Uri result) {
                         if (result != null) {
+
                             try {
-                                OutputStream outputStream = getActivity().getContentResolver().openOutputStream(result);
-                                outputStream.write("Test".getBytes());
+                                OutputStream outputStream = getActivity().getContentResolver()
+                                                                         .openOutputStream(result);
+                                String cardListJSON = objectMapper.writerWithDefaultPrettyPrinter()
+                                                                  .writeValueAsString(cardList);
+                                outputStream.write(cardListJSON.getBytes());
                                 outputStream.flush();
                                 outputStream.close();
                                 Toast.makeText(getContext(), R.string.file_saved, Toast.LENGTH_SHORT).show();
@@ -133,6 +143,7 @@ public class UpdateFragment extends BaseCardFragment {
                 });
     }
 
+    // The string passed is the filename
     private ActivityResultLauncher<String[]> getActivityResultLauncherUpload() {
         return registerForActivityResult(
                 new ActivityResultContracts.OpenDocument(),
@@ -144,11 +155,17 @@ public class UpdateFragment extends BaseCardFragment {
                             try(InputStream inputStream = getActivity().getContentResolver().openInputStream(result);
                                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
+
                                 bufferedReader.lines().forEach(line -> {
                                     fileContent += line;
                                 });
-                                Log.d(TAG, ">>:" + fileContent);
-                                uploadCards();
+
+                                // Log.d(TAG, ">>:" + fileContent);
+                                List<CardWithTags> uploadedCards = objectMapper.readerForListOf(CardWithTags.class).readValue(fileContent);
+                                Log.d(TAG, ">>uploadedCards:" + uploadedCards);
+
+                                uploadCards(uploadedCards);
+
                                 inputStreamReader.close();
                                 bufferedReader.close();
                                 Toast.makeText(getContext(), R.string.cards_uploaded, Toast.LENGTH_SHORT).show();
@@ -164,7 +181,7 @@ public class UpdateFragment extends BaseCardFragment {
                 });
     }
 
-    private void uploadCards() {
+    private void uploadCards(List<CardWithTags> cardList) {
         // TODO
     }
 

@@ -15,6 +15,10 @@ public class Tag {
     @ColumnInfo(name = "tag")
     private String tag;
 
+    public Tag () {
+
+    }
+
     public Tag(String tag) {
         this.tag = tag;
     }
