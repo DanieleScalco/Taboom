@@ -44,7 +44,6 @@ import it.bastoner.taboom.fragments.UpdateFragment;
 import it.bastoner.taboom.utilities.Utilities;
 import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
-// TODO close all inner views item
 public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerViewAdapterUpdate.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapterUpdate";
@@ -64,7 +63,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
     private EditText newTagEditText;
     private Button newTagButton;
     private List<Tag> tagsRecycler;
-    private List<Tag> chosenTags;
+    private List<Tag> chosenTags = new ArrayList<>();
 
     public RecyclerViewAdapterUpdate(List<CardWithTags> cardList, List<Tag> tagList, Context context,
                                      ViewModelMainActivity viewModelFragment, SharedPreferences sharedPreferences) {
