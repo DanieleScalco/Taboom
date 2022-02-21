@@ -80,7 +80,6 @@ public class PlayFragment extends BaseCardFragment {
     private SharedPreferences sharedPreferences;
     private int positionRecyclerCard;
 
-
     public PlayFragment(List<CardWithTags> cardList, List<Tag> tagList) {
         super(cardList, tagList);
     }
