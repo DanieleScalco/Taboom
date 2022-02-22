@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public static boolean appJustOpened;
     public static List<CardWithTags> recyclerCardList; // Cards in play
+    public static boolean recyclerCardIsChanged = true;
     public static List<Tag> recyclerTagList = new ArrayList<>(); // Tags chosen by user
 
     private List<CardWithTags> cardList;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d(TAG, ">>OnCreate()");
+        //Log.d(TAG, ">>OnCreate()");
 
         // No night mode support
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        Log.d(TAG, ">>OnBackPressed()");
+        //Log.d(TAG, ">>OnBackPressed()");
 
         // Remove focus from editText
         if (bottomNav.getSelectedItemId() == R.id.play_nav) {
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void firstLoadCardList() {
 
-        Log.d(TAG, ">>FirstLoadCardList()");
+        //Log.d(TAG, ">>FirstLoadCardList()");
 
         ConstraintLayout fragmentContainer = findViewById(R.id.fragment_container);
         ConstraintLayout progressBarContainer = findViewById(R.id.loading_container);
@@ -208,25 +209,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, ">>OnPause()");
+        //Log.d(TAG, ">>OnPause()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, ">>OnStop()");
+        //Log.d(TAG, ">>OnStop()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, ">>OnResume()");
+        //Log.d(TAG, ">>OnResume()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, ">>OnDestroy()");
+        //Log.d(TAG, ">>OnDestroy()");
 
         // Need cause if user exits application isn't closed for real
         viewModel.reloadAll();

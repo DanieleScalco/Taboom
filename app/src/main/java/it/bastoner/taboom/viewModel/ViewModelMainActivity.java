@@ -192,6 +192,7 @@ public class ViewModelMainActivity extends AndroidViewModel {
     }
 
     public void reloadAll() {
+        Log.d(TAG, ">>ReloadAll()");
         tagListIsUpdatedWithDb = false;
         cardListIsUpdatedWithDb = false;
     }

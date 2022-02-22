@@ -1,5 +1,8 @@
 package it.bastoner.taboom.database;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Ignore;
@@ -8,7 +11,7 @@ import androidx.room.Relation;
 
 import java.util.List;
 
-public class CardWithTags {
+public class CardWithTags implements Parcelable {
 
     @Embedded
     private Card card;
@@ -59,4 +62,30 @@ public class CardWithTags {
 
         return s.toString();
     }
+
+    // TODO empty
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+    }
+
+    @Ignore
+    protected CardWithTags(Parcel in) {
+    }
+
+    public static final Creator<CardWithTags> CREATOR = new Creator<CardWithTags>() {
+        @Override
+        public CardWithTags createFromParcel(Parcel in) {
+            return new CardWithTags(in);
+        }
+
+        @Override
+        public CardWithTags[] newArray(int size) {
+            return new CardWithTags[size];
+        }
+    };
 }

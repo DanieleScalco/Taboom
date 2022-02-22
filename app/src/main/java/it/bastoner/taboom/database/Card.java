@@ -134,7 +134,7 @@ public class Card {
     @NonNull
     @Override
     public String toString() {
-        return "CardEntity{" +
+        return title;/*"CardEntity{" +
                 "id=" + idCard +
                 ", title='" + title + '\'' +
                 ", tabooWord1='" + tabooWord1 + '\'' +
@@ -142,6 +142,6 @@ public class Card {
                 ", tabooWord3='" + tabooWord3 + '\'' +
                 ", tabooWord4='" + tabooWord4 + '\'' +
                 ", tabooWord5='" + tabooWord5 + '\'' +
-                '}';
+                '}';*/
     }
 }

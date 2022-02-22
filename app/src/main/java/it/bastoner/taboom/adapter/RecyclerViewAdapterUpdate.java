@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,8 +38,6 @@ import it.bastoner.taboom.animations.Animations;
 import it.bastoner.taboom.database.Card;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
-import it.bastoner.taboom.fragments.AddFragment;
-import it.bastoner.taboom.fragments.UpdateFragment;
 import it.bastoner.taboom.utilities.Utilities;
 import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 
@@ -64,6 +61,9 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
     private Button newTagButton;
     private List<Tag> tagsRecycler;
     private List<Tag> chosenTags = new ArrayList<>();
+
+    private AlertDialog dialogDeleteCard;
+
 
     public RecyclerViewAdapterUpdate(List<CardWithTags> cardList, List<Tag> tagList, Context context,
                                      ViewModelMainActivity viewModelFragment, SharedPreferences sharedPreferences) {
@@ -369,6 +369,7 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
 
     private void initializeLayoutCards(List<CardWithTags> cardList, Tag tag, ViewHolder holder, boolean isAllCards) {
 
+        long start = System.currentTimeMillis();
         // Or it will add already added cards
         holder.linearLayout.removeAllViews();
 
@@ -482,13 +483,14 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
                 openCloseView(layoutCardUpdate, null);
             });
 
-            AlertDialog dialogDeleteCard;
-            if (!isAllCards)
-                dialogDeleteCard = getDialogDeleteCardOrTag(card, tag);
-            else
-                dialogDeleteCard = getDialogDeleteCard(card);
+            clearButton.setOnClickListener(view -> {
+                if (!isAllCards)
+                    dialogDeleteCard = getDialogDeleteCardOrTag(card, tag);
+                else
+                    dialogDeleteCard = getDialogDeleteCard(card);
+                dialogDeleteCard.show();
 
-            clearButton.setOnClickListener(view -> dialogDeleteCard.show());
+            });
 
             String tagName;
             tagName = (tag != null) ? tag.getTag() : context.getResources().getString(R.string.all_cards_tag);
@@ -503,6 +505,9 @@ public class RecyclerViewAdapterUpdate extends RecyclerView.Adapter<RecyclerView
             holder.linearLayout.addView(cardView);
 
         }
+
+        long end = System.currentTimeMillis();
+        Log.d(TAG, "Durata in ms: " +  (end - start));
 
     }
 

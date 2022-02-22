@@ -291,26 +291,35 @@ public class PlayFragment extends BaseCardFragment {
 
         Log.d(TAG, ">>InitializeRecyclerCardList()");
 
-        MainActivity.recyclerCardList = new ArrayList<>();
-
-        Log.d(TAG, ">>TagListChosen: " + MainActivity.recyclerTagList);
-
-        if (MainActivity.recyclerTagList.isEmpty()) {
-            MainActivity.recyclerCardList = cardList;
+        if (!MainActivity.recyclerCardIsChanged) {
+            Log.d(TAG, ">>RecyclerCardList not changed");
+            return;
         } else {
 
-            for (CardWithTags c : cardList) {
-                for (Tag t1 : c.getTagList()) {
-                    for (Tag t2 : MainActivity.recyclerTagList) {
-                        if (t1.getTag().equalsIgnoreCase(t2.getTag()) && !MainActivity.recyclerCardList.contains(c))
-                            MainActivity.recyclerCardList.add(c);
+            Log.d(TAG, ">>TagListChosen: " + MainActivity.recyclerTagList);
+
+            if (MainActivity.recyclerTagList.isEmpty()) {
+                MainActivity.recyclerCardList = new ArrayList<>(cardList); // Copy
+            } else {
+
+                MainActivity.recyclerCardList = new ArrayList<>();
+
+                for (CardWithTags c : cardList) {
+                    for (Tag t1 : c.getTagList()) {
+                        for (Tag t2 : MainActivity.recyclerTagList) {
+                            if (t1.getTag().equalsIgnoreCase(t2.getTag()) && !MainActivity.recyclerCardList.contains(c))
+                                MainActivity.recyclerCardList.add(c);
+                        }
                     }
                 }
+
             }
+
+            MainActivity.recyclerCardIsChanged = false;
 
         }
 
-        Log.d(TAG, ">>Cards: " + MainActivity.recyclerCardList);
+        Log.d(TAG, ">>RecyclerCardList: " + MainActivity.recyclerCardList);
     }
 
     private void startTimer() {

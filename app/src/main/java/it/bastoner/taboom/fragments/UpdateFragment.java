@@ -41,9 +41,10 @@ import java.util.Set;
 
 import it.bastoner.taboom.MainActivity;
 import it.bastoner.taboom.R;
-import it.bastoner.taboom.adapter.RecyclerViewAdapterUpdate;
+import it.bastoner.taboom.adapter.RecyclerViewAdapterUpdateExpandable;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
+import it.bastoner.taboom.utilities.CardGroup;
 import it.bastoner.taboom.utilities.MyCreateDocument;
 import it.bastoner.taboom.utilities.Utilities;
 import it.bastoner.taboom.viewModel.ViewModelMainActivity;
@@ -69,18 +70,31 @@ public class UpdateFragment extends BaseCardFragment {
 
     public void updateUI(List<CardWithTags> cardListWithTags, List<Tag> tagList) {
 
-        RecyclerViewAdapterUpdate adapter = (RecyclerViewAdapterUpdate) recyclerView.getAdapter();
+        if (cardListWithTags != null && tagList != null) {
 
-        if (adapter != null && cardListWithTags != null && tagList != null) {
+            List<CardGroup> cardGroupList = new ArrayList<>();
+            CardGroup cardGroup = new CardGroup(getString(R.string.all_cards_tag), null, cardList);
+            Log.d(TAG, ">>CardGroup: " + cardGroup);
+            cardGroupList.add(cardGroup);
+            for (Tag tag: tagList) {
 
-            Log.d(TAG, ">>Update, cards: " + cardListWithTags);
-            Log.d(TAG, ">>Update, tags: " + tagList);
-            adapter.setCardList(cardListWithTags);
-            adapter.setTagList(tagList);
+                List<CardWithTags> cardGroupTag = new ArrayList<>();
+                for (CardWithTags cwt : cardList) {
+                    for (Tag t : cwt.getTagList()) {
+                        if (t.getTag().equals(tag.getTag()))
+                            cardGroupTag.add(cwt);
+                    }
+                }
+
+                cardGroup = new CardGroup(tag.getTag(), tag, cardGroupTag);
+                Log.d(TAG, ">>CardGroup: " + cardGroup);
+                cardGroupList.add(cardGroup);
+            }
+
+            RecyclerViewAdapterUpdateExpandable adapter = new RecyclerViewAdapterUpdateExpandable(cardGroupList,
+                                                            getContext(), sharedPreferences, viewModel);
+            recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
-            Log.d(TAG, ">>Update, Total cards: " + cardListWithTags.size());
-            Log.d(TAG, ">>Update, Total tags: " + tagList.size());
-
         }
     }
 
@@ -266,13 +280,27 @@ public class UpdateFragment extends BaseCardFragment {
         Log.d(TAG, ">>SetRecyclerView()");
         recyclerView = getView().findViewById(R.id.recycler_view_list);
 
-        RecyclerViewAdapterUpdate recyclerViewAdapter = new RecyclerViewAdapterUpdate(cardList, tagList,
-                                                                getContext(), viewModel, sharedPreferences);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
                                                             RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.setAdapter(recyclerViewAdapter);
+        List<CardGroup> cardGroupList = new ArrayList<>();
+        cardGroupList.add(new CardGroup("Tutte le carte", null, cardList));
+        for (Tag tag: tagList) {
+            List<CardWithTags> cardGroupTag = new ArrayList<>();
+            for (CardWithTags cwt : cardList) {
+                for (Tag t : cwt.getTagList()) {
+                    if (t.getTag().equals(tag.getTag()))
+                        cardGroupTag.add(cwt);
+                }
+            }
+            cardGroupList.add(new CardGroup(tag.getTag(), tag, cardGroupTag));
+        }
+
+        RecyclerViewAdapterUpdateExpandable adapter = new RecyclerViewAdapterUpdateExpandable(cardGroupList,
+                                                        getContext(), sharedPreferences, viewModel);
+        recyclerView.setAdapter(adapter);
+
 
     }
 
