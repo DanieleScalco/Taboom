@@ -26,7 +26,7 @@ public class RecyclerViewAdapterAdd extends RecyclerView.Adapter<RecyclerViewAda
     private List<Tag> tagListChosen = new ArrayList<>();
 
     // TagList is a COPY of the TagList in ViewModel!!!
-    public RecyclerViewAdapterAdd(List<Tag> tagList, List tagListChosen) {
+    public RecyclerViewAdapterAdd(List<Tag> tagList, List<Tag> tagListChosen) {
         this.tagList = tagList;
         this.tagListChosen = tagListChosen;
     }

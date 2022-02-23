@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintWidth_percent="0.9"
                     android:textSize="18sp"
-                    android:maxLength="17"
+                    android:maxLength="@integer/max_title_length"
                     style="@style/card_update"
                     android:layout_marginStart="8dp"
                     app:layout_constraintStart_toStartOf="parent"

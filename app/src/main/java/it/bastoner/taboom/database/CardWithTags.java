@@ -54,9 +54,10 @@ public class CardWithTags implements Parcelable {
         StringBuilder s = new StringBuilder(getCard().toString());
         s.append(", TAG[");
 
-        for (Tag t: getTagList()) {
-            s.append(t);
-        }
+        if (getTagList() != null)
+            for (Tag t: getTagList()) {
+                s.append(t);
+            }
 
         s.append("]");
 

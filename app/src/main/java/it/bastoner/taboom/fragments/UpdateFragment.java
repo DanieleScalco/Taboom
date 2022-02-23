@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,6 +56,7 @@ public class UpdateFragment extends BaseCardFragment {
     private static boolean fragmentIsActive;
 
     private RecyclerView recyclerView;
+    RecyclerViewAdapterUpdateExpandable adapter;
     private SharedPreferences sharedPreferences;
     private Toolbar toolbar;
 
@@ -73,7 +75,8 @@ public class UpdateFragment extends BaseCardFragment {
         if (cardListWithTags != null && tagList != null) {
 
             List<CardGroup> cardGroupList = new ArrayList<>();
-            CardGroup cardGroup = new CardGroup(getString(R.string.all_cards_tag), null, cardList);
+            // hardcoded string cause Context/Activity might be null
+            CardGroup cardGroup = new CardGroup("Tutte le carte", null, cardList);
             Log.d(TAG, ">>CardGroup: " + cardGroup);
             cardGroupList.add(cardGroup);
             for (Tag tag: tagList) {
@@ -92,8 +95,17 @@ public class UpdateFragment extends BaseCardFragment {
             }
 
             RecyclerViewAdapterUpdateExpandable adapter = new RecyclerViewAdapterUpdateExpandable(cardGroupList,
-                                                            getContext(), sharedPreferences, viewModel);
+                                                            getContext(), sharedPreferences, viewModel,
+                                                            cardListWithTags, tagList);
             recyclerView.setAdapter(adapter);
+
+            // Set opened groups
+            for (ExpandableGroup<CardGroup> group: adapter.getGroups()) {
+                boolean isGroupOpen = sharedPreferences.getBoolean(group.getTitle(), false);
+                if (isGroupOpen && !adapter.isGroupExpanded(group))
+                    adapter.toggleGroup(group);
+            }
+            //recyclerView.getLayoutManager().scrollToPosition();
             adapter.notifyDataSetChanged();
         }
     }
@@ -297,10 +309,10 @@ public class UpdateFragment extends BaseCardFragment {
             cardGroupList.add(new CardGroup(tag.getTag(), tag, cardGroupTag));
         }
 
-        RecyclerViewAdapterUpdateExpandable adapter = new RecyclerViewAdapterUpdateExpandable(cardGroupList,
-                                                        getContext(), sharedPreferences, viewModel);
+        adapter = new RecyclerViewAdapterUpdateExpandable(cardGroupList,
+                                                        getContext(), sharedPreferences, viewModel,
+                                                        cardList, tagList);
         recyclerView.setAdapter(adapter);
-
 
     }
 
