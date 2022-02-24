@@ -179,6 +179,7 @@ public class AddFragment extends BaseCardFragment {
         }
     }
 
+    // Look addTag adapterExpandable
     private void addTag() {
         Tag newTag = new Tag(newTagEditText.getText().toString());
 
@@ -198,8 +199,9 @@ public class AddFragment extends BaseCardFragment {
                     Toast.LENGTH_LONG).show();
         } else {
             newTagEditText.setText("");
-            tagsRecycler.add(newTag);
+            tagsRecycler.add(0, newTag);
             chosenTags.add(newTag);
+            Log.d(TAG, ">>chosenTags: " + chosenTags);
             recyclerViewAdapter.setTagList(tagsRecycler);
             recyclerViewAdapter.setTagListChosen(chosenTags);
             recyclerViewAdapter.notifyDataSetChanged();

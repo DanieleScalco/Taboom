@@ -290,6 +290,7 @@ public class RecyclerViewAdapterUpdateExpandable extends ExpandableRecyclerViewA
         return  dialogTagCard;
     }
 
+    // Look addTag addFragment
     private void addTag(EditText newTagEditText, CardViewHolder holder) {
 
         Tag newTag = new Tag(newTagEditText.getText().toString());
@@ -310,7 +311,7 @@ public class RecyclerViewAdapterUpdateExpandable extends ExpandableRecyclerViewA
                     Toast.LENGTH_LONG).show();
         } else {
             newTagEditText.setText("");
-            holder.tagsRecycler.add(newTag);
+            holder.tagsRecycler.add(0, newTag);
             holder.chosenTags.add(newTag);
             Log.d(TAG, ">>chosenTags: " + holder.chosenTags);
             holder.recyclerViewAdapter.setTagList(new ArrayList<>(holder.tagsRecycler));
