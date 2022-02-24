@@ -44,17 +44,17 @@ public class RecyclerViewAdapterAdd extends RecyclerView.Adapter<RecyclerViewAda
 
         Tag actualTag = tagList.get(position);
         holder.tag = actualTag;
-        if (Utilities.tagAlreadyExists(actualTag, tagListChosen))
-            holder.chip.setChecked(true);
-        if (holder.chip.isChecked() && !Utilities.tagAlreadyExists(actualTag, tagListChosen))
+        holder.chip.setChecked(Utilities.tagAlreadyExists(actualTag, tagListChosen));
+        if (holder.chip.isChecked() && !Utilities.tagAlreadyExists(actualTag, tagListChosen)) {
             tagListChosen.add(actualTag);
+        }
         holder.chip.setText(actualTag.getTag());
         holder.chip.setOnClickListener(view -> {
             if (holder.chip.isChecked()) {
                 tagListChosen.add(actualTag);
             } else {
                 Utilities.removeTag(actualTag, tagListChosen);
-                Log.d(TAG, ">>" +tagListChosen);
+                Log.d(TAG, ">>TagListChosen: " + tagListChosen);
             }
         });
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class RecyclerViewAdapterUpdateExpandable extends ExpandableRecyclerViewA
         CardWithTags cardWithTags = ((CardGroup) group).getItems().get(childIndex);
         Card card = cardWithTags.getCard();
         List<Tag> tagListCard = cardWithTags.getTagList();
+        holder.chosenTags = tagListCard;
         holder.textViewCardName.setText(card.getTitle());
         holder.titleEditText.setText(card.getTitle());
         holder.taboo1EditText.setText(card.getTabooWord1());
@@ -611,6 +613,7 @@ public class RecyclerViewAdapterUpdateExpandable extends ExpandableRecyclerViewA
         public CardViewHolder(View itemView) {
             super(itemView);
             textViewCardName = itemView.findViewById(R.id.card_name);
+            textViewCardName.setAutoSizeTextTypeUniformWithConfiguration(14, 18, 2, TypedValue.COMPLEX_UNIT_SP);
             clearButton = itemView.findViewById(R.id.clear_card);
             titleEditText = itemView.findViewById(R.id.update_title_edit_text);
             taboo1EditText = itemView.findViewById(R.id.update_taboo_1_edit_text);

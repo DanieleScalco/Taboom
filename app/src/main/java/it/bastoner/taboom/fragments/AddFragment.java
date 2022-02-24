@@ -42,6 +42,7 @@ import it.bastoner.taboom.viewModel.ViewModelMainActivity;
 public class AddFragment extends BaseCardFragment {
 
     private static final String TAG = "AddFragment";
+    private static boolean fragmentIsActive;
 
     private EditText titleEditText;
     private EditText taboo1EditText;
@@ -208,6 +209,8 @@ public class AddFragment extends BaseCardFragment {
 
     private void setRecyclerViewDialog(View dialogTags) {
 
+        Log.d(TAG, ">>SetRecyclerViewDialog()");
+
         recyclerView = dialogTags.findViewById(R.id.recycler_view_tags);
         tagsRecycler = new ArrayList<>(tagList);
         recyclerViewAdapter = new RecyclerViewAdapterAdd(tagsRecycler, chosenTags);
@@ -222,19 +225,32 @@ public class AddFragment extends BaseCardFragment {
 
         Log.d(TAG, ">>SetViewModel()");
 
+        fragmentIsActive = true;
+
         viewModel = new ViewModelProvider(requireActivity()).get(ViewModelMainActivity.class);
         viewModel.getAllCards().observe(requireActivity(), cardListLoaded -> {
-            cardList = cardListLoaded;
-            Log.d(TAG, ">>CardList updated:" + cardList);
-            //updateUI(cardList, tagList);
+            if (fragmentIsActive) {
+                cardList = cardListLoaded;
+                Log.d(TAG, ">>CardList updated:" + cardList);
+            }
         });
 
         viewModel.getAllTags().observe(requireActivity(), tagListLoaded -> {
-            tagList = tagListLoaded;
-            Log.d(TAG, ">>TagList updated:" + tagList);
-            //updateUI(cardList, tagList);
+            if (fragmentIsActive) {
+                tagList = tagListLoaded;
+                Log.d(TAG, ">>TagList updated:" + tagList);
+                updateUI(tagList);
+            }
         });
 
+    }
+
+    public void updateUI(List<Tag> tagList) {
+        Log.d(TAG, ">> UpdateUI");
+        if (recyclerViewAdapter != null) {
+            recyclerViewAdapter.setTagList(tagList);
+            recyclerViewAdapter.notifyDataSetChanged();
+        }
     }
 
     private void addCard() {
@@ -291,6 +307,10 @@ public class AddFragment extends BaseCardFragment {
         taboo4EditText.setText(emptyString);
         taboo5EditText.setText(emptyString);
 
+        chosenTags = new ArrayList<>();
+        recyclerViewAdapter.setTagListChosen(chosenTags);
+        recyclerViewAdapter.notifyDataSetChanged();
+
     }
 
     private AlertDialog getDialogTags(View view) {
@@ -319,4 +339,9 @@ public class AddFragment extends BaseCardFragment {
                 .create();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        fragmentIsActive = false;
+    }
 }

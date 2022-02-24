@@ -1,10 +1,12 @@
 package it.bastoner.taboom.fragments;
 
+import android.animation.Animator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -24,6 +27,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fasterxml.jackson.core.JacksonException;
@@ -38,11 +42,13 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import it.bastoner.taboom.MainActivity;
 import it.bastoner.taboom.R;
 import it.bastoner.taboom.adapter.RecyclerViewAdapterUpdateExpandable;
+import it.bastoner.taboom.animations.Animations;
 import it.bastoner.taboom.database.CardWithTags;
 import it.bastoner.taboom.database.Tag;
 import it.bastoner.taboom.utilities.CardGroup;
@@ -59,6 +65,7 @@ public class UpdateFragment extends BaseCardFragment {
     RecyclerViewAdapterUpdateExpandable adapter;
     private SharedPreferences sharedPreferences;
     private Toolbar toolbar;
+    private Button returnTopButton;
 
     private ActivityResultLauncher<String> activityResultLauncherSave;
     private ActivityResultLauncher<String[]> activityResultLauncherUpload;
@@ -130,13 +137,40 @@ public class UpdateFragment extends BaseCardFragment {
 
         setViewModel();
 
-        toolbar = getActivity().findViewById(R.id.toolbar_update);
-        setHasOptionsMenu(true);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        setView();
 
         activityResultLauncherSave = getActivityResultLauncherSave();
         activityResultLauncherUpload = getActivityResultLauncherUpload();
 
+    }
+
+    private void setView() {
+
+        toolbar = getActivity().findViewById(R.id.toolbar_update);
+        setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        returnTopButton = getActivity().findViewById(R.id.return_top);
+        returnTopButton.setOnClickListener(view -> {
+
+            Animator.AnimatorListener listener = new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) { }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    recyclerView.scrollToPosition(0);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) { }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) { }
+            };
+
+            Animations.doAlphaAnimation(view, listener);
+        });
     }
 
     private ActivityResultLauncher<String> getActivityResultLauncherSave() {

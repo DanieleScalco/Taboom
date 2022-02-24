@@ -14,6 +14,20 @@ public class Animations {
     // Animators can modify the positions of Views for real, Animations not
     // (you see animations but View don't move for real)
 
+    public static void doAlphaAnimation(View view, Animator.AnimatorListener listener) {
+
+        ObjectAnimator animatorAlpha = ObjectAnimator.ofFloat(view, Button.ALPHA, 1, 0.5f);
+        animatorAlpha.setDuration(150);
+        animatorAlpha.setRepeatMode(ValueAnimator.REVERSE);
+        animatorAlpha.setRepeatCount(1);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        if (listener != null)
+            animatorSet.addListener(listener);
+        animatorSet.play(animatorAlpha);
+        animatorSet.start();
+    }
+
     public static void doReduceIncreaseAnimation(View view, Animator.AnimatorListener listener) {
 
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, Button.SCALE_Y, 0.8f);
