@@ -45,7 +45,7 @@
     <string name="button_add_tag">Aggiungi TAG</string>
     <string name="title_choose_tag">Seleziona i TAG</string>
     <string name="tag">TAG</string>
-    <string name="create_tag">Crea TAG</string>
+    <string name="create_tag_tooltip">Crea TAG</string>
     <string name="card_already_exists_1">La carta</string>
     <string name="tag_already_exist">Il TAG</string>
     <string name="tag_already_exists_2">è gia stato salvato</string>

@@ -11,11 +11,13 @@
         android:gravity="center"
         android:inputType="number"
         android:maxLength="1"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:text="1"
         android:tooltipText="@string/minutes_tooltip"
         android:textAlignment="center"
         style="@style/dialog_modify_edit_text"
-        android:textSize="48sp"
+        android:textSize="56sp"
         android:importantForAutofill="no" />
 
     <TextView
@@ -25,7 +27,7 @@
         android:textAlignment="center"
         android:gravity="center"
         android:text=":"
-        android:textSize="48sp"
+        android:textSize="56sp"
         style="@style/dialog_modify_edit_text"/>
 
     <EditText
@@ -39,7 +41,7 @@
         android:tooltipText="@string/seconds_tooltip"
         android:textAlignment="center"
         style="@style/dialog_modify_edit_text"
-        android:textSize="48sp"
+        android:textSize="56sp"
         android:importantForAutofill="no" />
 
 </LinearLayout>

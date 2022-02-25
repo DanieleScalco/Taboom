@@ -9,7 +9,7 @@ android {
         applicationId "it.bastoner.taboom"
         minSdk 26
         targetSdk 31
-        versionCode 2 // Increment when modify application on the Play Store
+        versionCode 3 // Increment when modify application on the Play Store
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

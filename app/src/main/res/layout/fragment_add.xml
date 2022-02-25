@@ -72,6 +72,7 @@
             app:layout_constraintHeight_percent="1"
             android:gravity="center"
             android:tooltipText="@string/add_tooltip"
+            android:contentDescription="@string/add_tooltip"
             android:layout_marginEnd="20dp"
             android:background="@drawable/ic_baseline_add_24"
             app:layout_constraintStart_toEndOf="@id/add_tag"

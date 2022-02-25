@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:fitsSystemWindows="true">
+    <!-- android:fitsSystemWindows="true" for views to don't go under bottomNav -->
 
     <!-- height 93 to fill space -->
    <androidx.constraintlayout.widget.ConstraintLayout

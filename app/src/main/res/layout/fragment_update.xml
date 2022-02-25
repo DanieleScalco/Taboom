@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:tooltipText="@string/tooltip_return_top"
+        android:contentDescription="@string/tooltip_return_top"
         app:layout_constraintHeight_percent="0.05"
         android:background="@drawable/ic_baseline_keyboard_arrow_up_24"
         app:layout_constraintStart_toStartOf="parent"
