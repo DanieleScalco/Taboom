@@ -4,7 +4,6 @@
     xmlns:tools="http://schematch_parentmas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="-4dp"
     tools:context=".fragments.PlayFragment">
 
 
@@ -56,7 +55,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="-12dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/team_a_name"
@@ -69,14 +67,13 @@
                     app:layout_constraintWidth_percent="0.33"
                     app:layout_constraintHeight_percent="0.82"
                     android:layout_margin="4dp"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     style="@style/team_a_color_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/team_a_score"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@drawable/ic_baseline_remove_circle_outline_24"/>
+                    android:background="@drawable/ic_baseline_remove_circle_outline_24"
+                    android:tooltipText="@string/minus"/>
 
                 <TextView
                     android:id="@+id/team_a_score"
@@ -99,14 +96,13 @@
                     app:layout_constraintWidth_percent="0.33"
                     app:layout_constraintHeight_percent="0.82"
                     android:layout_margin="4dp"
-                    android:textSize="16sp"
                     style="@style/team_a_color_button"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@id/team_a_score"
                     app:layout_constraintEnd_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@drawable/ic_baseline_add_circle_outline_24"/>
+                    android:background="@drawable/ic_baseline_add_circle_outline_24"
+                    android:tooltipText="@string/plus"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -147,7 +143,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="-12dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/team_b_name"
@@ -163,14 +158,13 @@
                     app:layout_constraintWidth_percent="0.33"
                     app:layout_constraintHeight_percent="0.82"
                     android:layout_margin="4dp"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     style="@style/team_b_color_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/team_b_score"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@drawable/ic_baseline_remove_circle_outline_24"/>
+                    android:background="@drawable/ic_baseline_remove_circle_outline_24"
+                    android:tooltipText="@string/minus"/>
 
                 <TextView
                     android:id="@+id/team_b_score"
@@ -193,14 +187,13 @@
                     app:layout_constraintWidth_percent="0.33"
                     app:layout_constraintHeight_percent="0.82"
                     android:layout_margin="4dp"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     style="@style/team_b_color_button"
                     app:layout_constraintStart_toEndOf="@id/team_b_score"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@drawable/ic_baseline_add_circle_outline_24"/>
+                    android:background="@drawable/ic_baseline_add_circle_outline_24"
+                    android:tooltipText="@string/plus"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

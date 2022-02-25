@@ -49,7 +49,8 @@
                     app:layout_constraintHeight_percent="0.75"
                     android:layout_margin="4dp"
                     android:background="@drawable/ic_baseline_delete_24"
-                    android:tooltipText="@string/delete_tag"
+                    android:tooltipText="@string/delete"
+                    android:contentDescription="@string/delete"
                     style="@style/card_update"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +85,8 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:textAlignment="center"
-                        android:text="@string/title" />
+                        android:text="@string/title"
+                        android:labelFor="@id/update_title_edit_text"/>
 
                     <EditText
                         android:id="@+id/update_title_edit_text"
@@ -93,7 +95,6 @@
                         android:layout_weight="0.85"
                         android:layout_marginEnd="24dp"
                         android:layout_gravity="center"
-                        android:hint="@string/default_title_card"
                         android:maxLength="@integer/max_title_length"
                         android:importantForAutofill="no"
                         android:inputType="textCapSentences|textNoSuggestions"/>
@@ -116,7 +117,8 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:text="@string/taboo1"
-                        android:textAlignment="center"/>
+                        android:textAlignment="center"
+                        android:labelFor="@id/update_taboo_1_edit_text"/>
 
                     <EditText
                         android:id="@+id/update_taboo_1_edit_text"
@@ -125,7 +127,6 @@
                         android:layout_weight="0.85"
                         android:layout_marginEnd="24dp"
                         android:layout_gravity="center"
-                        android:hint="@string/default_taboo"
                         android:maxLength="@integer/max_taboo_length"
                         android:importantForAutofill="no"
                         android:inputType="textCapSentences|textNoSuggestions"/>
@@ -148,7 +149,8 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:text="@string/taboo2"
-                        android:textAlignment="center"/>
+                        android:textAlignment="center"
+                        android:labelFor="@id/update_taboo_2_edit_text"/>
 
                     <EditText
                         android:id="@+id/update_taboo_2_edit_text"
@@ -157,7 +159,6 @@
                         android:layout_weight="0.85"
                         android:layout_marginEnd="24dp"
                         android:layout_gravity="center"
-                        android:hint="@string/default_taboo"
                         android:maxLength="@integer/max_taboo_length"
                         android:importantForAutofill="no"
                         android:inputType="textCapSentences|textNoSuggestions"/>
@@ -180,7 +181,8 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:text="@string/taboo3"
-                        android:textAlignment="center"/>
+                        android:textAlignment="center"
+                        android:labelFor="@id/update_taboo_3_edit_text"/>
 
                     <EditText
                         android:id="@+id/update_taboo_3_edit_text"
@@ -189,7 +191,6 @@
                         android:layout_weight="0.85"
                         android:layout_marginEnd="24dp"
                         android:layout_gravity="center"
-                        android:hint="@string/default_taboo"
                         android:maxLength="@integer/max_taboo_length"
                         android:importantForAutofill="no"
                         android:inputType="textCapSentences|textNoSuggestions"/>
@@ -212,7 +213,8 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:text="@string/taboo4"
-                        android:textAlignment="center"/>
+                        android:textAlignment="center"
+                        android:labelFor="@id/update_taboo_4_edit_text"/>
 
                     <EditText
                         android:id="@+id/update_taboo_4_edit_text"
@@ -221,7 +223,6 @@
                         android:layout_weight="0.85"
                         android:layout_marginEnd="24dp"
                         android:layout_gravity="center"
-                        android:hint="@string/default_taboo"
                         android:maxLength="@integer/max_taboo_length"
                         android:importantForAutofill="no"
                         android:inputType="textCapSentences|textNoSuggestions"/>
@@ -244,7 +245,8 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:text="@string/taboo5"
-                        android:textAlignment="center"/>
+                        android:textAlignment="center"
+                        android:labelFor="@id/update_taboo_5_edit_text"/>
 
                     <EditText
                         android:id="@+id/update_taboo_5_edit_text"
@@ -253,7 +255,6 @@
                         android:layout_weight="0.85"
                         android:layout_marginEnd="24dp"
                         android:layout_gravity="center"
-                        android:hint="@string/default_taboo"
                         android:maxLength="@integer/max_taboo_length"
                         android:importantForAutofill="no"
                         android:inputType="textCapSentences|textNoSuggestions" />
@@ -283,7 +284,6 @@
                         android:drawableStart="@drawable/ic_baseline_more_vert_24"
                         android:drawableTint="@color/dark_red"
                         android:background="@drawable/border" />
-
 
                     <View
                         android:id="@+id/divider"

@@ -79,4 +79,6 @@
     <string name="operation_canceled">Operazione annullata</string>
     <string name="cant_read_file">Impossibile leggere il file</string>
     <string name="tooltip_return_top">Ritorna all\'inizio</string>
+    <string name="minus">-1</string>
+    <string name="plus">+1</string>
 </resources>

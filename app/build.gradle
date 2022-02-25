@@ -9,7 +9,7 @@ android {
         applicationId "it.bastoner.taboom"
         minSdk 26
         targetSdk 31
-        versionCode 1
+        versionCode 1 // Increment when modify application on the Play Store
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -17,7 +17,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true  // Set true if want to deploy to Play Store
+            minifyEnabled true  // Set true if you want to deploy to Play Store
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
