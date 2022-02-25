@@ -257,7 +257,11 @@
                         android:layout_gravity="center"
                         android:maxLength="@integer/max_taboo_length"
                         android:importantForAutofill="no"
-                        android:inputType="textCapSentences|textNoSuggestions" />
+                        android:inputType="textCapSentences|textNoSuggestions"
+                        android:imeOptions="actionDone"/>
+                    <!-- imeOptions="actionDone" needed cause by default it tries to
+                        focus next editText in the next card_update but it is hidden
+                    -->
                 </LinearLayout>
 
                 <LinearLayout
