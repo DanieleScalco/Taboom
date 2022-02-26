@@ -13,3 +13,6 @@ Available only in Italian, my mother tongue.
 
 ### Screen where you choose and update cards
 <img src="https://github.com/DanieleScalco/Taboom/blob/master/Taboom%20update.jpeg?raw=true" width="200" />
+
+### Try this!
+https://github.com/DanieleScalco/Taboom/blob/master/app/release/app-release.apk
