@@ -16,3 +16,4 @@ Available only in Italian, my mother tongue.
 
 ### Try this! You can download the app here:
 https://github.com/DanieleScalco/Taboom/blob/master/app/release/app-release.apk
+<img src="https://github.com/DanieleScalco/Taboom/blob/master/Download%20apk.jpeg?raw=true"/>
